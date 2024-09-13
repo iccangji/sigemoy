@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ViewController;
 use App\Http\Controllers\DummyController;
@@ -15,16 +16,13 @@ use App\Http\Controllers\DummyController;
 |
 */
 
-Route::get('/', function () {
+Route::get('/welcome', function () {
     return view('welcome');
 });
-
-Route::get('/login', [ViewController::class, 'login'])->name('login');
-Route::get('/Admin-Dashboard', [ViewController::class, 'dashboard'])->name('Admin-Dashboard');
-Route::get('/dummy-users', [DummyController::class, 'generateDummyUsers']);
-
-
-Route::middleware('auth')->group(function () {
-
-
-});
+Route::get('/', function () {
+    return view('welcome');
+})->middleware('auth');
+Route::get('/login', [UserController::class, 'index'])->name('login');
+Route::post('/logout', [UserController::class, 'logout']);
+Route::post('/login', [UserController::class, 'login']);
+Route::get('/user', [UserController::class, 'show']);

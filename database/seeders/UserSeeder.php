@@ -2,43 +2,24 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Enums\UserRole;
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
+
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
-    public function run()
+    public function run(): void
     {
-        // Membuat user dengan role Admin
-        User::factory()->create([
-            'name' => 'Admin User',
-            'role' => UserRole::Admin->value,
-            'password' => Hash::make('adminpassword'), // Password untuk admin
-        ]);
-
-        // Membuat user dengan role Input
-        User::factory()->create([
-            'name' => 'Input User',
-            'role' => UserRole::Input->value,
-            'password' => Hash::make('inputpassword'), // Password untuk input
-        ]);
-
-        // Membuat user dengan role Viewer
-        User::factory()->create([
-            'name' => 'Viewer User',
-            'role' => UserRole::Viewer->value,
-            'password' => Hash::make('viewerpassword'), // Password untuk viewer
-        ]);
-
-        // Membuat 10 user acak dengan role berbeda
-        User::factory()->count(10)->create([
-            'password' => Hash::make('password'), // Password default untuk user acak
+        DB::table('users')->insert([
+            'user' => 'admin',
+            'password' => Hash::make('admin'),
+            'level' => 'admin',
         ]);
     }
 }

@@ -25,9 +25,9 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'user' => 'admin',
-            'level' => 'admin',
-            'password' => static::$password ??= Hash::make('admin'),
+            'name' => fake()->name(),
+            'password' => static::$password ??= Hash::make('password'),
+            'role' => $this->faker->randomElement([UserRole::Admin->value, UserRole::Input->value, UserRole::Viewer->value]), // Gunakan enum yang ada
             'remember_token' => Str::random(10),
         ];
     }
@@ -35,10 +35,10 @@ class UserFactory extends Factory
     /**
      * Indicate that the model's email address should be unverified.
      */
-    // public function unverified(): static
-    // {
-    //     return $this->state(fn(array $attributes) => [
-    //         'email_verified_at' => null,
-    //     ]);
-    // }
+    public function unverified(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'email_verified_at' => null,
+        ]);
+    }
 }
