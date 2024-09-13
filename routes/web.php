@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ViewController;
+use App\Http\Controllers\DummyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +17,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/login', [ViewController::class, 'login'])->name('login');
+Route::get('/Admin-Dashboard', [ViewController::class, 'dashboard'])->name('Admin-Dashboard');
+Route::get('/dummy-users', [DummyController::class, 'generateDummyUsers']);
+
+
+Route::middleware('auth')->group(function () {
+
+
 });
