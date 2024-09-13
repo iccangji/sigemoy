@@ -23,6 +23,5 @@ Route::get('/', function () {
     return view('welcome');
 })->middleware('auth');
 Route::get('/login', [UserController::class, 'index'])->name('login');
-Route::post('/logout', [UserController::class, 'logout']);
 Route::post('/login', [UserController::class, 'login']);
-Route::get('/user', [UserController::class, 'show']);
+Route::post('/logout', [UserController::class, 'logout']);

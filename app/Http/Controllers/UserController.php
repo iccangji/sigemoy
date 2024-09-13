@@ -11,11 +11,12 @@ class UserController extends Controller
 {
     public function index()
     {
-        return view('login');
+        return view('admin.login');
     }
 
     public function login(Request $request)
     {
+        // dd($request);
         $data = $request->validate([
             'user' => '',
             'password' => '',
@@ -23,8 +24,9 @@ class UserController extends Controller
         if (Auth::attempt($data)) {
             $request->session()->regenerate();
             return redirect()->intended('/');
-        }
-        return back()->with('loginError', 'User atau Password salah');
+        }else{
+            return back()->with('loginError', 'User atau Password salah');
+        } 
     }
     public function logout()
     {
