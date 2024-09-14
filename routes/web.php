@@ -25,3 +25,9 @@ Route::get('/', function () {
 Route::get('/login', [UserController::class, 'index'])->name('login');
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/logout', [UserController::class, 'logout']);
+
+Route::get('/Admin-Dashboard', [ViewController::class, 'DashboardAdmin']);
+Route::get('/Data-Pemilih', [ViewController::class, 'DataPemilih']);
+
+
+

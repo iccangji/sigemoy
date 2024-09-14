@@ -11,8 +11,11 @@ class ViewController extends Controller
         return view('admin.login');
     }
     
-    public function Dashboard(){
+    public function DashboardAdmin(){
         return view('admin.DashboardAdmin');
     }
-
+    
+    public function DataPemilih(){
+        return view('admin.Data-pemilih');
+    }
 }
