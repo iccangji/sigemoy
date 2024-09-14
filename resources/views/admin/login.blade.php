@@ -133,7 +133,7 @@
             </div>
             <h4 class="d-block mt-4 text-dark footer-login">TIM PEMENANGAN </h4>
             <h4 class="d-block mt-2 text-dark footer-login">YUDHI-NIRNA </h4>
-            <h4 class="d-block mt-2 text-dark footer-login">KENDARI MEAMBO 2024 </h4>
+            <h4 class="d-block mt-2 text-dark footer-login">KENDARI BERSIH MERAKYAT </h4>
           </div>
           <div class="col-6 col-xxl-2 d-none d-lg-block">
             <div id="carouselExampleSlidesOnly" class="carousel-login slide " data-ride="carousel">
