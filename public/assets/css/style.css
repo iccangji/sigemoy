@@ -2911,13 +2911,27 @@ a.dropdown-item.active {
   line-height: 24px;
 }
 
+.carousel-login {
+  height: 100%;
+  width: 40%;
+  position: fixed;
+  top: 0;
+  right: 0;
+}
+
+.carousel-login img {
+  height: 100vh !important;
+  object-fit: cover;
+}
+
 .carousel-img-login {
-  height: 500px;
-  object-fit: contain;
+  height: 400px !important;
+  object-fit: cover;
+  border-radius: 12px;
 }
 
 .carousel-item {
-  border-radius: 20px;
+  border-radius: 12px;
 }
 
 /* 4. Theme Style */
@@ -3029,7 +3043,19 @@ a.bb {
   text-transform: uppercase;
   letter-spacing: 4px;
   color: #666;
-  text-align: center;
+  text-align: left;
+}
+
+.footer-login {
+  text-align: left;
+}
+
+@media (max-width: 990px) {
+
+  .login-brand,
+  .footer-login {
+    text-align: center;
+  }
 }
 
 .font-weight-600 {
