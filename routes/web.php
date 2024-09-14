@@ -4,6 +4,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ViewController;
 use App\Http\Controllers\DummyController;
+use App\Http\Controllers\IndexController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,9 +20,10 @@ use App\Http\Controllers\DummyController;
 Route::get('/welcome', function () {
     return view('welcome');
 });
-Route::get('/', function () {
-    return view('welcome');
-})->middleware('auth');
+Route::get('/', [IndexController::class, 'index'])->middleware('auth');
 Route::get('/login', [UserController::class, 'index'])->name('login');
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/logout', [UserController::class, 'logout']);
+
+Route::get('/details/{nama_kecamatan}', [IndexController::class, 'detailsKecamatan'])->middleware('auth');
+Route::get('/details/{nama_kecamatan}/{nama_kelurahan}', [IndexController::class, 'detailsKelurahan'])->middleware('auth');

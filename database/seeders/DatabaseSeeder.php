@@ -5,6 +5,8 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Database\Seeders\UserSeeder;
+use Database\Seeders\PemilihSeeder;
+use Database\Seeders\DataKpuSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,10 +15,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\User::factory()->create();
-        // \App\Models\User::factory()->create([
-        //     'user' => 'admin',
-        //     'email' => 'admin',
-        // ]);
+        $this->call([
+            UserSeeder::class,
+            PemilihSeeder::class,
+            DataKpuSeeder::class
+        ]);
     }
 }
