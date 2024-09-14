@@ -24,3 +24,6 @@ Route::get('/', [IndexController::class, 'index'])->middleware('auth');
 Route::get('/login', [UserController::class, 'index'])->name('login');
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/logout', [UserController::class, 'logout']);
+
+Route::get('/details/{nama_kecamatan}', [IndexController::class, 'detailsKecamatan'])->middleware('auth');
+Route::get('/details/{nama_kecamatan}/{nama_kelurahan}', [IndexController::class, 'detailsKelurahan'])->middleware('auth');

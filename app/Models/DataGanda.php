@@ -7,5 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class DataGanda extends Model
 {
+    protected $table = 'data_ganda';
     use HasFactory;
 }

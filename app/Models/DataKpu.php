@@ -7,5 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class DataKpu extends Model
 {
+    protected $table = 'data_kpu';
     use HasFactory;
 }
