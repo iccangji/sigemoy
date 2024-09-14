@@ -18,8 +18,20 @@ class UserSeeder extends Seeder
     {
         DB::table('users')->insert([
             'user' => 'admin',
-            'password' => Hash::make('admin'),
+            'password' => Hash::make('123'),
             'level' => 'admin',
+        ]);
+
+        DB::table('users')->insert([
+            'user' => 'viewer',
+            'password' => Hash::make('123'),
+            'level' => 'viewer',
+        ]);
+
+        DB::table('users')->insert([
+            'user' => 'penginput',
+            'password' => Hash::make('123'),
+            'level' => 'penginput',
         ]);
     }
 }
