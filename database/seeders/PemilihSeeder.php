@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 
 class PemilihSeeder extends Seeder
@@ -12,7 +13,7 @@ class PemilihSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Pemilih::factory()->create([
+        DB::table('pemilih')->insert([
             'nama' => 'tes',
             'nik' => 'tes',
             'no_hp' => 'tes',
