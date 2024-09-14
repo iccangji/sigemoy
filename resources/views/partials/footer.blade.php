@@ -1,6 +1,6 @@
 <footer class="main-footer">
     <div class="footer-left">
-      Copyright &copy; 2024 <div class="bullet"></div> Design By <a href="https://nauval.in/">Tim Validasi Data Pemilihan</a>
+      Copyright &copy; 2024 <div class="bullet"></div> Design By <a href="https://nauval.in/">KodingMi.IT</a>
     </div>
     <div class="footer-right">
       
