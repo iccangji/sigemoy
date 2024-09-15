@@ -64,7 +64,7 @@
 }
 
 a {
-  color: #ff9650;
+  color: #9ce0ff;
   font-weight: 500;
   transition: all .5s;
   -webkit-transition: all .5s;
@@ -1545,7 +1545,7 @@ table tr:hover .table-links {
 
 /* 3.10 Pagination */
 .page-item .page-link {
-  color: #ff9650;
+  color: #0573a7;
   border-radius: 3px;
   margin: 0 3px;
 }
@@ -3355,7 +3355,7 @@ pre {
 }
 
 .section .section-header .section-header-back .btn:hover {
-  background-color: #ff9650;
+  background-color: #9ce0ff;
   color: #fff;
 }
 
@@ -3390,7 +3390,7 @@ pre {
   border-radius: 5px;
   height: 8px;
   width: 30px;
-  background-color: #ff9650;
+  background-color: #9ce0ff;
   display: inline-block;
   float: left;
   margin-top: 6px;
@@ -3600,7 +3600,7 @@ body.sidebar-mini .main-sidebar .sidebar-menu>li>a.has-dropdown:after {
 
 body.sidebar-mini .main-sidebar .sidebar-menu>li.active>a {
   box-shadow: 0 4px 8px #acb5f6;
-  background-color: #ff9650;
+  background-color: #9ce0ff;
   color: #fff;
   text-align: center;
 }
@@ -3623,7 +3623,7 @@ body.sidebar-mini .main-sidebar .sidebar-menu>li ul.dropdown-menu li>a:focus,
 body.sidebar-mini .main-sidebar .sidebar-menu>li ul.dropdown-menu li.active>a,
 body.sidebar-mini .main-sidebar .sidebar-menu>li ul.dropdown-menu li.active>a:hover {
   color: #fff;
-  background-color: #ff9650 !important;
+  background-color: #9ce0ff !important;
 }
 
 body.sidebar-mini .main-sidebar .sidebar-menu>li ul.dropdown-menu li a {
@@ -3969,7 +3969,7 @@ body.layout-3 .main-footer {
 }
 
 .main-sidebar .sidebar-menu li.active a {
-  color: #ff9650;
+  color: #9ce0ff;
   font-weight: 600;
   background-color: #fcfcfd;
 }
@@ -4022,7 +4022,7 @@ body.layout-3 .main-footer {
 }
 
 .main-sidebar .sidebar-menu li ul.dropdown-menu li.active>a {
-  color: #ff9650;
+  color: #9ce0ff;
   font-weight: 600;
 }
 
@@ -4067,7 +4067,7 @@ body.layout-3 .main-footer {
 }
 
 body:not(.sidebar-mini) .sidebar-style-1 .sidebar-menu li.active a {
-  background-color: #ff9650;
+  background-color: #9ce0ff;
   color: #fff;
 }
 
@@ -4097,7 +4097,7 @@ body:not(.sidebar-mini) .sidebar-style-2 .sidebar-menu>li.active>a:before {
   transform: translateY(-50%);
   height: 25px;
   width: 4px;
-  background-color: #ff9650;
+  background-color: #9ce0ff;
 }
 
 body:not(.sidebar-mini) .sidebar-style-2 .sidebar-menu li.active ul.dropdown-menu li a {
