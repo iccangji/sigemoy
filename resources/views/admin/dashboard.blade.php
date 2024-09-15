@@ -280,12 +280,17 @@
     let dataJson;
     async function getData() {
         try {
-            const response = await fetch('http://localhost:8000/data-index');
+            const options = {
+                method: 'GET',
+                mode: 'no-cors'
+            };
+            const response = await fetch('http://localhost:8000/data-index', options);
             dataJson = await response.json();
             data = dataJson.data_grafik;
         } catch (error) {
             console.error('Error fetching or displaying data:', error);
         } finally {
+            console.log(dataJson);
             const ctx = document.getElementById('myChart').getContext('2d');
             initializeChart(ctx, data);
             document.getElementById('count_pemilih').innerHTML = dataJson.pemilih
