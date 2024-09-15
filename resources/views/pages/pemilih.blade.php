@@ -1,4 +1,4 @@
-@extends('partials.mainberanda')
+@extends('main')
 
 @section('konten')
 
@@ -24,6 +24,7 @@
             <div class="card">
               <div class="card-header d-flex justify-content-between align-items-center">
                 <h4>Data Pemlih</h4>
+                  
                 <button class="btn btn-primary btn-round" data-toggle="modal" data-target="#Tambahdata">
                   <i class="fa fa-plus"></i>Tambah Data
                 </button>

@@ -54,7 +54,9 @@
       <nav class="navbar navbar-expand-lg main-navbar">
         <form class="form-inline mr-auto">
           <ul class="navbar-nav mr-3">
-            <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars text-dark"></i></a></li>
+            @if ($level != 'penginput')
+              <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars text-dark"></i></a></li>
+            @endif
             {{-- <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="fas fa-search"></i></a></li> --}}
           </ul>
 
@@ -77,7 +79,9 @@
         </ul>
       </nav>
       {{-- sidebar --}}
-      @include('partials.sidebar')
+      @if ($level != 'penginput')
+        @include('partials.sidebar')
+      @endif
 
       <!-- Main Content -->
       @yield('konten')

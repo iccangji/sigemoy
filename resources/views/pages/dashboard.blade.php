@@ -1,8 +1,12 @@
-@extends('partials.mainberanda')
+@extends('main')
 
 @section('konten')
 
-<div class="main-content">
+<div class="main-content"
+    @if ($level == 'penginput')
+         style="padding-left:20px;"
+    @endif
+>
     <section class="section">
         <div class="section-header">
             <h1>Dashboard</h1>

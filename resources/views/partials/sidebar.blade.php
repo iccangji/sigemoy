@@ -5,9 +5,11 @@
     </div>
     <ul class="sidebar-menu">
       <li class="menu-header">Halaman</li>
-      <li class=" {{ $page=='dashboard' ?  'active' : '' }}">
-        <a href="/" class="nav-link "><i class="fa-solid fa-home"></i><span>Dashboard</span></a>
-      </li>
+    
+        <li class=" {{ $page=='dashboard' ?  'active' : '' }}">
+          <a href="/" class="nav-link "><i class="fa-solid fa-home"></i><span>Dashboard</span></a>
+        </li>
+      
       <li class="{{ Request::is('Data-Pemilih') ?  'active' : '' }}">
         <a class="nav-link" href="/Data-Pemilih"><i class="fa-solid fa-user-check"></i><span>Data Pemilih</span></a>
       </li>
