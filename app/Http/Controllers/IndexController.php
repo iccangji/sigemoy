@@ -14,6 +14,17 @@ class IndexController extends Controller
 {
     public function index()
     {
+        $user = auth()->user()->level;
+        if ($user == 'penginput') {
+            return view(
+                'pages.pemilih',
+                [
+                    'page' => 'dashboard',
+                    'user' => auth()->user()->user,
+                    'level' => auth()->user()->level
+                ]
+            );    # code...
+        }
         return view(
             'pages.dashboard',
             [
