@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ViewController;
 use App\Http\Controllers\DummyController;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\PemilihController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,10 +21,13 @@ use App\Http\Controllers\IndexController;
 Route::get('/welcome', function () {
     return view('welcome');
 });
-Route::get('/', [IndexController::class, 'index'])->middleware(['auth', 'cors']);
+
 Route::get('/login', [UserController::class, 'index'])->name('login');
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/logout', [UserController::class, 'logout']);
+
+Route::get('/', [IndexController::class, 'index'])->middleware(['auth', 'cors']);
+Route::get('/pemilih', [PemilihController::class, 'index'])->middleware(['auth', 'cors']);
 
 Route::get('/data-index', [IndexController::class, 'indexData'])->middleware('auth');
 Route::get('/details/{nama_kecamatan}', [IndexController::class, 'detailsKecamatan'])->middleware('auth');

@@ -10,8 +10,8 @@
           <a href="/" class="nav-link "><i class="fa-solid fa-home"></i><span>Dashboard</span></a>
         </li>
       
-      <li class="{{ Request::is('Data-Pemilih') ?  'active' : '' }}">
-        <a class="nav-link" href="/Data-Pemilih"><i class="fa-solid fa-user-check"></i><span>Data Pemilih</span></a>
+      <li class="{{ Request::is('pemilih') ?  'active' : '' }}">
+        <a class="nav-link" href="/pemilih"><i class="fa-solid fa-user-check"></i><span>Data Pemilih</span></a>
       </li>
     </ul>
   </aside>
