@@ -11,7 +11,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        return view('admin.login');
+        return view('auth.login');
     }
 
     public function login(Request $request)
@@ -24,9 +24,9 @@ class UserController extends Controller
         if (Auth::attempt($data)) {
             $request->session()->regenerate();
             return redirect()->intended('/');
-        }else{
+        } else {
             return back()->with('loginError', 'User atau Password salah');
-        } 
+        }
     }
     public function logout()
     {

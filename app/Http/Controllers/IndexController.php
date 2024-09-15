@@ -15,11 +15,18 @@ class IndexController extends Controller
     public function index()
     {
         if (auth()->user()->level == "admin") {
-            $data = $this->getCountData()['pemilih_per_kecamatan'];
-            foreach ($data as $item) {
-                echo $item->kecamatan . ': ' . $item->total_pemilih . ' posts<br>';
-            }
-            return response()->json($data);
+            // $data = $this->getCountData()['pemilih_per_kecamatan'];
+            // foreach ($data as $item) {
+            //     echo $item->kecamatan . ': ' . $item->total_pemilih . ' posts<br>';
+            // }
+            // return response()->json($data);
+            return view(
+                'admin.dashboard',
+                [
+                    'page' => 'dashboard',
+                    'user' => auth()->user()->user
+                ]
+            );
         } else if (auth()->user()->level == "viewer") {
             $data = $this->getCountData()['pemilih_per_kecamatan'];
             foreach ($data as $item) {
@@ -33,26 +40,45 @@ class IndexController extends Controller
         }
     }
 
+    public function indexData()
+    {
+        return $this->getCountData();
+    }
+
     private function getCountData()
     {
-        $count_per_kecamatan = Pemilih::select('kecamatan', DB::raw('COUNT(*) as total_pemilih'))
-            ->groupBy('kecamatan')
-            ->get();
-        return [
+        $data = Pemilih::select('kecamatan', 'kelurahan', 'tps', DB::raw('COUNT(*) as total_pemilih'))
+            ->groupBy('kecamatan', 'kelurahan', 'tps')
+            ->get()
+            ->groupBy('kecamatan') // Mengelompokkan berdasarkan kecamatan
+            ->map(function ($kelurahanGroup) {
+                return [
+                    'kelurahan' => $kelurahanGroup->groupBy('kelurahan') // Mengelompokkan berdasarkan kelurahan
+                        ->map(function ($tpsGroup) {
+                            return [
+                                'tps' => $tpsGroup->map(function ($item) {
+                                    return [
+                                        'name' => $item->tps,
+                                        'pemilih' => $item->total_pemilih,
+                                    ];
+                                })->values()
+                            ];
+                        })
+                ];
+            });
+        return response()->json([
             'pemilih' => Pemilih::count(),
             'data_ganda' => DataGanda::count(),
             'data_kpu' => DataKpu::count(),
             'data_invalid' => DataKpuInvalid::count(),
-            'pemilih_per_kecamatan' => $count_per_kecamatan
-        ];
+            'data_grafik' => $data
+        ]);
     }
 
     private function getCreatedData(string $user)
     {
         return Pemilih::where('created_by', $user)->get();
     }
-
-
 
     public function detailsKecamatan($nama_kecamatan)
     {
