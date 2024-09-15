@@ -33,4 +33,4 @@ Route::get('/data-index', [IndexController::class, 'indexData'])->middleware('au
 Route::get('/details/{nama_kecamatan}', [IndexController::class, 'detailsKecamatan'])->middleware('auth');
 Route::get('/details/{nama_kecamatan}/{nama_kelurahan}', [IndexController::class, 'detailsKelurahan'])->middleware('auth');
 Route::get('/Admin-Dashboard', [ViewController::class, 'DashboardAdmin']);
-Route::get('/Data-Pemilih', [ViewController::class, 'DataPemilih']);
+// Route::get('/Data-Pemilih', [ViewController::class, 'DataPemilih']);

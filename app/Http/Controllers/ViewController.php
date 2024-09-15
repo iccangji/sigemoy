@@ -12,8 +12,8 @@ class ViewController extends Controller
         return view('pages.dashboard');
     }
 
-    public function DataPemilih()
-    {
-        return view('pages.pemilih');
-    }
+    // public function DataPemilih()
+    // {
+    //     return view('pages.pemilih');
+    // }
 }
