@@ -77,7 +77,7 @@
         </ul>
       </nav>
       {{-- sidebar --}}
-      @include('admin.sidebar.sidebar')
+      @include('partials.sidebar')
 
       <!-- Main Content -->
       @yield('konten')

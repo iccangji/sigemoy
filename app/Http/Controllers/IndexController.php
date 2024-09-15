@@ -14,30 +14,14 @@ class IndexController extends Controller
 {
     public function index()
     {
-        if (auth()->user()->level == "admin") {
-            // $data = $this->getCountData()['pemilih_per_kecamatan'];
-            // foreach ($data as $item) {
-            //     echo $item->kecamatan . ': ' . $item->total_pemilih . ' posts<br>';
-            // }
-            // return response()->json($data);
-            return view(
-                'admin.dashboard',
-                [
-                    'page' => 'dashboard',
-                    'user' => auth()->user()->user
-                ]
-            );
-        } else if (auth()->user()->level == "viewer") {
-            $data = $this->getCountData()['pemilih_per_kecamatan'];
-            foreach ($data as $item) {
-                echo $item->kecamatan . ': ' . $item->total_pemilih . ' posts<br>';
-            }
-        } else if (auth()->user()->level == "penginput") {
-            $data = $this->getCreatedData(auth()->user()->user);
-            foreach ($data as $item) {
-                echo $item->kecamatan;
-            }
-        }
+        return view(
+            'pages.dashboard',
+            [
+                'page' => 'dashboard',
+                'user' => auth()->user()->user,
+                'level' => auth()->user()->level
+            ]
+        );
     }
 
     public function indexData()

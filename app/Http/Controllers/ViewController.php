@@ -9,11 +9,11 @@ class ViewController extends Controller
 
     public function DashboardAdmin()
     {
-        return view('admin.dashboard');
+        return view('pages.dashboard');
     }
 
     public function DataPemilih()
     {
-        return view('admin.pemilih');
+        return view('pages.pemilih');
     }
 }

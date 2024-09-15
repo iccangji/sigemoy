@@ -38,6 +38,7 @@
                     </div>
                 </div>
             </div>
+            @if ($user!='penginput')
             <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                 <div class="card card-statistic-1">
                     <div class="card-icon bg-warning">
@@ -66,6 +67,7 @@
                     </div>
                 </div>
             </div>
+            @endif
         </div>
 
         <!-- Chart container -->
@@ -76,7 +78,7 @@
             <div class="card-body">
                 <canvas id="myChart" width="400" height="200"></canvas>
             </div>
-            <div class="footer align-items-center mb-5" style="display: flex; justify-content: center;">
+            <div class="footer align-items-center mb-5 me-0" style="display: flex; justify-content: center;">
                 <button class="btn btn-warning" id="backButton" onclick="goBack()" style="display: none;"><i class="fa-solid fa-backward"></i> Kembali</button>
             </div>
         </div>
