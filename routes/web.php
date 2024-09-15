@@ -20,7 +20,7 @@ use App\Http\Controllers\IndexController;
 Route::get('/welcome', function () {
     return view('welcome');
 });
-Route::get('/', [IndexController::class, 'index'])->middleware('auth');
+Route::get('/', [IndexController::class, 'index'])->middleware(['auth', 'cors']);
 Route::get('/login', [UserController::class, 'index'])->name('login');
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/logout', [UserController::class, 'logout']);

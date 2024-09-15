@@ -280,11 +280,7 @@
     let dataJson;
     async function getData() {
         try {
-            const options = {
-                method: 'GET',
-                mode: 'no-cors'
-            };
-            const response = await fetch('http://localhost:8000/data-index', options);
+            const response = await fetch('http://localhost:8000/data-index');
             dataJson = await response.json();
             data = dataJson.data_grafik;
         } catch (error) {
