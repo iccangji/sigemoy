@@ -1,11 +1,18 @@
 <?php
 
-use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ViewController;
 use App\Http\Controllers\DummyController;
+use App\Http\Controllers\GandaController;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\InvalidController;
+use App\Http\Controllers\KpuController;
 use App\Http\Controllers\PemilihController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ViewController;
+use Illuminate\Support\Facades\Route;
+
+
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +43,7 @@ Route::resource('/pemilih', PemilihController::class)->only([
     'destroy'
 ])->middleware(['auth']);
 Route::get('/pemilih-lokasi/{id}', [PemilihController::class, 'location'])->middleware(['auth']);
+Route::get('/kpu-lokasi/{id}', [KpuController::class, 'location'])->middleware(['auth']);
 
 Route::resource('/data-user', UserController::class)->only([
     'index',
@@ -43,6 +51,19 @@ Route::resource('/data-user', UserController::class)->only([
     'update',
     'destroy'
 ]);
+
+Route::resource('/data-kpu', KpuController::class)->only([
+    'index',
+    'store',
+    'update',
+    'destroy'
+])->middleware(['auth']);
+
+Route::get('/data-ganda', [GandaController::class, 'index'])->middleware(['auth', 'cors']);
+Route::get('/data-invalid', [InvalidController::class, 'index'])->middleware(['auth', 'cors']);
+// Route::get('/data-kpu', [KpuController::class, 'index'])->middleware(['auth']);
+
+
 
 
 // Route::get('/pemilih', [PemilihController::class, 'index'])->middleware(['auth']);

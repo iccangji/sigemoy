@@ -9,7 +9,7 @@
   >
   <section class="section">
     <div class="section-header">
-      <h1>Data Ganda</h1>
+      <h1>Data Tidak Valid</h1>
       {{-- <div class="section-header-breadcrumb">
         <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
         <div class="breadcrumb-item"><a href="#">Informasi Data Pemilih</a></div>
@@ -22,7 +22,7 @@
         <div class="col-12">
           <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-              <h2 class="section-title">Data Ganda</h2>
+              <h2 class="section-title">Data Tidak Valid</h2>
             </div>
             <div class="card-body">
               @if (session('success'))
@@ -47,22 +47,22 @@
                 <div class="form-group">
                   <label for="showEntries">Data Perbaris :</label>
                   <select id="showEntries" class="form-control" style="width: 100px;">
-                    <option value="/data-ganda?size=50"
+                    <option value="/data-invalid?size=50"
                       @if ($selected_size==50)
                       selected
                       @endif>50</option>
-                    <option value="/data-ganda?size=100"
+                    <option value="/data-invalid?size=100"
                       @if ($selected_size==100)
                       selected
                       @endif>100</option>
-                    <option value="/data-ganda?size=200"
+                    <option value="/data-invalid?size=200"
                       @if ($selected_size==200)
                       selected
                       @endif>200</option>
                   </select>
                 </div>
                 <div class="form-group">
-                  <form id="search-form" method="GET" action="./data-ganda">
+                  <form id="search-form" method="GET" action="./data-invalid">
                     <label for="Pencarian Data">Pencarian Data</label>
                     <input type="text" name="search" class="form-control" id="searchInput" value="{{ $search }}" placeholder="Masukkan nama...">
                     {{-- <button type="submit" class="btn btn-success"><i class="fa fa-search" aria-hidden="true"></i></button> --}}
@@ -104,10 +104,9 @@
                       <td>{{$item->kelurahan}}</td>
                       <td>{{$item->kecamatan}}</td>
                       <td>{{$item->nama_pj}}</td>
-                      <td><div class="badge badge-warning">Data Ganda</div></td>
+                      <td><div class="badge badge-danger">Data Tidak Valid</div></td>
                       @if ($level != 'viewer')
                         <td class="text-center">
-                          {{-- <a href="#" class="btn btn-icon btn-info" data-toggle="modal" data-target="#editdata-{{$item->id}}"><i class="far fa-edit"></i></a> --}}
                           <a href="#" class="btn btn-icon btn-success"><i class="fas fa-check"> </i></a>
                           <form action="{{ route('pemilih.destroy', $item->id) }}" method="POST" style="display:inline-block;">
                             @csrf
@@ -154,8 +153,6 @@
 
   </section>
 </div>
-
-
 
 
 

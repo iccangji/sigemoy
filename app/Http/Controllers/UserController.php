@@ -36,6 +36,7 @@ class UserController extends Controller
 
     public function index(){
         $data = User::where('level','viewer')->orWhere('level','penginput')->get();
+        $countUser = User::count();
         return view(
             'pages.datauser',
             [
@@ -43,13 +44,15 @@ class UserController extends Controller
                 'title' => 'Data User',
                 'user' => auth()->user()->user,
                 'level' => auth()->user()->level,
-                'data' => $data
+                'data' => $data,
+                'count' => $countUser
             ]
         );
     }
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $data = $request->validate([
             'username' => 'required',
             'password' => 'required|min:8',
@@ -68,6 +71,7 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
+        
         $data = $request->validate([
             'username' => 'required',
             'password' => 'required|min:8',

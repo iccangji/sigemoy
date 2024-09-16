@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Kecamatan;
 use App\Models\Pemilih;
-use App\Models\Kelurahan;
 use Illuminate\Http\Request;
-class PemilihController extends Controller
-{   
+
+class InvalidController extends Controller
+{
+    //
     public function index(Request $request)
     {
         $size = $request->input('size', 50);
@@ -24,13 +24,11 @@ class PemilihController extends Controller
                 ->orderBy('updated_at', 'desc')->paginate($size);
             $countPemilih = Pemilih::where('created_by', auth()->user()->user)->count();
         }
-
-        $kecamatan = Kecamatan::get();
         return view(
-            'pages.pemilih',
+            'pages.datatidakvalid',
             [
-                'page' => 'pemilih',
-                'title' => 'Data Pemilih',
+                'page' => 'data-invalid',
+                'title' => 'Data Tidak Valid',
                 'user' => auth()->user()->user,
                 'level' => auth()->user()->level,
                 'data' => $items,
@@ -38,14 +36,12 @@ class PemilihController extends Controller
                 'count' => $countPemilih,
                 'selected_size' => $size,
                 'current_page' => $page,
-                'kecamatan'=> $kecamatan
             ]
         );
     }
 
     public function store(Request $request)
     {
-        // dd($request->all());
         $data = $request->validate([
             'nama_pemilih' => 'required',
             'NIK' => 'required',
@@ -53,10 +49,9 @@ class PemilihController extends Controller
             'hub_keluarga' => 'required',
             'tps' => 'required',
             'kelurahan' => 'required',
-            'kecamatan' => 'required',
             'nama_pj' => 'required'
         ]);
-        $kecamatan = Kecamatan::where('id', $request->kecamatan)->first()->nama;
+
         if ($data) {
             Pemilih::create([
                 'nama' => $request->nama_pemilih,
@@ -65,44 +60,11 @@ class PemilihController extends Controller
                 'hub_keluarga' => $request->hub_keluarga,
                 'tps' => $request->tps,
                 'kelurahan' => $request->kelurahan,
-                'kecamatan' => $kecamatan,
-                'nama_pj' => $request->nama_pj,
-                'created_by' => auth()->user()->user
+                'nama_pj' => $request->nama_pj
             ]);
             return back()->with('success', 'Data berhasil dimasukkan');
         }
         return back()->with('error', 'Data pemilih tidak dapat dimasukkan');
-    }
-    
-    public function update(Request $request, $id)
-    {
-        $data = $request->validate([
-            'nama_pemilih' => 'required',
-            'NIK' => 'required',
-            'no_hp' => 'required',
-            'hub_keluarga' => 'required',
-            'tps' => 'required',
-            'kelurahan' => 'required',
-            'kecamatan' => 'required',
-            'nama_pj' => 'required'
-        ]);
-        $kecamatan = Kecamatan::where('id', $request->kecamatan)->first()->nama;
-        if ($data) {
-            $item = Pemilih::findOrFail($id);
-            $item->update([
-                'nama' => $request->nama_pemilih,
-                'nik' => $request->NIK,
-                'no_hp' => $request->no_hp,
-                'hub_keluarga' => $request->hub_keluarga,
-                'tps' => $request->tps,
-                'kelurahan' => $request->kelurahan,
-                'kecamatan' => $kecamatan,
-                'nama_pj' => $request->nama_pj,
-                'created_by' => auth()->user()->user
-            ]);
-            return back()->with('success', 'Data berhasil diubah');
-        }
-        return back()->with('error', 'Data pemilih tidak dapat diubah');
     }
 
     public function destroy($id)
@@ -111,26 +73,6 @@ class PemilihController extends Controller
         return back()->with('success', 'Data berhasil dihapus');
     }
 
-    public function location($kecamatan_id){
-        $kelurahans = Kelurahan::where('kecamatan_id', $kecamatan_id)->get();
-        return response()->json($kelurahans);
-    }
-
-    // public function getPemilihData(Request $request)
-    // {
-    //     // $page = $request->input('page');
-    //     // $offset = ($page * $size) - $size;
-    //     // if ($size && $offset >= 0) {
-    //     //     return $dataPemilih;
-    //     // }
-    //     // $data =  Pemilih::get();
-    //     $size = $request->input('size');
-    //     $dataPemilih = Pemilih::paginate($size);
-    //     return response()->json($dataPemilih);
-    // }
-
-
-    // Endpoint untuk auto-complete kelurahan
     public function getKelurahan(Request $request)
     {
         $search = $request->query('search');
@@ -141,7 +83,6 @@ class PemilihController extends Controller
         return response()->json($kelurahan);
     }
 
-    // Endpoint untuk mendapatkan kecamatan berdasarkan kelurahan
     public function getKecamatanByKelurahan(Request $request)
     {
         $kelurahan = $request->query('kelurahan');

@@ -7,6 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class DataKpu extends Model
 {
-    protected $table = 'data_kpu';
     use HasFactory;
+    protected $table = 'data_kpu';
+
+    protected $fillable = [
+        'nama',
+        'jenis_kelamin',
+        'usia',
+        'alamat',
+        'tps',
+        'kelurahan',
+    ];
+
 }

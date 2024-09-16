@@ -351,9 +351,6 @@
                                 <label for="kelurahan">Kelurahan</label>
                                 <select name="kelurahan" id="kelurahan-edit" class="form-control" required>
                                     <option value="">--Pilih Kelurahan--</option>
-                                    {{-- @foreach ($kecamatan as $p)
-                        <option value="{{ $p->id }}">{{ $p->nama }}</option>
-              @endforeach --}}
                                 </select>
                                 @error('kelurahan')
                                     <small class="text-danger">{{ $message }}</small>
