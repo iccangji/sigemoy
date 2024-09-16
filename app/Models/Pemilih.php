@@ -17,6 +17,8 @@ class Pemilih extends Model
         'hub_keluarga',
         'tps',
         'kelurahan',
+        'kecamatan',
         'nama_pj',
+        'created_by',
     ];
 }

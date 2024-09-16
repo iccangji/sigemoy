@@ -18,7 +18,7 @@ class PemilihFactory extends Factory
             'nama' => $this->faker->name,
             'nik' => '001',
             'no_hp' => '082134567890',
-            'hub_keluarga' => 'saudara',
+            'hub_keluarga' => $this->faker->randomElement(['Saudara Kandung', 'Mertua', 'Ipar', 'Suami/Istri', 'Anak', 'Ponakan']),
             'tps' => $this->faker->randomElement(['001', '002', '003', '004']),
             'kelurahan' => $this->faker->randomElement(['Kambu', 'Sambuli', 'Pondambea', 'Abeli', 'Bende']),
             'kecamatan' => $this->faker->randomElement(['Kambu', 'Baruga', 'Abeli', 'Poasia']),

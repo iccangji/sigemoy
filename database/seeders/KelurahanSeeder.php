@@ -46,10 +46,6 @@ class KelurahanSeeder extends Seeder
             'kecamatan_id' => 2,
         ]);
         Kelurahan::create([
-            'nama' => 'Kambu',
-            'kecamatan_id' => 2,
-        ]);
-        Kelurahan::create([
             'nama' => 'Wundumbatu',
             'kecamatan_id' => 3,
         ]);
