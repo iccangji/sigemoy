@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Pemilih;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,15 +10,20 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class PemilihFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+
+    protected $model = Pemilih::class;
     public function definition(): array
     {
         return [
-            //
+            'nama' => $this->faker->name,
+            'nik' => '001',
+            'no_hp' => '082134567890',
+            'hub_keluarga' => 'saudara',
+            'tps' => $this->faker->randomElement(['001', '002', '003', '004']),
+            'kelurahan' => $this->faker->randomElement(['Kambu', 'Sambuli', 'Pondambea', 'Abeli', 'Bende']),
+            'kecamatan' => $this->faker->randomElement(['Kambu', 'Baruga', 'Abeli', 'Poasia']),
+            'nama_pj' => $this->faker->name,
+            'created_by' => $this->faker->name
         ];
     }
 }

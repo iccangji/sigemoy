@@ -285,11 +285,12 @@
     async function getData() {
         try {
             const response = await fetch('http://localhost:8000/data-index');
-            dataJson = await response.json();
+            dataJson = await response.json(); //Progress bar berjalan
             data = dataJson.data_grafik;
         } catch (error) {
             console.error('Error fetching or displaying data:', error);
         } finally {
+            //Progress bar berhenti
             console.log(dataJson);
             const ctx = document.getElementById('myChart').getContext('2d');
             initializeChart(ctx, data);
@@ -301,6 +302,9 @@
     }
 
     getData();
+    // setTimeout(() => {
+    //     console.log("Delayed for 1 second.");
+    // }, "5000");
 </script>
 
 

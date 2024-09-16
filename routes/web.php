@@ -27,15 +27,29 @@ Route::post('/login', [UserController::class, 'login']);
 Route::post('/logout', [UserController::class, 'logout']);
 
 Route::get('/', [IndexController::class, 'index'])->middleware(['auth', 'cors']);
-Route::get('/pemilih', [PemilihController::class, 'index'])->middleware(['auth', 'cors']);
+Route::get('/data-index', [IndexController::class, 'indexData'])->middleware(['auth', 'cors']);
 
-//
-Route::get('/pemilih-data', [PemilihController::class, 'getPemilihData']);
-//
+Route::resource('/pemilih', \App\Http\Controllers\PemilihController::class)->only([
+    'index',
+    'store',
+    'update',
+    'destroy'
+])->middleware(['auth']);;
+
+Route::get('/autocomplete/kelurahan', [ViewController::class, 'getKelurahan']);
+Route::get('/autocomplete/kecamatan', [ViewController::class, 'getKecamatanByKelurahan']);
 
 
-Route::get('/data-index', [IndexController::class, 'indexData']);
-Route::get('/details/{nama_kecamatan}', [IndexController::class, 'detailsKecamatan'])->middleware('auth');
-Route::get('/details/{nama_kecamatan}/{nama_kelurahan}', [IndexController::class, 'detailsKelurahan'])->middleware('auth');
-Route::get('/Admin-Dashboard', [ViewController::class, 'DashboardAdmin']);
+// Route::get('/pemilih', [PemilihController::class, 'index'])->middleware(['auth']);
+// Route::post('/pemilih', [PemilihController::class, 'store'])->middleware(['auth']);
+// Route::delete('/pemilih/{id}', [PemilihController::class, 'destroy'])->middleware(['auth']);
+
+
+// //
+// Route::get('/pemilih-data', [PemilihController::class, 'getPemilihData']);
+// //
+
+// Route::get('/details/{nama_kecamatan}', [IndexController::class, 'detailsKecamatan'])->middleware('auth');
+// Route::get('/details/{nama_kecamatan}/{nama_kelurahan}', [IndexController::class, 'detailsKelurahan'])->middleware('auth');
+// Route::get('/Admin-Dashboard', [ViewController::class, 'DashboardAdmin']);
 // Route::get('/Data-Pemilih', [ViewController::class, 'DataPemilih']);

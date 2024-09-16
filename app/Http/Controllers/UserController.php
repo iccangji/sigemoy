@@ -18,8 +18,8 @@ class UserController extends Controller
     {
         // dd($request);
         $data = $request->validate([
-            'user' => '',
-            'password' => '',
+            'user' => 'required',
+            'password' => 'required',
         ]);
         if (Auth::attempt($data)) {
             $request->session()->regenerate();

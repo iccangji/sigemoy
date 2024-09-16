@@ -9,28 +9,23 @@ use App\Models\Pemilih;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\PemilihController;
 
 class IndexController extends Controller
 {
     public function index()
     {
-        $user = auth()->user()->level;
-        if ($user == 'penginput') {
-            return view(
-                'pages.pemilih',
-                [
-                    'page' => 'dashboard',
-                    'user' => auth()->user()->user,
-                    'level' => auth()->user()->level
-                ]
-            );    # code...
+        $level = auth()->user()->level;
+        if ($level == 'penginput') {
+            return redirect('/pemilih');   # code...
         }
         return view(
             'pages.dashboard',
             [
                 'page' => 'dashboard',
+                'title' => 'Dashboard',
                 'user' => auth()->user()->user,
-                'level' => auth()->user()->level
+                'level' => $level
             ]
         );
     }
@@ -51,12 +46,14 @@ class IndexController extends Controller
                     'kelurahan' => $kelurahanGroup->groupBy('kelurahan') // Mengelompokkan berdasarkan kelurahan
                         ->map(function ($tpsGroup) {
                             return [
-                                'tps' => $tpsGroup->map(function ($item) {
+                                'tps' => $tpsGroup->sortBy(function ($item) { // Mengurutkan TPS
+                                    return (int) $item->tps; // Mengonversi TPS ke integer untuk pengurutan numerik
+                                })->map(function ($item) {
                                     return [
                                         'name' => $item->tps,
                                         'pemilih' => $item->total_pemilih,
                                     ];
-                                })->values()
+                                })->values() // Reset indeks array
                             ];
                         })
                 ];
@@ -70,33 +67,33 @@ class IndexController extends Controller
         ]);
     }
 
-    private function getCreatedData(string $user)
-    {
-        return Pemilih::where('created_by', $user)->get();
-    }
+    // private function getCreatedData(string $user)
+    // {
+    //     return Pemilih::where('created_by', $user)->get();
+    // }
 
-    public function detailsKecamatan($nama_kecamatan)
-    {
-        $count_per_kelurahan = Pemilih::select('kelurahan', DB::raw('COUNT(*) as total_pemilih'))
-            ->groupBy('kelurahan')
-            ->where('kecamatan', $nama_kecamatan)
-            ->get();
-        foreach ($count_per_kelurahan as $item) {
-            echo $item->kelurahan . ': ' . $item->total_pemilih . ' posts<br>';
-        }
-        return response()->json($count_per_kelurahan);
-    }
-    public function detailsKelurahan($nama_kecamatan = "", $nama_kelurahan)
-    {
-        $count_per_tps = Pemilih::select('tps', DB::raw('COUNT(*) as total_pemilih'))
-            ->groupBy('tps')
-            ->where('kelurahan', $nama_kelurahan)
-            ->where('kecamatan', $nama_kecamatan)
-            ->get();
+    // public function detailsKecamatan($nama_kecamatan)
+    // {
+    //     $count_per_kelurahan = Pemilih::select('kelurahan', DB::raw('COUNT(*) as total_pemilih'))
+    //         ->groupBy('kelurahan')
+    //         ->where('kecamatan', $nama_kecamatan)
+    //         ->get();
+    //     foreach ($count_per_kelurahan as $item) {
+    //         echo $item->kelurahan . ': ' . $item->total_pemilih . ' posts<br>';
+    //     }
+    //     return response()->json($count_per_kelurahan);
+    // }
+    // public function detailsKelurahan($nama_kecamatan = "", $nama_kelurahan)
+    // {
+    //     $count_per_tps = Pemilih::select('tps', DB::raw('COUNT(*) as total_pemilih'))
+    //         ->groupBy('tps')
+    //         ->where('kelurahan', $nama_kelurahan)
+    //         ->where('kecamatan', $nama_kecamatan)
+    //         ->get();
 
-        // foreach ($count_per_tps as $item) {
-        //     echo $item->tps . ': ' . $item->total_pemilih . ' posts<br>';
-        // }
-        return response()->json($count_per_tps);
-    }
+    //     // foreach ($count_per_tps as $item) {
+    //     //     echo $item->tps . ': ' . $item->total_pemilih . ' posts<br>';
+    //     // }
+    //     return response()->json($count_per_tps);
+    // }
 }
