@@ -22,7 +22,7 @@ Route::get('/welcome', function () {
     return view('welcome');
 });
 
-Route::get('/login', [UserController::class, 'index'])->name('login');
+Route::get('/login', [UserController::class, 'auth'])->name('login');
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/logout', [UserController::class, 'logout']);
 
@@ -35,8 +35,14 @@ Route::resource('/pemilih', PemilihController::class)->only([
     'update',
     'destroy'
 ])->middleware(['auth']);
-
 Route::get('/pemilih-lokasi/{id}', [PemilihController::class, 'location'])->middleware(['auth']);
+
+Route::resource('/data-user', UserController::class)->only([
+    'index',
+    'store',
+    'update',
+    'destroy'
+]);
 
 
 // Route::get('/pemilih', [PemilihController::class, 'index'])->middleware(['auth']);
