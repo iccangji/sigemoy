@@ -11,7 +11,19 @@
         </li>
       
       <li class="{{ Request::is('pemilih') ?  'active' : '' }}">
-        <a class="nav-link" href="/pemilih"><i class="fa-solid fa-user-check"></i><span>Data Pemilih</span></a>
+        <a class="nav-link" href="/pemilih"><i class="fa-solid fa-list"></i><span>Data Pemilih</span></a>
+      </li>
+      <li class="{{ Request::is('pemilih') ?  'active' : '' }}">
+        <a class="nav-link" href="/pemilih"><i class="fa-solid fa-copy"></i><span>Data Ganda</span></a>
+      </li>
+      <li class="{{ Request::is('pemilih') ?  'active' : '' }}">
+        <a class="nav-link" href="/pemilih"><i class="fa-solid fa-user-xmark"></i><span>Data Tidak valid</span></a>
+      </li>
+      <li class="{{ Request::is('pemilih') ?  'active' : '' }}">
+        <a class="nav-link" href="/pemilih"><i class="fa-solid fa-user-check"></i><span>Data KPU</span></a>
+      </li>
+      <li class="{{ Request::is('pemilih') ?  'active' : '' }}">
+        <a class="nav-link" href="/pemilih"><i class="fa-solid fa-users"></i><span>Data User Penginput</span></a>
       </li>
     </ul>
   </aside>
