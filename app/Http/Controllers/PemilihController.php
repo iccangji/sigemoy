@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kecamatan;
 use App\Models\Pemilih;
+use App\Models\Kelurahan;
 use Illuminate\Http\Request;
-
 class PemilihController extends Controller
-{
+{   
     public function index(Request $request)
     {
         $size = $request->input('size', 50);
@@ -23,6 +24,8 @@ class PemilihController extends Controller
                 ->orderBy('updated_at', 'desc')->paginate($size);
             $countPemilih = Pemilih::where('created_by', auth()->user()->user)->count();
         }
+
+        $kecamatan = Kecamatan::get();
         return view(
             'pages.pemilih',
             [
@@ -35,6 +38,7 @@ class PemilihController extends Controller
                 'count' => $countPemilih,
                 'selected_size' => $size,
                 'current_page' => $page,
+                'kecamatan'=> $kecamatan
             ]
         );
     }
@@ -59,6 +63,7 @@ class PemilihController extends Controller
                 'hub_keluarga' => $request->hub_keluarga,
                 'tps' => $request->tps,
                 'kelurahan' => $request->kelurahan,
+                'kecamatan' => $request->kecamatan,
                 'nama_pj' => $request->nama_pj
             ]);
             return back()->with('success', 'Data berhasil dimasukkan');
@@ -70,6 +75,11 @@ class PemilihController extends Controller
     {
         Pemilih::destroy($id);
         return back()->with('success', 'Data berhasil dihapus');
+    }
+
+    public function location($kecamatan_id){
+        $kelurahans = Kelurahan::where('kecamatan_id', $kecamatan_id)->get();
+        return response()->json($kelurahans);
     }
 
     // public function getPemilihData(Request $request)

@@ -29,15 +29,14 @@ Route::post('/logout', [UserController::class, 'logout']);
 Route::get('/', [IndexController::class, 'index'])->middleware(['auth', 'cors']);
 Route::get('/data-index', [IndexController::class, 'indexData'])->middleware(['auth', 'cors']);
 
-Route::resource('/pemilih', \App\Http\Controllers\PemilihController::class)->only([
+Route::resource('/pemilih', PemilihController::class)->only([
     'index',
     'store',
     'update',
     'destroy'
-])->middleware(['auth']);;
+])->middleware(['auth']);
 
-Route::get('/autocomplete/kelurahan', [ViewController::class, 'getKelurahan']);
-Route::get('/autocomplete/kecamatan', [ViewController::class, 'getKecamatanByKelurahan']);
+Route::get('/pemilih-lokasi/{id}', [PemilihController::class, 'location'])->middleware(['auth']);
 
 
 // Route::get('/pemilih', [PemilihController::class, 'index'])->middleware(['auth']);

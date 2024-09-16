@@ -215,16 +215,33 @@
             @enderror
           </div>
           <div class="form-group">
-            <label>TPS</label>
-            <input type="text" class="form-control" name="tps" id="tps" placeholder="Masukan TPS" value="{{ old('tps') }}" required>
-            @error('tps')
+            <label for="kecamatan">Kecamatan</label>
+            <select name="kecamatan" class="form-control" id="kecamatan-insert" required>
+              <option value="">--Pilih Kecamatan--</option>
+              @foreach($kecamatan as $p)
+                        <option value="{{ $p->id }}">{{ $p->nama }}</option>
+              @endforeach
+            </select>
+            @error('kecamatan')
             <small class="text-danger">{{ $message }}</small>
             @enderror
           </div>
           <div class="form-group">
-            <label>Kelurahan</label>
-            <input type="text" class="form-control" name="kelurahan" id="kelurahan" placeholder="Masukan Kelurahan" value="{{ old('kelurahan') }}" required>
+            <label for="kelurahan">Kelurahan</label>
+            <select name="kelurahan" id="kelurahan-insert" class="form-control" required>
+              <option value="">--Pilih Kelurahan--</option>
+              {{-- @foreach($kecamatan as $p)
+                        <option value="{{ $p->id }}">{{ $p->nama }}</option>
+              @endforeach --}}
+            </select>
             @error('kelurahan')
+            <small class="text-danger">{{ $message }}</small>
+            @enderror
+          </div>
+          <div class="form-group">
+            <label>TPS</label>
+            <input type="text" class="form-control" name="tps" id="tps" placeholder="Masukan TPS" value="{{ old('tps') }}" required>
+            @error('tps')
             <small class="text-danger">{{ $message }}</small>
             @enderror
           </div>
@@ -308,23 +325,33 @@
             @enderror
           </div>
           <div class="form-group">
-            <label>TPS</label>
-            <input type="text" class="form-control" name="tps" id="tps" placeholder="Masukan TPS" value="{{$item->tps}}" required>
-            @error('tps')
+            <label for="kecamatan">Kecamatan</label>
+            <select name="kecamatan" class="form-control" id="kecamatan-edit" required>
+              <option value="">--Pilih Kecamatan--</option>
+              @foreach($kecamatan as $p)
+                        <option value="{{ $p->id }}">{{ $p->nama }}</option>
+              @endforeach
+            </select>
+            @error('kecamatan')
             <small class="text-danger">{{ $message }}</small>
             @enderror
           </div>
           <div class="form-group">
-            <label>Kelurahan</label>
-            <input type="text" class="form-control" name="kelurahan" id="kelurahan" placeholder="Masukan Kelurahan" value="{{$item->kelurahan}}" required>
+            <label for="kelurahan">Kelurahan</label>
+            <select name="kelurahan" id="kelurahan-edit" class="form-control" required>
+              <option value="">--Pilih Kelurahan--</option>
+              {{-- @foreach($kecamatan as $p)
+                        <option value="{{ $p->id }}">{{ $p->nama }}</option>
+              @endforeach --}}
+            </select>
             @error('kelurahan')
             <small class="text-danger">{{ $message }}</small>
             @enderror
           </div>
           <div class="form-group">
-            <label>Kecamatan</label>
-            <input type="text" class="form-control" name="kecamatan" id="kecamatan" disabled placeholder="Masukan Kelurahan" value="{{$item->kelurahan}}" required>
-            @error('kecamatan')
+            <label>TPS</label>
+            <input type="text" class="form-control" name="tps" id="tps" placeholder="Masukan TPS" value="{{$item->tps}}" required>
+            @error('tps')
             <small class="text-danger">{{ $message }}</small>
             @enderror
           </div>
@@ -387,52 +414,46 @@
     }
   });
 
-
-  // section pemilih
   $(document).ready(function() {
-    // Auto-complete untuk kelurahan
-    $('#kelurahan').autocomplete({
-        source: function(request, response) {
-            $.ajax({
-                url: '/autocomplete/kelurahan',
-                data: {
-                    search: request.term
-                },
-                success: function(data) {
-                    response($.map(data, function(item) {
-                        return {
-                            label: item.kelurahan,
-                            value: item.kelurahan
-                        };
-                    }));
-                }
-            });
-        },
-        select: function(event, ui) {
-            // Ketika kelurahan dipilih, ambil kecamatan yang sesuai
-            const kelurahan = ui.item.value;
-            $('#kelurahan').val(kelurahan);
-            
-            // Disable input kecamatan dan isi data kecamatan yang terkait
-            $.ajax({
-                url: '/autocomplete/kecamatan',
-                data: {
-                    kelurahan: kelurahan
-                },
-                success: function(data) {
-                    $('#kecamatan').val(data.kecamatan); // Isi kecamatan terkait
-                    $('#kecamatan').prop('disabled', true); // Disable input kecamatan
-                }
-            });
-            
-            return false;
-        }
-    });
-});
-
-
-
-  
+      $('#kecamatan-insert').on('change', function() {
+          var kecamatanId = $(this).val();
+          if(kecamatanId) {
+              $.ajax({
+                  url: '/pemilih-lokasi/' + kecamatanId,
+                  type: "GET",
+                  dataType: "json",
+                  success:function(data) {
+                      $('#kelurahan-insert').empty();
+                      $('#kelurahan-insert').append('<option value="">-- Pilih Kelurahan --</option>'); 
+                      $.each(data, function(key, kelurahan) {
+                          $('#kelurahan-insert').append('<option value="'+ kelurahan.id +'">'+ kelurahan.nama +'</option>');
+                      });
+                  }
+              });
+          } else {
+              $('#kelurahan-insert').empty();
+          }
+      });
+      
+      $('#kecamatan-edit').on('change', function() {
+          var kecamatanId = $(this).val();
+          if(kecamatanId) {
+              $.ajax({
+                  url: '/pemilih-lokasi/' + kecamatanId,
+                  type: "GET",
+                  dataType: "json",
+                  success:function(data) {
+                      $('#kelurahan-edit').empty();
+                      $('#kelurahan-edit').append('<option value="">-- Pilih Kelurahan --</option>'); 
+                      $.each(data, function(key, kelurahan) {
+                          $('#kelurahan-edit').append('<option value="'+ kelurahan.id +'">'+ kelurahan.nama +'</option>');
+                      });
+                  }
+              });
+          } else {
+              $('#kelurahan-edit').empty();
+          }
+      });
+  });
 </script>
-
 @endsection
