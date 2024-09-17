@@ -22,10 +22,13 @@
       <li class="{{ Request::is('data-kpu') ?  'active' : '' }}">
         <a class="nav-link" href="/data-kpu"><i class="fa-solid fa-user-check"></i><span>Data KPU</span></a>
       </li>
+      <li class="{{ Request::is('penanggung-jawab') ?  'active' : '' }}">
+        <a class="nav-link" href="/penanggung-jawab"><i class="fa-solid fa-users"></i><span>Data Penanggung Jawab</span></a>
+      </li>
       @if ($level != 'viewer')
         
       <li class="{{ Request::is('data-user') ?  'active' : '' }}">
-        <a class="nav-link" href="/data-user"><i class="fa-solid fa-users"></i><span>Data User </span></a>
+        <a class="nav-link" href="/data-user"><i class="fa-solid fa-user"></i><span>Data User </span></a>
       </li>
       @endif
     </ul>

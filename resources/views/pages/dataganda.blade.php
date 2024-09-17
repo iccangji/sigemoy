@@ -72,7 +72,6 @@
                                                 <th scope="col">TPS</th>
                                                 <th scope="col">Kelurahan</th>
                                                 <th scope="col">Kecamatan</th>
-                                                <th scope="col">Nama PJ</th>
                                                 <th scope="col">Status</th>
                                                 @if ($level != 'viewer')
                                                     <th scope="col">Aksi</th>
@@ -83,7 +82,7 @@
                                             @php
                                                 $number = ($current_page - 1) * $selected_size + 1;
                                             @endphp
-                                            @foreach ($data as $item)
+                                            {{-- @foreach ($data as $item)
                                                 <tr>
                                                     <td>{{ $number }}</td>
                                                     <td>{{ $item->nama }}</td>
@@ -93,30 +92,28 @@
                                                     <td>{{ $item->tps }}</td>
                                                     <td>{{ $item->kelurahan }}</td>
                                                     <td>{{ $item->kecamatan }}</td>
-                                                    <td>{{ $item->nama_pj }}</td>
                                                     <td>
                                                         <div class="badge badge-warning">Data Ganda</div>
                                                     </td>
                                                     @if ($level != 'viewer')
-                                                        <td class="text-center text-nowrap">
-                                                            {{-- <a href="#" class="btn btn-icon btn-info" data-toggle="modal" data-target="#editdata-{{$item->id}}"><i class="far fa-edit"></i></a> --}}
-                                                            <a href="#" class="btn btn-icon btn-success"><i
-                                                                    class="fas fa-check"> </i></a>
-                                                            <form action="{{ route('pemilih.destroy', $item->id) }}"
-                                                                method="POST" style="display:inline-block;">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" class="btn btn-icon btn-danger"
-                                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus ini?')"><i
-                                                                        class="fas fa-times"></i></button>
-                                                            </form>
-                                                        </td>
+                                                <td class="text-center text-nowrap">
+                                                    <a href="#" class="btn btn-icon btn-info" data-toggle="modal" data-target="#report"><i class="far fa-eye"></i></a>
+                                                    <a href="#" class="btn btn-icon btn-success" data-toggle="modal" data-target="#edit"><i class="far fa-edit"> </i></a>
+                                                    <form action="#"
+                                                        method="POST" style="display:inline-block;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-icon btn-danger"
+                                                            onclick="return confirm('Apakah Anda yakin ingin menghapus ini?')"><i
+                                                                class="fas fa-times"></i></button>
+                                                    </form>
+                                                </td>
                                                     @endif
                                                 </tr>
                                                 @php
                                                     $number++;
                                                 @endphp
-                                            @endforeach
+                                            @endforeach --}}
                                         </tbody>
                                     </table>
                                 </div>
@@ -157,7 +154,140 @@
     </div>
 
 
+    {{-- modal detail --}}
+    <div class="modal fade" id="report" tabindex="-1" role="dialog" aria-labelledby="report" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Detail</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="#" method="POST">
+                    @csrf
+                    @method('POST')
+                    <div class="modal-body">
+                        <p class="text-center">Kesalahan! ada kesamaan ditemukan pada data pemilih dari penanggung jawab Name dan Penanggung Jawab User</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Kembali</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
+    {{-- modal edit data --}}
+      <!-- Modal Tambah Data -->
+      <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="Tambahdata" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Data Ganda</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ route('pemilih.store') }}" method="POST">
+                    @csrf
+                    @method('POST')
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Nama Pemilih</label>
+                            <input type="text" name="nama_pemilih" id="nama_pemilih"
+                                placeholder="Masukan Nama Pemilih" class="form-control"
+                                value="{{ old('nama_pemilih') }}" required>
+                            @error('nama_pemilih')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>NIK</label>
+                            <input type="text" class="form-control" name="NIK" id="NIK"
+                                placeholder="Masukan NIK" value="{{ old('NIK') }}" required>
+                            @error('NIK')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>No. HP</label>
+                            <input type="text" class="form-control" name="no_hp" id="no_hp"
+                                placeholder="Masukan Nomor Handphone" value="{{ old('no_hp') }}" required>
+                            @error('no_hp')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="hub_keluarga">Hubungan Keluarga</label>
+                            <select name="hub_keluarga" class="form-control" required>
+                                <option value="">--Pilih Hubungan Keluarga--</option>
+                                <option value="Suami/Istri">Suami/Istri</option>
+                                <option value="Anak">Anak</option>
+                                <option value="Saudara Kandung">Saudara Kandung</option>
+                                <option value="Mertua">Mertua</option>
+                                <option value="Ponakan">Ponakan</option>
+                                <option value="Ipar">Ipar</option>
+                            </select>
+                            @error('hub_keluarga')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="kecamatan">Kecamatan</label>
+                            <select name="kecamatan" class="form-control" id="kecamatan-insert" required>
+                                <option value="">--Pilih Kecamatan--</option>
+                                @foreach ($kecamatan as $p)
+                                    <option value="{{ $p->id }}">{{ $p->nama }}</option>
+                                @endforeach
+                            </select>
+                            @error('kecamatan')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="kelurahan">Kelurahan</label>
+                            <select name="kelurahan" id="kelurahan-insert" class="form-control" required>
+                                <option value="">--Pilih Kelurahan--</option>
+                            </select>
+                            @error('kelurahan')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>TPS</label>
+                            <input type="text" class="form-control" name="tps" id="tps"
+                                placeholder="Masukan TPS" value="{{ old('tps') }}" required>
+                            @error('tps')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>Nama Penanggung Jawab</label>
+                            <input type="text" class="form-control" name="nama_pj" id="nama_pj"
+                                placeholder="Masukan Nama Penanggung Jawab" value="{{ old('nama_pj') }}" required>
+                            @error('nama_pj')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>Nomor HP Penanggung Jawab</label>
+                            <input type="text" class="form-control" name="no_hp_pj" id="no_hp_pj"
+                                placeholder="Masukan Nomor HP Penanggung Jawab" value="{{ old('no_hp_pj') }}" required>
+                            @error('no_hp_pj')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Kembali</button>
+                        <button type="submit" class="btn btn-success">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 
     <script>
