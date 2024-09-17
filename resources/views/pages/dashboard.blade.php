@@ -278,7 +278,7 @@
                     },
                     scales: {
                         yAxes: [{
-                            y: {
+                            ticks: {
                                 beginAtZero: true
                             }
                         }]
