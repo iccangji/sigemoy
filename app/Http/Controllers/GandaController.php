@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DataGanda;
 use App\Models\Kecamatan;
 use App\Models\Pemilih;
 use Illuminate\Http\Request;
@@ -16,17 +17,21 @@ class GandaController extends Controller
         $search = $request->query('search', '');
 
         if (auth()->user()->level != 'penginput') {
-            $items = Pemilih::where('nama', 'like', "%$search%")
+            $items = DataGanda::where('nama', 'like', "%$search%")
                 ->orderBy('updated_at', 'desc')->paginate($size);
-            $countPemilih = Pemilih::count();
+            $countPemilih = DataGanda::where('nama', 'like', "%$search%")
+                ->orderBy('updated_at', 'desc')->count();
         } else {
-            $items = Pemilih::where('nama', 'like', "%$search%")
+            $items = DataGanda::where('nama', 'like', "%$search%")
                 ->where('created_by', auth()->user()->user)
                 ->orderBy('updated_at', 'desc')->paginate($size);
-            $countPemilih = Pemilih::where('created_by', auth()->user()->user)->count();
+            $countPemilih = DataGanda::where('nama', 'like', "%$search%")
+                ->where('created_by', auth()->user()->user)
+                ->orderBy('updated_at', 'desc')->count();
         }
 
         $kecamatan = Kecamatan::get();
+
         return view(
             'pages.dataganda',
             [

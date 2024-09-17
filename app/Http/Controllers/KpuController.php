@@ -121,7 +121,7 @@ class KpuController extends Controller
                 Excel::import(new DataKpuImport(), $request->file('upload')->store('temp'));
                 return redirect()->back()->with('success', 'Data berhasil diimport!');
             } catch (\Throwable $th) {
-                return redirect()->back()->with('error', 'Error: ' . $th);
+                return redirect()->back()->with('error', 'Data tidak sesuai dengan format');
             }
             // Data gagal diimport. Pastikan tidak ada data yang kosong dan file sesuai dengan format
         }

@@ -19,7 +19,9 @@ return new class extends Migration
             $table->string('hub_keluarga');
             $table->string('tps');
             $table->string('kelurahan');
+            $table->string('kecamatan');
             $table->string('nama_pj');
+            $table->string('created_by');
             $table->timestamps();
         });
     }

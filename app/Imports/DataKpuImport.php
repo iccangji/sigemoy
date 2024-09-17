@@ -18,8 +18,8 @@ class DataKpuImport implements ToModel, WithStartRow
             'jenis_kelamin' => $row[3],
             'usia' => $row[4],
             'alamat' => $row[5],
-            'tps' => $row[9],
-            'kelurahan' => $row[10],
+            'tps' => $row[10],
+            'kelurahan' => $row[9],
         ]);
     }
 
