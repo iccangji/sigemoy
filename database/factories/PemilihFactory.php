@@ -23,6 +23,7 @@ class PemilihFactory extends Factory
             'kelurahan' => $this->faker->randomElement(['Kambu', 'Sambuli', 'Pondambea', 'Abeli', 'Bende']),
             'kecamatan' => $this->faker->randomElement(['Kambu', 'Baruga', 'Abeli', 'Poasia']),
             'nama_pj' => $this->faker->name,
+            'no_hp_pj' => '082134567890',
             'created_by' => $this->faker->name
         ];
     }

@@ -6,6 +6,7 @@ use App\Imports\PemilihImport;
 use App\Models\Kecamatan;
 use App\Models\Pemilih;
 use App\Models\Kelurahan;
+use App\Models\PenanggungJawab;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -60,6 +61,7 @@ class PemilihController extends Controller
             'kelurahan' => 'required',
             'kecamatan' => 'required',
             'nama_pj' => 'required',
+            'no_hp_pj' => 'required',
         ]);
         $kecamatan = Kecamatan::where('id', $request->kecamatan)->first()->nama;
         if ($data) {
@@ -74,6 +76,14 @@ class PemilihController extends Controller
                 'nama_pj' => $request->nama_pj,
                 'created_by' => auth()->user()->user,
             ]);
+
+            $pj_count = PenanggungJawab::where('nama', $request->nama_pj)->count();
+            if ($pj_count == 0) {
+                PenanggungJawab::create([
+                    'nama' => $request->nama_pj,
+                    'no_hp' => $request->no_hp_pj,
+                ]);
+            }
             return back()->with('success', 'Data berhasil dimasukkan');
         }
         return back()->with('error', 'Data pemilih tidak dapat dimasukkan');

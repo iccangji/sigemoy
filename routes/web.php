@@ -6,6 +6,7 @@ use App\Http\Controllers\IndexController;
 use App\Http\Controllers\InvalidController;
 use App\Http\Controllers\KpuController;
 use App\Http\Controllers\PemilihController;
+use App\Http\Controllers\PenanggungJawabController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ViewController;
 use Illuminate\Support\Facades\Route;
@@ -61,7 +62,9 @@ Route::resource('/data-kpu', KpuController::class)->only([
 Route::post('/kpu-import', [KpuController::class, 'importData'])->middleware(['auth'])->name('kpu.import');
 
 Route::get('/data-ganda', [GandaController::class, 'index'])->middleware(['auth', 'cors'])->name('ganda.index');
-Route::get('/data-invalid', [InvalidController::class, 'index'])->middleware(['auth', 'cors'])->name('invalid.index');;
+Route::get('/data-invalid', [InvalidController::class, 'index'])->middleware(['auth', 'cors'])->name('invalid.index');
+
+Route::get('/penanggung-jawab', [PenanggungJawabController::class, 'index'])->middleware(['auth', 'cors'])->name('pj.index');;
 
 
 // Route::get('/data-kpu', [KpuController::class, 'index'])->middleware(['auth']);

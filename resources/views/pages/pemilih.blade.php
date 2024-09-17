@@ -107,7 +107,7 @@
                                                     <td>{{ $item->tps }}</td>
                                                     <td>{{ $item->kelurahan }}</td>
                                                     <td>{{ $item->kecamatan }}</td>
-                                                    <td>{{ $item->nama_pj }}</td>
+                                                    <td>{{ $item->nama_pj }}</td    >
                                                     @if ($level != 'viewer')
                                                         <td class="text-center text-nowrap">
                                                             <a href="#" class="btn btn-icon btn-info"
@@ -259,6 +259,14 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
+                        <div class="form-group">
+                            <label>Nomor HP Penanggung Jawab</label>
+                            <input type="text" class="form-control" name="no_hp_pj" id="no_hp_pj"
+                                placeholder="Masukan Nomor HP Penanggung Jawab" value="{{ old('no_hp_pj') }}" required>
+                            @error('no_hp_pj')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
 
                     </div>
                     <div class="modal-footer">
@@ -369,6 +377,14 @@
                                 <input type="text" class="form-control" name="nama_pj" id="nama_pj"
                                     placeholder="Masukan Nama Penanggung Jawab" value="{{ $item->nama_pj }}" required>
                                 @error('nama_pj')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label>Nomor HP Penanggung Jawab</label>
+                                <input type="text" class="form-control" name="no_hp_pj" id="no_hp_pj"
+                                    placeholder="Masukan Nomor HP Penanggung Jawab" value="{{ $item->no_hp_pj }}" required>
+                                @error('no_hp_pj')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
