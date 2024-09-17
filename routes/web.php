@@ -30,11 +30,11 @@ Route::get('/welcome', function () {
 });
 
 Route::get('/login', [UserController::class, 'auth'])->name('login');
-Route::post('/login', [UserController::class, 'login']);
-Route::post('/logout', [UserController::class, 'logout']);
+Route::post('/login', [UserController::class, 'login'])->name('login.auth');
+Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
-Route::get('/', [IndexController::class, 'index'])->middleware(['auth', 'cors']);
-Route::get('/data-index', [IndexController::class, 'indexData'])->middleware(['auth', 'cors']);
+Route::get('/', [IndexController::class, 'index'])->middleware(['auth', 'cors'])->name('dashboard');
+Route::get('/data-index', [IndexController::class, 'indexData'])->middleware(['auth', 'cors'])->name('dashboard.data');
 
 Route::resource('/pemilih', PemilihController::class)->only([
     'index',
@@ -42,8 +42,8 @@ Route::resource('/pemilih', PemilihController::class)->only([
     'update',
     'destroy'
 ])->middleware(['auth']);
-Route::get('/pemilih-lokasi/{id}', [PemilihController::class, 'location'])->middleware(['auth']);
-Route::get('/kpu-lokasi/{id}', [KpuController::class, 'location'])->middleware(['auth']);
+Route::get('/pemilih-lokasi/{id}', [PemilihController::class, 'location'])->middleware(['auth'])->name('pemilih.location');
+Route::post('/pemilih-import', [PemilihController::class, 'importData'])->middleware(['auth'])->name('pemilih.import');
 
 Route::resource('/data-user', UserController::class)->only([
     'index',
@@ -58,9 +58,12 @@ Route::resource('/data-kpu', KpuController::class)->only([
     'update',
     'destroy'
 ])->middleware(['auth']);
+Route::post('/kpu-import', [KpuController::class, 'importData'])->middleware(['auth'])->name('kpu.import');
 
-Route::get('/data-ganda', [GandaController::class, 'index'])->middleware(['auth', 'cors']);
-Route::get('/data-invalid', [InvalidController::class, 'index'])->middleware(['auth', 'cors']);
+Route::get('/data-ganda', [GandaController::class, 'index'])->middleware(['auth', 'cors'])->name('ganda.index');
+Route::get('/data-invalid', [InvalidController::class, 'index'])->middleware(['auth', 'cors'])->name('invalid.index');;
+
+
 // Route::get('/data-kpu', [KpuController::class, 'index'])->middleware(['auth']);
 
 

@@ -66,34 +66,4 @@ class IndexController extends Controller
             'data_grafik' => $data
         ]);
     }
-
-    // private function getCreatedData(string $user)
-    // {
-    //     return Pemilih::where('created_by', $user)->get();
-    // }
-
-    // public function detailsKecamatan($nama_kecamatan)
-    // {
-    //     $count_per_kelurahan = Pemilih::select('kelurahan', DB::raw('COUNT(*) as total_pemilih'))
-    //         ->groupBy('kelurahan')
-    //         ->where('kecamatan', $nama_kecamatan)
-    //         ->get();
-    //     foreach ($count_per_kelurahan as $item) {
-    //         echo $item->kelurahan . ': ' . $item->total_pemilih . ' posts<br>';
-    //     }
-    //     return response()->json($count_per_kelurahan);
-    // }
-    // public function detailsKelurahan($nama_kecamatan = "", $nama_kelurahan)
-    // {
-    //     $count_per_tps = Pemilih::select('tps', DB::raw('COUNT(*) as total_pemilih'))
-    //         ->groupBy('tps')
-    //         ->where('kelurahan', $nama_kelurahan)
-    //         ->where('kecamatan', $nama_kecamatan)
-    //         ->get();
-
-    //     // foreach ($count_per_tps as $item) {
-    //     //     echo $item->tps . ': ' . $item->total_pemilih . ' posts<br>';
-    //     // }
-    //     return response()->json($count_per_tps);
-    // }
 }

@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\DataKpuImport;
 use App\Models\DataKpu;
-use App\Models\Kecamatan;
 use App\Models\Kelurahan;
-use App\Models\Pemilih;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class KpuController extends Controller
 {
@@ -20,15 +21,19 @@ class KpuController extends Controller
         if (auth()->user()->level != 'penginput') {
             $items = DataKpu::where('nama', 'like', "%$search%")
                 ->orderBy('updated_at', 'desc')->paginate($size);
-            $countkpu = DataKpu::count();
+            $countkpu = DataKpu::where('nama', 'like', "%$search%")
+                ->orderBy('updated_at', 'desc')->count();
         } else {
             $items = DataKpu::where('nama', 'like', "%$search%")
                 ->where('created_by', auth()->user()->user)
                 ->orderBy('updated_at', 'desc')->paginate($size);
-            $countkpu = DataKpu::where('created_by', auth()->user()->user)->count();
+            $countkpu = DataKpu::where('nama', 'like', "%$search%")
+                ->where('created_by', auth()->user()->user)
+                ->orderBy('updated_at', 'desc')->count();
         }
 
         $kelurahan = Kelurahan::get();
+        // dd($search);
         return view(
             'pages.datakpu',
             [
@@ -37,11 +42,11 @@ class KpuController extends Controller
                 'user' => auth()->user()->user,
                 'level' => auth()->user()->level,
                 'data' => $items,
-                'search' => $search,
+                'search' => $request->input('search', ''),
                 'count' => $countkpu,
                 'selected_size' => $size,
                 'current_page' => $page,
-                'kelurahan'=> $kelurahan
+                'kelurahan' => $kelurahan
             ]
         );
     }
@@ -56,7 +61,7 @@ class KpuController extends Controller
             'alamat' => 'required',
             'tps' => 'required',
             'kelurahan' => 'required',
-            
+
         ]);
         // $ke = Kecamatan::where('id', $request->kecamatan)->first()->nama;
         if ($data) {
@@ -106,43 +111,20 @@ class KpuController extends Controller
         DataKpu::destroy($id);
         return back()->with('success', 'Data berhasil dihapus');
     }
-
-    // public function location($kecamatan_id){
-    //     $kelurahans = Kelurahan::where('kecamatan_id', $kecamatan_id)->get();
-    //     return response()->json($kelurahans);
-    // }
-
-    // public function getPemilihData(Request $request)
-    // {
-    //     // $page = $request->input('page');
-    //     // $offset = ($page * $size) - $size;
-    //     // if ($size && $offset >= 0) {
-    //     //     return $dataPemilih;
-    //     // }
-    //     // $data =  Pemilih::get();
-    //     $size = $request->input('size');
-    //     $dataPemilih = Pemilih::paginate($size);
-    //     return response()->json($dataPemilih);
-    // }
-
-
-    // Endpoint untuk auto-complete kelurahan
-    public function getKelurahan(Request $request)
+    public function importData(Request $request)
     {
-        $search = $request->query('search');
-        $kelurahan = DataKpu::where('kelurahan', 'like', "%$search%")
-            ->groupBy('kelurahan') // Hindari duplikasi dengan grouping
-            ->get(['kelurahan']); // Ambil hanya kolom kelurahan
-
-        return response()->json($kelurahan);
-    }
-
-    // Endpoint untuk mendapatkan kecamatan berdasarkan kelurahan
-    public function getKecamatanByKelurahan(Request $request)
-    {
-        $kelurahan = $request->query('kelurahan');
-        $kecamatan = Pemilih::where('kelurahan', $kelurahan)->first(['kecamatan']);
-
-        return response()->json($kecamatan);
+        $data = $request->validate([
+            'upload' => 'required|mimes:xls,xlsx',
+        ]);
+        if ($data) {
+            try {
+                Excel::import(new DataKpuImport(), $request->file('upload')->store('temp'));
+                return redirect()->back()->with('success', 'Data berhasil diimport!');
+            } catch (\Throwable $th) {
+                return redirect()->back()->with('error', 'Error: ' . $th);
+            }
+            // Data gagal diimport. Pastikan tidak ada data yang kosong dan file sesuai dengan format
+        }
+        return redirect()->back()->with('error', 'Data gagal diimport, pastikan file berbentuk excel');
     }
 }

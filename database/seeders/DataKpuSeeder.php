@@ -11,15 +11,5 @@ class DataKpuSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run(): void
-    {
-        DB::table('data_kpu')->insert([
-            'nama' => 'tes',
-            'jenis_kelamin' => 'L',
-            'usia' => 20,
-            'alamat' => 'tes',
-            'tps' => '001',
-            'kelurahan' => 'Kambu',
-        ]);
-    }
+    public function run(): void {}
 }

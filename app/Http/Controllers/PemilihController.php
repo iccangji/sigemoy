@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\PemilihImport;
 use App\Models\Kecamatan;
 use App\Models\Pemilih;
 use App\Models\Kelurahan;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+
 class PemilihController extends Controller
-{   
+{
     public function index(Request $request)
     {
         $size = $request->input('size', 50);
@@ -16,31 +19,33 @@ class PemilihController extends Controller
 
         if (auth()->user()->level != 'penginput') {
             $items = Pemilih::where('nama', 'like', "%$search%")
-                ->orderBy('updated_at', 'desc')->paginate($size);
-            $countPemilih = Pemilih::count();
+                ->orderBy('updated_at', 'desc')
+                ->paginate($size);
+            $countPemilih = Pemilih::where('nama', 'like', "%$search%")
+                ->orderBy('updated_at', 'desc')->count();
         } else {
             $items = Pemilih::where('nama', 'like', "%$search%")
                 ->where('created_by', auth()->user()->user)
-                ->orderBy('updated_at', 'desc')->paginate($size);
-            $countPemilih = Pemilih::where('created_by', auth()->user()->user)->count();
+                ->orderBy('updated_at', 'desc')
+                ->paginate($size);
+            $countPemilih = Pemilih::where('nama', 'like', "%$search%")
+                ->where('created_by', auth()->user()->user)
+                ->orderBy('updated_at', 'desc')->count();
         }
 
         $kecamatan = Kecamatan::get();
-        return view(
-            'pages.pemilih',
-            [
-                'page' => 'pemilih',
-                'title' => 'Data Pemilih',
-                'user' => auth()->user()->user,
-                'level' => auth()->user()->level,
-                'data' => $items,
-                'search' => $search,
-                'count' => $countPemilih,
-                'selected_size' => $size,
-                'current_page' => $page,
-                'kecamatan'=> $kecamatan
-            ]
-        );
+        return view('pages.pemilih', [
+            'page' => 'pemilih',
+            'title' => 'Data Pemilih',
+            'user' => auth()->user()->user,
+            'level' => auth()->user()->level,
+            'data' => $items,
+            'search' => $search,
+            'count' => $countPemilih,
+            'selected_size' => $size,
+            'current_page' => $page,
+            'kecamatan' => $kecamatan,
+        ]);
     }
 
     public function store(Request $request)
@@ -54,7 +59,7 @@ class PemilihController extends Controller
             'tps' => 'required',
             'kelurahan' => 'required',
             'kecamatan' => 'required',
-            'nama_pj' => 'required'
+            'nama_pj' => 'required',
         ]);
         $kecamatan = Kecamatan::where('id', $request->kecamatan)->first()->nama;
         if ($data) {
@@ -67,13 +72,13 @@ class PemilihController extends Controller
                 'kelurahan' => $request->kelurahan,
                 'kecamatan' => $kecamatan,
                 'nama_pj' => $request->nama_pj,
-                'created_by' => auth()->user()->user
+                'created_by' => auth()->user()->user,
             ]);
             return back()->with('success', 'Data berhasil dimasukkan');
         }
         return back()->with('error', 'Data pemilih tidak dapat dimasukkan');
     }
-    
+
     public function update(Request $request, $id)
     {
         $data = $request->validate([
@@ -84,7 +89,7 @@ class PemilihController extends Controller
             'tps' => 'required',
             'kelurahan' => 'required',
             'kecamatan' => 'required',
-            'nama_pj' => 'required'
+            'nama_pj' => 'required',
         ]);
         $kecamatan = Kecamatan::where('id', $request->kecamatan)->first()->nama;
         if ($data) {
@@ -98,7 +103,7 @@ class PemilihController extends Controller
                 'kelurahan' => $request->kelurahan,
                 'kecamatan' => $kecamatan,
                 'nama_pj' => $request->nama_pj,
-                'created_by' => auth()->user()->user
+                'created_by' => auth()->user()->user,
             ]);
             return back()->with('success', 'Data berhasil diubah');
         }
@@ -111,42 +116,25 @@ class PemilihController extends Controller
         return back()->with('success', 'Data berhasil dihapus');
     }
 
-    public function location($kecamatan_id){
+    public function location($kecamatan_id)
+    {
         $kelurahans = Kelurahan::where('kecamatan_id', $kecamatan_id)->get();
         return response()->json($kelurahans);
     }
 
-    // public function getPemilihData(Request $request)
-    // {
-    //     // $page = $request->input('page');
-    //     // $offset = ($page * $size) - $size;
-    //     // if ($size && $offset >= 0) {
-    //     //     return $dataPemilih;
-    //     // }
-    //     // $data =  Pemilih::get();
-    //     $size = $request->input('size');
-    //     $dataPemilih = Pemilih::paginate($size);
-    //     return response()->json($dataPemilih);
-    // }
-
-
-    // Endpoint untuk auto-complete kelurahan
-    public function getKelurahan(Request $request)
+    public function importData(Request $request)
     {
-        $search = $request->query('search');
-        $kelurahan = Pemilih::where('kelurahan', 'like', "%$search%")
-            ->groupBy('kelurahan') // Hindari duplikasi dengan grouping
-            ->get(['kelurahan']); // Ambil hanya kolom kelurahan
-
-        return response()->json($kelurahan);
-    }
-
-    // Endpoint untuk mendapatkan kecamatan berdasarkan kelurahan
-    public function getKecamatanByKelurahan(Request $request)
-    {
-        $kelurahan = $request->query('kelurahan');
-        $kecamatan = Pemilih::where('kelurahan', $kelurahan)->first(['kecamatan']);
-
-        return response()->json($kecamatan);
+        $data = $request->validate([
+            'upload' => 'required|mimes:xls,xlsx',
+        ]);
+        if ($data) {
+            try {
+                Excel::import(new PemilihImport(auth()->user()->user), $request->file('upload')->store('temp'));
+                return redirect()->back()->with('success', 'Data berhasil diimport!');
+            } catch (\Throwable $th) {
+                return redirect()->back()->with('error', 'Data gagal diimport. Pastikan tidak ada data yang kosong dan file sesuai dengan format');
+            }
+        }
+        return redirect()->back()->with('error', 'Data gagal diimport. Pastikan file berbentuk excel');
     }
 }

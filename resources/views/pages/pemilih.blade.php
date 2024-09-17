@@ -57,16 +57,16 @@
                                     <div class="form-group">
                                         <label for="showEntries">Data Perbaris :</label>
                                         <select id="showEntries" class="form-control" style="width: 100px;">
-                                            <option value="/pemilih?size=50"
+                                            <option value="{{ route('pemilih.index') }}?size=50"
                                                 @if ($selected_size == 50) selected @endif>50</option>
-                                            <option value="/pemilih?size=100"
+                                            <option value="{{ route('pemilih.index') }}?size=100"
                                                 @if ($selected_size == 100) selected @endif>100</option>
-                                            <option value="/pemilih?size=200"
+                                            <option value="{{ route('pemilih.index') }}?size=200"
                                                 @if ($selected_size == 200) selected @endif>200</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <form id="search-form" method="GET" action="./pemilih">
+                                        <form id="search-form" method="GET" action="{{ route('pemilih.index') }}">
                                             <label for="Pencarian Data">Pencarian Data</label>
                                             <input type="text" name="search" class="form-control" id="searchInput"
                                                 value="{{ $search }}" placeholder="Masukkan nama...">
@@ -109,7 +109,7 @@
                                                     <td>{{ $item->kecamatan }}</td>
                                                     <td>{{ $item->nama_pj }}</td>
                                                     @if ($level != 'viewer')
-                                                        <td class="text-center">
+                                                        <td class="text-center text-nowrap">
                                                             <a href="#" class="btn btn-icon btn-info"
                                                                 data-toggle="modal"
                                                                 data-target="#editdata-{{ $item->id }}"><i
@@ -178,7 +178,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="/pemilih" method="POST">
+                <form action="{{ route('pemilih.store') }}" method="POST">
                     @csrf
                     @method('POST')
                     <div class="modal-body">
@@ -395,7 +395,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="#" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('pemilih.import') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('POST')
                     <div class="modal-body">
@@ -431,7 +431,7 @@
                 var kecamatanId = $(this).val();
                 if (kecamatanId) {
                     $.ajax({
-                        url: '/pemilih-lokasi/' + kecamatanId,
+                        url: "{{ url('pemilih-lokasi') }}/" + kecamatanId,
                         type: "GET",
                         dataType: "json",
                         success: function(data) {
@@ -454,7 +454,7 @@
                 var kecamatanId = $(this).val();
                 if (kecamatanId) {
                     $.ajax({
-                        url: '/pemilih-lokasi/' + kecamatanId,
+                        url: "{{ url('pemilih-lokasi') }}/" + kecamatanId,
                         type: "GET",
                         dataType: "json",
                         success: function(data) {

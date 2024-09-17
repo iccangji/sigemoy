@@ -34,9 +34,10 @@ class UserController extends Controller
         return redirect('/');
     }
 
-    public function index(){
-        $data = User::where('level','viewer')->orWhere('level','penginput')->get();
-        $countUser = User::count();
+    public function index()
+    {
+        $data = User::where('level', 'viewer')->orWhere('level', 'penginput')->get();
+        $countUser = User::where('level', 'viewer')->orWhere('level', 'penginput')->count();
         return view(
             'pages.datauser',
             [
@@ -58,7 +59,7 @@ class UserController extends Controller
             'password' => 'required|min:8',
             'level' => 'required',
         ]);
-        if($data){
+        if ($data) {
             User::create([
                 'user' => $request->username,
                 'password' => Hash::make($request->password),
@@ -71,13 +72,13 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        
+
         $data = $request->validate([
             'username' => 'required',
             'password' => 'required|min:8',
             'level' => 'required',
         ]);
-        if($data){
+        if ($data) {
             $item = User::findOrFail($id);
             $item->update([
                 'user' => $request->username,

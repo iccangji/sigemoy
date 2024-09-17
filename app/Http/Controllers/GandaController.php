@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class GandaController extends Controller
 {
-    
+
     public function index(Request $request)
     {
         $size = $request->input('size', 50);
@@ -39,7 +39,7 @@ class GandaController extends Controller
                 'count' => $countPemilih,
                 'selected_size' => $size,
                 'current_page' => $page,
-                'kecamatan'=> $kecamatan
+                'kecamatan' => $kecamatan
             ]
         );
     }
@@ -75,23 +75,5 @@ class GandaController extends Controller
     {
         Pemilih::destroy($id);
         return back()->with('success', 'Data berhasil dihapus');
-    }
-
-    public function getKelurahan(Request $request)
-    {
-        $search = $request->query('search');
-        $kelurahan = Pemilih::where('kelurahan', 'like', "%$search%")
-            ->groupBy('kelurahan') // Hindari duplikasi dengan grouping
-            ->get(['kelurahan']); // Ambil hanya kolom kelurahan
-
-        return response()->json($kelurahan);
-    }
-
-    public function getKecamatanByKelurahan(Request $request)
-    {
-        $kelurahan = $request->query('kelurahan');
-        $kecamatan = Pemilih::where('kelurahan', $kelurahan)->first(['kecamatan']);
-
-        return response()->json($kecamatan);
     }
 }
