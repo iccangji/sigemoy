@@ -43,6 +43,7 @@ Route::resource('/pemilih', PemilihController::class)->only([
     'update',
     'destroy'
 ])->middleware(['auth']);
+
 Route::get('/pemilih-lokasi/{id}', [PemilihController::class, 'location'])->middleware(['auth'])->name('pemilih.location');
 Route::post('/pemilih-import', [PemilihController::class, 'importData'])->middleware(['auth'])->name('pemilih.import');
 
@@ -65,6 +66,8 @@ Route::get('/data-ganda', [GandaController::class, 'index'])->middleware(['auth'
 Route::delete('/data-ganda/{id}', [GandaController::class, 'destroy'])->middleware(['auth', 'cors'])->name('ganda.destroy');
 
 Route::get('/data-invalid', [InvalidController::class, 'index'])->middleware(['auth', 'cors'])->name('invalid.index');
+Route::delete('/data-invalid/{id}', [InvalidController::class, 'destroy'])->middleware(['auth', 'cors'])->name('invalid.destroy');
+Route::post('/data-invalid/insert', [InvalidController::class, 'store'])->middleware(['auth', 'cors'])->name('invalid.store');
 
 Route::get('/penanggung-jawab', [PenanggungJawabController::class, 'index'])->middleware(['auth', 'cors'])->name('pj.index');;
 

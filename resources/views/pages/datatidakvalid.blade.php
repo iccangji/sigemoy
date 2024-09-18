@@ -99,9 +99,11 @@
                                                     </td>
                                                     @if ($level != 'viewer')
                                                         <td class="text-center text-nowrap">
-                                                            <a href="#" class="btn btn-icon btn-success"><i
-                                                                    class="fas fa-check"> </i></a>
-                                                            <form action="{{ route('pemilih.destroy', $item->id) }}"
+                                                            <a href="#" class="btn btn-icon btn-success"
+                                                                data-toggle="modal"
+                                                                data-target="#editdata-{{ $item->id }}"><i
+                                                                    class="fa fa-check"></i></a>
+                                                            <form action="{{ route('invalid.destroy', $item->id) }}"
                                                                 method="POST" style="display:inline-block;">
                                                                 @csrf
                                                                 @method('DELETE')
@@ -154,6 +156,57 @@
 
         </section>
     </div>
+    <!-- Modal Tambah Data -->
+    {{-- modal edit data --}}
+    @foreach ($data as $item)
+        <div class="modal fade" id="editdata-{{ $item->id }}" tabindex="-1" role="dialog"
+            aria-labelledby="editdata-{{ $item->id }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Data pemilih</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="{{ route('invalid.store') }}" method="POST">
+                        @csrf
+                        @method('POST')
+                        <div class="modal-body">
+                            <input type="hidden" name="nama_pemilih" id="nama_pemilih"
+                                placeholder="Masukan Nama Pemilih" class="form-control" value="{{ $item->nama }}"
+                                required>
+                            <input type="hidden" class="form-control" name="NIK" id="NIK"
+                                placeholder="Masukan NIK" value="{{ $item->nik }}" required>
+                            <input type="hidden" class="form-control" name="no_hp" id="no_hp"
+                                placeholder="Masukan Nomor Handphone" value="{{ $item->no_hp }}" required>
+                            <input type="hidden" class="form-control" name="hub_keluarga" id="hub_keluarga"
+                                placeholder="Masukan Nomor Handphone" value="{{ $item->hub_keluarga }}" required>
+                            @php
+                                $kecamatan_nama =
+                                    $kecamatan[array_search($item->kecamatan, array_column($kecamatan, 'id'))]['nama'];
+                            @endphp
+                            <input type="hidden" class="form-control" name="kecamatan" id="kecamatan"
+                                placeholder="Masukan Nomor Handphone" value="{{ $kecamatan_nama }}" required>
+                            <input type="hidden" class="form-control" name="kelurahan" id="kelurahan"
+                                placeholder="Masukan Nomor Handphone" value="{{ $item->kelurahan }}" required>
+                            <input type="hidden" class="form-control" name="tps" id="tps"
+                                placeholder="Masukan TPS" value="{{ $item->tps }}" required>
+                            <input type="hidden" class="form-control" name="nama_pj" id="nama_pj"
+                                placeholder="Masukan Nama Penanggung Jawab" value="{{ $item->nama_pj }}" required>
+                            <input type="hidden" class="form-control" name="no_hp_pj" id="no_hp_pj"
+                                placeholder="Masukan Nomor HP Penanggung Jawab" value="{{ $item->no_hp_pj }}" required>
+                            <p class="text-center w-100">Data ini tidak valid dengan Data KPU.<br>Tetap masukkan?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger mb-2" data-dismiss="modal">Kembali</button>
+                            <button type="submit" class="btn btn-success">Tetap Masukkan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endforeach
 
 
 

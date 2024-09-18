@@ -8,5 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class DataKpuInvalid extends Model
 {
     protected $table = 'data_kpu_invalid';
-    use HasFactory;
+    protected $fillable = [
+        'nama',
+        'nik',
+        'no_hp',
+        'hub_keluarga',
+        'tps',
+        'kelurahan',
+        'kecamatan',
+        'nama_pj',
+        'no_hp_pj',
+    ];
 }

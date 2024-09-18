@@ -14,11 +14,14 @@ return new class extends Migration
         Schema::create('data_kpu_invalid', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->string('jenis_kelamin', 1);
-            $table->integer('usia');
-            $table->string('alamat');
+            $table->string('nik');
+            $table->string('no_hp');
+            $table->string('hub_keluarga');
             $table->string('tps');
             $table->string('kelurahan');
+            $table->string('kecamatan');
+            $table->string('nama_pj');
+            $table->string('no_hp_pj');
             $table->timestamps();
         });
     }
