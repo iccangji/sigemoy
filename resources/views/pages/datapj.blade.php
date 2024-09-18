@@ -60,7 +60,7 @@
 
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-hover">
-                                        <thead class="text-center">
+                                        <thead class="text-left">
                                             <tr>
                                                 <th scope="col">No</th>
                                                 <th scope="col">Nama Penanggung Jawab</th>
@@ -73,7 +73,7 @@
                                                 $number = ($current_page-1)*$selected_size + 1;
                                             @endphp
                                             @foreach ($data as $item)
-                                                <tr class="text-center">
+                                                <tr class="text-left">
                                                     <td>{{ $number }}</td>
                                                     <td>{{ $item->nama }}</td>
                                                     <td>{{ $item->no_hp }}</td>

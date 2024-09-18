@@ -107,7 +107,7 @@
                                                     <td>{{ $item->tps }}</td>
                                                     <td>{{ $item->kelurahan }}</td>
                                                     <td>{{ $item->kecamatan }}</td>
-                                                    <td>{{ $item->nama_pj }}</td    >
+                                                    <td>{{ $item->nama_pj }}</td>
                                                     @if ($level != 'viewer')
                                                         <td class="text-center text-nowrap">
                                                             <a href="#" class="btn btn-icon btn-info"
@@ -330,7 +330,7 @@
                                     </option>
                                     <option value="Anak" @if ($item->hub_keluarga == 'Anak') selected @endif>Anak</option>
                                     <option value="Saudara Kandung" @if ($item->hub_keluarga == 'Saudara Kandung') selected @endif>
-                                        saudara</option>
+                                        Saudara Kandung</option>
                                     <option value="Mertua" @if ($item->hub_keluarga == 'Mertua') selected @endif>Mertua
                                     </option>
                                     <option value="Ponakan" @if ($item->hub_keluarga == 'Ponakan') selected @endif>Ponakan
@@ -383,7 +383,8 @@
                             <div class="form-group">
                                 <label>Nomor HP Penanggung Jawab</label>
                                 <input type="text" class="form-control" name="no_hp_pj" id="no_hp_pj"
-                                    placeholder="Masukan Nomor HP Penanggung Jawab" value="{{ $item->no_hp_pj }}" required>
+                                    placeholder="Masukan Nomor HP Penanggung Jawab" value="{{ $item->no_hp_pj }}"
+                                    required>
                                 @error('no_hp_pj')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror

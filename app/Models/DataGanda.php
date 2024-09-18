@@ -15,7 +15,6 @@ class DataGanda extends Model
         'tps',
         'kelurahan',
         'kecamatan',
-        'nama_pj',
-        'created_by',
+        'report',
     ];
 }

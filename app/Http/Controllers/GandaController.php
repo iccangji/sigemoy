@@ -49,36 +49,9 @@ class GandaController extends Controller
         );
     }
 
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-            'nama_pemilih' => 'required',
-            'NIK' => 'required',
-            'no_hp' => 'required',
-            'hub_keluarga' => 'required',
-            'tps' => 'required',
-            'kelurahan' => 'required',
-            'nama_pj' => 'required'
-        ]);
-
-        if ($data) {
-            Pemilih::create([
-                'nama' => $request->nama_pemilih,
-                'nik' => $request->NIK,
-                'no_hp' => $request->no_hp,
-                'hub_keluarga' => $request->hub_keluarga,
-                'tps' => $request->tps,
-                'kelurahan' => $request->kelurahan,
-                'nama_pj' => $request->nama_pj
-            ]);
-            return back()->with('success', 'Data berhasil dimasukkan');
-        }
-        return back()->with('error', 'Data pemilih tidak dapat dimasukkan');
-    }
-
     public function destroy($id)
     {
-        Pemilih::destroy($id);
+        DataGanda::destroy($id);
         return back()->with('success', 'Data berhasil dihapus');
     }
 }

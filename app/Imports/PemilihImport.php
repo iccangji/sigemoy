@@ -8,17 +8,17 @@ use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
 class PemilihImport implements WithMultipleSheets
 {
-    protected $user;
+    // protected $user;
 
-    // Constructor untuk menerima user dari controller
-    public function __construct($user)
-    {
-        $this->user = $user;
-    }
+    // // Constructor untuk menerima user dari controller
+    // public function __construct($user)
+    // {
+    //     $this->user = $user;
+    // }
     public function sheets(): array
     {
         return [
-            0 => new PemilihSheetImport($this->user),
+            0 => new PemilihSheetImport(),
         ];
     }
 }
