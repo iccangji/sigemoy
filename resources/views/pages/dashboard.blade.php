@@ -308,5 +308,7 @@
         }
 
         getData();
+
+        setInterval(getData, 30000);
     </script>
 @endsection
