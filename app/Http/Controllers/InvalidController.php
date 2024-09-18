@@ -78,6 +78,7 @@ class InvalidController extends Controller
                 'kelurahan' => $request->kelurahan,
                 'kecamatan' => $request->kecamatan,
                 'nama_pj' => $request->nama_pj,
+                'no_hp_pj' => $request->no_hp_pj,
                 'created_by' => auth()->user()->user,
             ]);
 

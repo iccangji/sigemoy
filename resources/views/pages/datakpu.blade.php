@@ -304,7 +304,9 @@
                                 <select name="kelurahan" class="form-control" id="kelurahan" required>
                                     <option value="">--Pilih Kelurahan--</option>
                                     @foreach ($kelurahan as $p)
-                                        <option value="{{ $p->nama }}">{{ $p->nama }}</option>
+                                        <option value="{{ $p->id }}"
+                                            @if ($item->kelurahan == $p->nama) selected @endif>{{ $p->nama }}
+                                        </option>
                                     @endforeach
                                 </select>
                                 @error('kelurahan')

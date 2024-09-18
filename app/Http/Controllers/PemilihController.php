@@ -38,6 +38,7 @@ class PemilihController extends Controller
         }
 
         $kecamatan = Kecamatan::get();
+        $kelurahan = Kelurahan::get();
         return view('pages.pemilih', [
             'page' => 'pemilih',
             'title' => 'Data Pemilih',
@@ -49,6 +50,7 @@ class PemilihController extends Controller
             'selected_size' => $size,
             'current_page' => $page,
             'kecamatan' => $kecamatan,
+            'kelurahan' => $kelurahan,
         ]);
     }
 
@@ -89,6 +91,7 @@ class PemilihController extends Controller
                 'kelurahan' => $request->kelurahan,
                 'kecamatan' => $kecamatan,
                 'nama_pj' => $request->nama_pj,
+                'no_hp_pj' => $request->no_hp_pj,
                 'created_by' => auth()->user()->user,
             ]);
             return back()->with('success', 'Data berhasil dimasukkan');
@@ -107,6 +110,7 @@ class PemilihController extends Controller
             'kelurahan' => 'required',
             'kecamatan' => 'required',
             'nama_pj' => 'required',
+            'no_hp_pj' => 'required',
         ]);
         $kecamatan = Kecamatan::where('id', $request->kecamatan)->first()->nama;
         if ($data) {
@@ -120,6 +124,7 @@ class PemilihController extends Controller
                 'kelurahan' => $request->kelurahan,
                 'kecamatan' => $kecamatan,
                 'nama_pj' => $request->nama_pj,
+                'no_hp_pj' => $request->no_hp_pj,
                 'created_by' => auth()->user()->user,
             ]);
             return back()->with('success', 'Data berhasil diubah');
@@ -166,6 +171,7 @@ class PemilihController extends Controller
                                     'kelurahan' => $item[5],
                                     'kecamatan' => $item[4],
                                     'nama_pj' => $item[7],
+                                    'no_hp_pj' => $item[8],
                                     'created_by' => auth()->user()->user,
                                 ]);
 
@@ -204,7 +210,7 @@ class PemilihController extends Controller
                             'kelurahan' => $item[5],
                             'kecamatan' => $item[4],
                             'nama_pj' => $item[7],
-                            'no_hp_pj' => $item[7],
+                            'no_hp_pj' => $item[8],
                         ]);
                     }
                 }

@@ -348,7 +348,9 @@
                                 <select name="kecamatan" class="form-control" id="kecamatan-edit" required>
                                     <option value="">--Pilih Kecamatan--</option>
                                     @foreach ($kecamatan as $p)
-                                        <option value="{{ $p->id }}">{{ $p->nama }}</option>
+                                        <option value="{{ $p->id }}"
+                                            @if ($item->kecamatan == $p->nama) selected @endif>{{ $p->nama }}
+                                        </option>
                                     @endforeach
                                 </select>
                                 @error('kecamatan')
@@ -359,6 +361,11 @@
                                 <label for="kelurahan">Kelurahan</label>
                                 <select name="kelurahan" id="kelurahan-edit" class="form-control" required>
                                     <option value="">--Pilih Kelurahan--</option>
+                                    @foreach ($kelurahan as $p)
+                                        <option value="{{ $p->id }}"
+                                            @if ($item->kelurahan == $p->nama) selected @endif>{{ $p->nama }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('kelurahan')
                                     <small class="text-danger">{{ $message }}</small>
@@ -467,28 +474,7 @@
                 }
             });
 
-            $('#kecamatan-edit').on('change', function() {
-                var kecamatanId = $(this).val();
-                if (kecamatanId) {
-                    $.ajax({
-                        url: "{{ url('pemilih-lokasi') }}/" + kecamatanId,
-                        type: "GET",
-                        dataType: "json",
-                        success: function(data) {
-                            $('#kelurahan-edit').empty();
-                            $('#kelurahan-edit').append(
-                                '<option value="">-- Pilih Kelurahan --</option>');
-                            $.each(data, function(key, kelurahan) {
-                                $('#kelurahan-edit').append('<option value="' +
-                                    kelurahan.nama + '">' + kelurahan.nama +
-                                    '</option>');
-                            });
-                        }
-                    });
-                } else {
-                    $('#kelurahan-edit').empty();
-                }
-            });
+
         });
     </script>
 @endsection

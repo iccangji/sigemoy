@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('kelurahan');
             $table->string('kecamatan');
             $table->string('nama_pj');
+            $table->string('no_hp_pj');
             $table->string('created_by');
             $table->timestamps();
         });

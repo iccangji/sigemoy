@@ -185,13 +185,13 @@
                 </div>
             </div>
         </div>
-        <!-- Modal Tambah Data -->
+        <!-- Modal edit data -->
         <div class="modal fade" id="edit-{{ $item->id }}" tabindex="-1" role="dialog"
             aria-labelledby="edit-{{ $item->id }}" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Tambah Data pemilih</h5>
+                        <h5 class="modal-title">Data pemilih</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -278,7 +278,7 @@
                             <div class="form-group">
                                 <label>Nama Penanggung Jawab</label>
                                 <input type="text" class="form-control" name="nama_pj" id="nama_pj"
-                                    placeholder="Masukan Nama Penanggung Jawab" value="{{ old('nama_pj') }}" required>
+                                    placeholder="Masukan Nama Penanggung Jawab" value="" required>
                                 @error('nama_pj')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -286,7 +286,7 @@
                             <div class="form-group">
                                 <label>Nomor HP Penanggung Jawab</label>
                                 <input type="text" class="form-control" name="no_hp_pj" id="no_hp_pj"
-                                    placeholder="Masukan Nomor HP Penanggung Jawab" value="{{ old('no_hp_pj') }}"
+                                    placeholder="Masukan Nomor HP Penanggung Jawab" value=""
                                     required>
                                 @error('no_hp_pj')
                                     <small class="text-danger">{{ $message }}</small>
