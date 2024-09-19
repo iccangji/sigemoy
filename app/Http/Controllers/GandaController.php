@@ -19,15 +19,12 @@ class GandaController extends Controller
         if (auth()->user()->level != 'penginput') {
             $items = DataGanda::where('nama', 'like', "%$search%")
                 ->orderBy('updated_at', 'desc')->paginate($size);
-            $countPemilih = DataGanda::where('nama', 'like', "%$search%")
-                ->orderBy('updated_at', 'desc')->count();
+            $countPemilih = $items->total();
         } else {
             $items = DataGanda::where('nama', 'like', "%$search%")
                 ->where('created_by', auth()->user()->user)
                 ->orderBy('updated_at', 'desc')->paginate($size);
-            $countPemilih = DataGanda::where('nama', 'like', "%$search%")
-                ->where('created_by', auth()->user()->user)
-                ->orderBy('updated_at', 'desc')->count();
+            $countPemilih = $items->total();
         }
 
         $kecamatan = Kecamatan::get();
@@ -43,7 +40,6 @@ class GandaController extends Controller
                 'search' => $search,
                 'count' => $countPemilih,
                 'selected_size' => $size,
-                'current_page' => $page,
                 'kecamatan' => $kecamatan
             ]
         );

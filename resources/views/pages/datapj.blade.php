@@ -39,24 +39,25 @@
 
 
                                 <div class="d-flex justify-content-between mb-3 align-items-center">
-                                <div class="form-group">
-                                <label for="showEntries">Data Perbaris :</label>
-                                <select id="showEntries" class="form-control" style="width: 100px;">
-                                    <option value="{{ route('pj.index') }}?size=50"
-                                    @if ($selected_size == 50) selected @endif>50</option>
-                                    <option value="{{ route('pj.index') }}?size=100"
-                                    @if ($selected_size == 100) selected @endif>100</option>
-                                    <option value="{{ route('pj.index') }}?size=200"
-                                    @if ($selected_size == 200) selected @endif>200</option>
-                                </select>
+                                    <div class="form-group">
+                                        <label for="showEntries">Data Perbaris :</label>
+                                        <select id="showEntries" class="form-control" style="width: 100px;">
+                                            <option value="{{ route('pj.index') }}?size=50"
+                                                @if ($selected_size == 50) selected @endif>50</option>
+                                            <option value="{{ route('pj.index') }}?size=100"
+                                                @if ($selected_size == 100) selected @endif>100</option>
+                                            <option value="{{ route('pj.index') }}?size=200"
+                                                @if ($selected_size == 200) selected @endif>200</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <form id="search-form" method="GET" action="{{ route('pj.index') }}">
+                                            <label for="Pencarian Data">Pencarian Data</label>
+                                            <input type="text" name="search" class="form-control" id="searchInput"
+                                                value="{{ $search }}" placeholder="Masukkan nama...">
+                                        </form>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                <form id="search-form" method="GET" action="{{ route('pj.index') }}">
-                                    <label for="Pencarian Data">Pencarian Data</label>
-                                    <input type="text" name="search" class="form-control" id="searchInput" value="{{ $search }}" placeholder="Masukkan nama...">
-                                </form>
-                                </div>
-                            </div>
 
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-hover">
@@ -65,12 +66,12 @@
                                                 <th scope="col">No</th>
                                                 <th scope="col">Nama Penanggung Jawab</th>
                                                 <th scope="col">No. HP</th>
-                                               
+
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @php
-                                                $number = ($current_page-1)*$selected_size + 1;
+                                                $number = ($data->currentPage() - 1) * $selected_size + 1;
                                             @endphp
                                             @foreach ($data as $item)
                                                 <tr class="text-left">
@@ -89,23 +90,28 @@
                                 <div class="footer  d-flex justify-content-between align-items-center">
                                     <span>Total {{ $count }} Data</span>
 
-                                <nav aria-label="Page navigation example">
-                                    <ul class="pagination">
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination">
 
-                                        <li class="page-item">
-                                        @if ($data->currentPage() > 1)
-                                        <a href="{{ $data->previousPageUrl() }}&size={{$selected_size}}" data-page="{{ $data->currentPage() - 1 }}" class="page-link">Previous</a>
-                                        @endif
-                                        </li>
-                                        <li>
-                                        <a class="page-link disabled bordered">{{ $data->currentPage() }}</a>
-                                        </li>
-                                        <li class="page-item">@if ($data->hasMorePages())
-                                        <a href="{{ $data->nextPageUrl() }}&size={{$selected_size}}" data-page="{{ $data->currentPage() + 1 }}" class="page-link">Next</a>
-                                        @endif
-                                        </li>
-                                    </ul>
-                                </nav>
+                                            <li class="page-item">
+                                                @if ($data->currentPage() > 1)
+                                                    <a href="{{ $data->previousPageUrl() }}&size={{ $selected_size }}"
+                                                        data-page="{{ $data->currentPage() - 1 }}"
+                                                        class="page-link">Previous</a>
+                                                @endif
+                                            </li>
+                                            <li>
+                                                <a class="page-link disabled bordered">{{ $data->currentPage() }}</a>
+                                            </li>
+                                            <li class="page-item">
+                                                @if ($data->hasMorePages())
+                                                    <a href="{{ $data->nextPageUrl() }}&size={{ $selected_size }}"
+                                                        data-page="{{ $data->currentPage() + 1 }}"
+                                                        class="page-link">Next</a>
+                                                @endif
+                                            </li>
+                                        </ul>
+                                    </nav>
                                 </div>
                             </div>
                         </div>
@@ -116,7 +122,7 @@
         </section>
     </div>
 
-    
+
     <script>
         document.getElementById('showEntries').addEventListener('change', function(event) {
             var selectedValue = event.target.value;
@@ -124,7 +130,5 @@
                 window.location.href = selectedValue;
             }
         });
-
     </script>
-
 @endsection

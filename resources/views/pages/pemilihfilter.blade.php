@@ -147,7 +147,7 @@
 
                                             <li class="page-item">
                                                 @if ($data->currentPage() > 1)
-                                                    <a href="{{ $data->previousPageUrl() }}&size={{ $selected_size }}"
+                                                    <a href="{{ $data->previousPageUrl() }}&size={{ $selected_size }}&nama_pemilih={{ $namaQuery }}&kecamatan={{ $kecamatanQuery }}&kelurahan={{ $kelurahanQuery }}&tps={{ $tpsQuery }}"
                                                         data-page="{{ $data->currentPage() - 1 }}"
                                                         class="page-link">Previous</a>
                                                 @endif
@@ -157,7 +157,7 @@
                                             </li>
                                             <li class="page-item">
                                                 @if ($data->hasMorePages())
-                                                    <a href="{{ $data->nextPageUrl() }}&size={{ $selected_size }}"
+                                                    <a href="{{ $data->nextPageUrl() }}&size={{ $selected_size }}&nama_pemilih={{ $namaQuery }}&kecamatan={{ $kecamatanQuery }}&kelurahan={{ $kelurahanQuery }}&tps={{ $tpsQuery }}"
                                                         data-page="{{ $data->currentPage() + 1 }}"
                                                         class="page-link">Next</a>
                                                 @endif

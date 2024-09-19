@@ -21,18 +21,15 @@ class KpuController extends Controller
         if (auth()->user()->level != 'penginput') {
             $items = DataKpu::where('nama', 'like', "%$search%")
                 ->orderBy('updated_at', 'desc')->paginate($size);
-            $countkpu = DataKpu::where('nama', 'like', "%$search%")
-                ->orderBy('updated_at', 'desc')->count();
+            $countkpu = $items->total();
         } else {
             $items = DataKpu::where('nama', 'like', "%$search%")
                 ->where('created_by', auth()->user()->user)
                 ->orderBy('updated_at', 'desc')->paginate($size);
-            $countkpu = DataKpu::where('nama', 'like', "%$search%")
-                ->where('created_by', auth()->user()->user)
-                ->orderBy('updated_at', 'desc')->count();
+            $countkpu = $items->total();
         }
 
-        $kelurahan = Kelurahan::get();
+        $kelurahan = Kelurahan::orderBy('nama', 'asc')->get();
         // dd($search);
         return view(
             'pages.datakpu',
@@ -45,10 +42,58 @@ class KpuController extends Controller
                 'search' => $request->input('search', ''),
                 'count' => $countkpu,
                 'selected_size' => $size,
-                'current_page' => $page,
-                'kelurahan' => $kelurahan
+                'kelurahan' => $kelurahan,
+                'route' => route('data-kpu.index'),
             ]
         );
+    }
+
+    public function cari(Request $request)
+    {
+        $size = $request->input('size', 50);
+        $search = $request->query('search', '');
+
+        $filter_nama = $request->input('nama_pemilih', '');
+        $filter_kecamatan = $request->input('kecamatan', '');
+        $filter_kelurahan = $request->input('kelurahan', '');
+        $filter_tps = $request->input('tps', '');
+
+        if (auth()->user()->level != 'penginput') {
+            $items = DataKpu::where('nama', 'like', "%$filter_nama%")
+                ->where('kelurahan', 'like', "%$filter_kelurahan%")
+                ->where('tps', 'like', "%$filter_tps%")
+                ->orderBy('updated_at', 'desc')
+                ->paginate($size);
+            $countPemilih = $items->total();
+        } else {
+            $items = DataKpu::where('nama', 'like', "%$search%")
+                ->where('nama', 'like', "%$filter_nama%")
+                ->where('kelurahan', 'like', "%$filter_kelurahan%")
+                ->where('tps', 'like', "%$filter_tps%")
+                ->where('created_by', auth()->user()->user)
+                ->orderBy('updated_at', 'desc')
+                ->paginate($size);
+            $countPemilih = $items->total();
+        }
+
+        $kelurahan = Kelurahan::orderBy('nama', 'asc')->get();
+        return view('pages.datakpufilter', [
+            'page' => 'pemilih',
+            'title' => 'Data Pemilih',
+            'user' => auth()->user()->user,
+            'level' => auth()->user()->level,
+            'data' => $items,
+            'search' => $search,
+            'count' => $countPemilih,
+            'selected_size' => $size,
+            'kelurahan' => $kelurahan,
+            'isFilter' => true,
+            'namaQuery' => $filter_nama,
+            'kecamatanQuery' => $filter_kecamatan,
+            'kelurahanQuery' => $filter_kelurahan,
+            'tpsQuery' => $filter_tps,
+            'route' => route('kpu.filter'),
+        ]);
     }
 
     public function store(Request $request)

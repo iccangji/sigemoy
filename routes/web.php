@@ -43,8 +43,10 @@ Route::resource('/pemilih', PemilihController::class)->only([
     'update',
     'destroy'
 ])->middleware(['auth']);
+
 Route::get('/pemilih/filter', [PemilihController::class, 'cari'])->middleware(['auth', 'cors'])->name('pemilih.filter');
 Route::post('/pemilih/filter', [PemilihController::class, 'cari'])->middleware(['auth', 'cors'])->name('pemilih.filter');
+
 Route::get('/pemilih-lokasi/{id}', [PemilihController::class, 'location'])->middleware(['auth'])->name('pemilih.location');
 Route::post('/pemilih-import', [PemilihController::class, 'importData'])->middleware(['auth'])->name('pemilih.import');
 
@@ -61,6 +63,10 @@ Route::resource('/data-kpu', KpuController::class)->only([
     'update',
     'destroy'
 ])->middleware(['auth']);
+
+Route::get('/data-kpu/filter', [KpuController::class, 'cari'])->middleware(['auth', 'cors'])->name('kpu.filter');
+Route::post('/data-kpu/filter', [KpuController::class, 'cari'])->middleware(['auth', 'cors'])->name('kpu.filter');
+
 Route::post('/kpu-import', [KpuController::class, 'importData'])->middleware(['auth'])->name('kpu.import');
 Route::get('/kpu-truncate', [KpuController::class, 'clearData'])->middleware(['auth'])->name('kpu.truncate');
 

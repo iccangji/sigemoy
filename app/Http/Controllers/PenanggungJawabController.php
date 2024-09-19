@@ -16,8 +16,7 @@ class PenanggungJawabController extends Controller
         $items = PenanggungJawab::where('nama', 'like', "%$search%")
             ->orderBy('updated_at', 'desc')
             ->paginate($size);
-        $countPemilih = PenanggungJawab::where('nama', 'like', "%$search%")
-            ->orderBy('updated_at', 'desc')->count();
+        $countPemilih = $items->total();
         return view('pages.datapj', [
             'page' => 'datapj',
             'title' => 'Penanggung Jawab',
@@ -27,7 +26,6 @@ class PenanggungJawabController extends Controller
             'search' => $search,
             'count' => $countPemilih,
             'selected_size' => $size,
-            'current_page' => $page,
         ]);
     }
 }

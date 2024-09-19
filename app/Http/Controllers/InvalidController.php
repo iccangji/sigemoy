@@ -22,12 +22,12 @@ class InvalidController extends Controller
         if (auth()->user()->level != 'penginput') {
             $items = DataKpuInvalid::where('nama', 'like', "%$search%")
                 ->orderBy('updated_at', 'desc')->paginate($size);
-            $countPemilih = DataKpuInvalid::count();
+            $countPemilih = $items->total();
         } else {
             $items = DataKpuInvalid::where('nama', 'like', "%$search%")
                 ->where('created_by', auth()->user()->user)
                 ->orderBy('updated_at', 'desc')->paginate($size);
-            $countPemilih = DataKpuInvalid::where('created_by', auth()->user()->user)->count();
+            $countPemilih = $items->total();
         }
 
         $kecamatan = Kecamatan::get();
@@ -42,7 +42,6 @@ class InvalidController extends Controller
                 'search' => $search,
                 'count' => $countPemilih,
                 'selected_size' => $size,
-                'current_page' => $page,
                 'kecamatan' => $kecamatan->toArray(),
             ]
         );

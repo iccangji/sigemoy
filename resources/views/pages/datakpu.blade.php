@@ -43,26 +43,32 @@
                                 @endif
                             </div>
                             <div class="card-body">
-                                
+
                                 <div class="d-flex justify-content-between mb-3 align-items-center">
                                     <div class="form-group">
                                         <label for="showEntries">Data Perbaris :</label>
                                         <select id="showEntries" class="form-control" style="width: 100px;">
-                                            <option value="{{ route('data-kpu.index') }}?size=50"
+                                            <option value="{{ $route }}?size=50"
                                                 @if ($selected_size == 50) selected @endif>50</option>
-                                            <option value="{{ route('data-kpu.index') }}?size=100"
+                                            <option value="{{ $route }}?size=100"
                                                 @if ($selected_size == 100) selected @endif>100</option>
-                                            <option value="{{ route('data-kpu.index') }}?size=200"
+                                            <option value="{{ $route }}?size=200"
                                                 @if ($selected_size == 200) selected @endif>200</option>
                                         </select>
                                     </div>
-                                    <div class="form-group">
-                                        <form id="search-form" method="GET" action="{{ route('data-kpu.index') }}">
+                                    <div class="form-group d-flex align-items-end">
+                                        <form id="search-form" method="GET" action="{{ $route }}">
                                             <label for="Pencarian Data">Pencarian Data</label>
                                             <input type="text" name="search" class="form-control" id="searchInput"
                                                 value="{{ $search }}" placeholder="Masukkan nama...">
                                             {{-- <button type="submit" class="btn btn-success"><i class="fa fa-search" aria-hidden="true"></i></button> --}}
                                         </form>
+                                        <div class="">
+                                            <button class="ml-2 p-2 rounded btn btn-primary btn-round" data-toggle="modal"
+                                                data-target="#filterSearch">
+                                                <i class="fa fa-filter"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -84,7 +90,7 @@
                                         </thead>
                                         <tbody>
                                             @php
-                                                $number = ($current_page - 1) * $selected_size + 1;
+                                                $number = ($data->currentPage() - 1) * $selected_size + 1;
                                             @endphp
                                             @foreach ($data as $item)
                                                 <tr>
@@ -105,7 +111,8 @@
                                                                 method="POST" style="display:inline-block;">
                                                                 @csrf
                                                                 @method('DELETE')
-                                                                <button type="submit" class="btn btn-icon btn-danger delete-confirm">
+                                                                <button type="submit"
+                                                                    class="btn btn-icon btn-danger delete-confirm">
                                                                     <i class="fas fa-times"></i>
                                                                 </button>
                                                             </form>
@@ -316,6 +323,59 @@
     @endforeach
 
     {{-- modal upload data excel  --}}
+    <div class="modal fade" id="filterSearch" tabindex="-1" role="dialog" aria-labelledby="filterSearch"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Pencarian Filter</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ route('kpu.filter') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Nama Pemilh</label>
+                            <input type="text" name="nama_pemilih" id="nama_pemilih"
+                                placeholder="Masukan Nama Pemilih" class="form-control" value="">
+                            @error('nama_pemilih')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="kelurahan">Kelurahan</label>
+                            <select name="kelurahan" id="kelurahan-edit" class="form-control">
+                                <option value="">--Pilih Kelurahan--</option>
+                                @foreach ($kelurahan as $p)
+                                    <option value="{{ strtoupper($p->nama) }}">{{ strtoupper($p->nama) }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('kelurahan')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>TPS</label>
+                            <input type="text" class="form-control" name="tps" id="tps"
+                                placeholder="Masukan TPS" value="">
+                            @error('tps')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger mb-2" data-dismiss="modal">Kembali</button>
+                        <button type="submit" class="btn btn-success">Filter Data</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- modal upload data excel  --}}
     <div class="modal fade" id="UploadExcel" tabindex="-1" role="dialog" aria-labelledby="UploadExcel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -380,9 +440,9 @@
         });
 
         document.addEventListener('DOMContentLoaded', function() {
-        $('.delete-confirm').on('click', function(event) {
-            event.preventDefault();
-            var form = $(this).closest('form');
+            $('.delete-confirm').on('click', function(event) {
+                event.preventDefault();
+                var form = $(this).closest('form');
 
                 Swal.fire({
                     title: 'Apakah Anda yakin?',
@@ -399,26 +459,26 @@
                     }
                 });
             });
-         });
+        });
 
-            @if(session('success'))
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil!',
-                    text: '{{ session('success') }}',
-                    timer: 3000,
-                    showConfirmButton: false
-                });
-            @endif
-            
-            @if(session('error'))
-                Swal.fire({
-                    icon: 'danger',
-                    title: 'Gagal',
-                    text: '{{ session('error') }}',
-                    timer: 3000,
-                    showConfirmButton: true
-                });
-            @endif
+        @if (session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        @endif
+
+        @if (session('error'))
+            Swal.fire({
+                icon: 'danger',
+                title: 'Gagal',
+                text: '{{ session('error') }}',
+                timer: 3000,
+                showConfirmButton: true
+            });
+        @endif
     </script>
 @endsection

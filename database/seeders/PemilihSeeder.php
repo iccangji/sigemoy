@@ -14,6 +14,6 @@ class PemilihSeeder extends Seeder
      */
     public function run(): void
     {
-        // Pemilih::factory()->count(100)->create();
+        Pemilih::factory()->count(500)->create();
     }
 }

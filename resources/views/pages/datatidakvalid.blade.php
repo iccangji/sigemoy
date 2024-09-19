@@ -73,7 +73,7 @@
                                         </thead>
                                         <tbody>
                                             @php
-                                                $number = ($current_page - 1) * $selected_size + 1;
+                                                $number = ($data->currentPage() - 1) * $selected_size + 1;
                                             @endphp
                                             @foreach ($data as $item)
                                                 <tr>
@@ -99,7 +99,8 @@
                                                                 method="POST" style="display:inline-block;">
                                                                 @csrf
                                                                 @method('DELETE')
-                                                                <button type="submit" class="btn btn-icon btn-danger delete-confirm">
+                                                                <button type="submit"
+                                                                    class="btn btn-icon btn-danger delete-confirm">
                                                                     <i class="fas fa-times"></i></button>
                                                             </form>
                                                         </td>
@@ -164,9 +165,8 @@
                         @csrf
                         @method('POST')
                         <div class="modal-body">
-                            <input type="hidden" name="nama_pemilih" id="nama_pemilih"
-                                placeholder="Masukan Nama Pemilih" class="form-control" value="{{ $item->nama }}"
-                                required>
+                            <input type="hidden" name="nama_pemilih" id="nama_pemilih" placeholder="Masukan Nama Pemilih"
+                                class="form-control" value="{{ $item->nama }}" required>
                             <input type="hidden" class="form-control" name="NIK" id="NIK"
                                 placeholder="Masukan NIK" value="{{ $item->nik }}" required>
                             <input type="hidden" class="form-control" name="no_hp" id="no_hp"
@@ -276,9 +276,9 @@
         });
 
         document.addEventListener('DOMContentLoaded', function() {
-        $('.delete-confirm').on('click', function(event) {
-            event.preventDefault();
-            var form = $(this).closest('form');
+            $('.delete-confirm').on('click', function(event) {
+                event.preventDefault();
+                var form = $(this).closest('form');
 
                 Swal.fire({
                     title: 'Apakah Anda yakin?',
@@ -295,27 +295,26 @@
                     }
                 });
             });
-         });
+        });
 
-            @if(session('success'))
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil!',
-                    text: '{{ session('success') }}',
-                    timer: 3000,
-                    showConfirmButton: false
-                });
-            @endif
-            
-            @if(session('error'))
-                Swal.fire({
-                    icon: 'danger',
-                    title: 'Gagal',
-                    text: '{{ session('error') }}',
-                    timer: 3000,
-                    showConfirmButton: true
-                });
-            @endif
+        @if (session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        @endif
 
+        @if (session('error'))
+            Swal.fire({
+                icon: 'danger',
+                title: 'Gagal',
+                text: '{{ session('error') }}',
+                timer: 3000,
+                showConfirmButton: true
+            });
+        @endif
     </script>
 @endsection
