@@ -57,21 +57,27 @@
                                     <div class="form-group">
                                         <label for="showEntries">Data Perbaris :</label>
                                         <select id="showEntries" class="form-control" style="width: 100px;">
-                                            <option value="{{ route('pemilih.index') }}?size=50"
+                                            <option value="{{ $route }}?size=50"
                                                 @if ($selected_size == 50) selected @endif>50</option>
-                                            <option value="{{ route('pemilih.index') }}?size=100"
+                                            <option value="{{ $route }}?size=100"
                                                 @if ($selected_size == 100) selected @endif>100</option>
-                                            <option value="{{ route('pemilih.index') }}?size=200"
+                                            <option value="{{ $route }}?size=200"
                                                 @if ($selected_size == 200) selected @endif>200</option>
                                         </select>
                                     </div>
-                                    <div class="form-group">
-                                        <form id="search-form" method="GET" action="{{ route('pemilih.index') }}">
+                                    <div class="form-group d-flex align-items-end">
+                                        <form id="search-form" method="GET" action="{{ $route }}">
                                             <label for="Pencarian Data">Pencarian Data</label>
                                             <input type="text" name="search" class="form-control" id="searchInput"
                                                 value="{{ $search }}" placeholder="Masukkan nama...">
                                             {{-- <button type="submit" class="btn btn-success"><i class="fa fa-search" aria-hidden="true"></i></button> --}}
                                         </form>
+                                        <div class="">
+                                            <button class="ml-2 p-2 rounded btn btn-primary btn-round" data-toggle="modal"
+                                                data-target="#filterSearch">
+                                                <i class="fa fa-filter"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -409,7 +415,72 @@
     @endforeach
 
     {{-- modal upload data excel  --}}
-    <div class="modal fade" id="UploadExcel" tabindex="-1" role="dialog" aria-labelledby="UploadExcel"
+    <div class="modal fade" id="filterSearch" tabindex="-1" role="dialog" aria-labelledby="filterSearch"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Data pemilih</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ route('pemilih.filter') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Nama Pemilh</label>
+                            <input type="text" name="nama_pemilih" id="nama_pemilih"
+                                placeholder="Masukan Nama Pemilih" class="form-control" value="">
+                            @error('nama_pemilih')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="kecamatan">Kecamatan</label>
+                            <select name="kecamatan" class="form-control" id="kecamatan-edit">
+                                <option value="">--Pilih Kecamatan--</option>
+                                @foreach ($kecamatan as $p)
+                                    <option value="{{ $p->id }}">{{ $p->nama }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('kecamatan')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="kelurahan">Kelurahan</label>
+                            <select name="kelurahan" id="kelurahan-edit" class="form-control">
+                                <option value="">--Pilih Kelurahan--</option>
+                                @foreach ($kelurahan as $p)
+                                    <option value="{{ $p->id }}">{{ $p->nama }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('kelurahan')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label>TPS</label>
+                            <input type="text" class="form-control" name="tps" id="tps"
+                                placeholder="Masukan TPS" value="">
+                            @error('tps')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger mb-2" data-dismiss="modal">Kembali</button>
+                        <button type="submit" class="btn btn-success">Filter Data</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {{-- modal upload data excel  --}}
+    <div class="modal fade" id="uploadExcel" tabindex="-1" role="dialog" aria-labelledby="uploadExcel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">

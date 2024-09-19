@@ -51,8 +51,63 @@ class PemilihController extends Controller
             'current_page' => $page,
             'kecamatan' => $kecamatan,
             'kelurahan' => $kelurahan,
+            'route' => route('pemilih.index')
         ]);
     }
+
+    // public function filter(Request $request)
+    // {
+    //     $size = $request->input('size', 50);
+    //     $page = $request->input('page', 1);
+    //     $search = $request->query('search', '');
+
+    //     $filter_nama = $request->input('nama', '');
+    //     $filter_kecamatan = $request->input('kecamatan', '');
+    //     $filter_kelurahan = $request->input('kelurahan', '');
+    //     $filter_tps = $request->input('tps', '');
+
+
+    //     if (auth()->user()->level != 'penginput') {
+    //         $items = Pemilih::where('nama', 'like', "%$search%")
+    //             ->where('nama', 'like', "%$filter_nama%")
+    //             ->where('kecamatan', 'like', "%$filter_kecamatan%")
+    //             ->where('kelurahan', 'like', "%$filter_kelurahan%")
+    //             ->where('tps', 'like', "%$filter_tps%")
+    //             ->orderBy('updated_at', 'desc')
+    //             ->paginate($size);
+    //         $countPemilih = Pemilih::where('nama', 'like', "%$search%")
+    //             ->orderBy('updated_at', 'desc')->count();
+    //     } else {
+    //         $items = Pemilih::where('nama', 'like', "%$search%")
+    //             ->where('nama', 'like', "%$filter_nama%")
+    //             ->where('kecamatan', 'like', "%$filter_kecamatan%")
+    //             ->where('kelurahan', 'like', "%$filter_kelurahan%")
+    //             ->where('tps', 'like', "%$filter_tps%")
+    //             ->where('created_by', auth()->user()->user)
+    //             ->orderBy('updated_at', 'desc')
+    //             ->paginate($size);
+    //         $countPemilih = Pemilih::where('nama', 'like', "%$search%")
+    //             ->where('created_by', auth()->user()->user)
+    //             ->orderBy('updated_at', 'desc')->count();
+    //     }
+
+    //     $kecamatan = Kecamatan::get();
+    //     $kelurahan = Kelurahan::get();
+    //     return view('pages.pemilih', [
+    //         'page' => 'pemilih',
+    //         'title' => 'Data Pemilih',
+    //         'user' => auth()->user()->user,
+    //         'level' => auth()->user()->level,
+    //         'data' => $items,
+    //         'search' => $search,
+    //         'count' => $countPemilih,
+    //         'selected_size' => $size,
+    //         'current_page' => $page,
+    //         'kecamatan' => $kecamatan,
+    //         'kelurahan' => $kelurahan,
+    //         'route' => route('pemilih.filter'),
+    //     ]);
+    // }
 
     public function store(Request $request)
     {
@@ -327,5 +382,41 @@ class PemilihController extends Controller
             'result' => true,
             'message' => ''
         ];
+    }
+
+    public function cari(Request $request)
+    {
+        $size = $request->input('size', 50);
+        $page = $request->input('page', 1);
+        $search = $request->query('search', '');
+
+        if (auth()->user()->level != 'penginput') {
+            $items = Pemilih::where('nama', 'like', "%$search%")
+                ->orderBy('updated_at', 'desc')
+                ->paginate($size);
+            $countPemilih = Pemilih::where('nama', 'like', "%$search%")
+                ->orderBy('updated_at', 'desc')->count();
+        } else {
+            $items = Pemilih::where('nama', 'like', "%$search%")
+                ->where('created_by', auth()->user()->user)
+                ->orderBy('updated_at', 'desc')
+                ->paginate($size);
+            $countPemilih = Pemilih::where('nama', 'like', "%$search%")
+                ->where('created_by', auth()->user()->user)
+                ->orderBy('updated_at', 'desc')->count();
+        }
+
+        $kecamatan = Kecamatan::get();
+        $kelurahan = Kelurahan::get();
+        return view(
+            'pages.dashboard',
+            [
+                'page' => 'dashboard',
+                'title' => 'Dashboard',
+                'user' => auth()->user()->user,
+                'level' => 'admin'
+            ]
+        );
+        // return view('welcome');
     }
 }
