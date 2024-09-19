@@ -315,7 +315,7 @@ class PemilihController extends Controller
         return redirect()->back()->with('error', 'Data gagal diimport. Pastikan file berbentuk excel');
     }
 
-    private function dataGandaValidate(Request $request)
+    public function dataGandaValidate(Request $request)
     {
         $pj_count = PenanggungJawab::where('nama', $request->nama_pj)->count();
         if ($pj_count == 0) {
@@ -351,11 +351,10 @@ class PemilihController extends Controller
         ];
     }
 
-    private function dataKpuValidate(Request $request)
+    public function dataKpuValidate(Request $request)
     {
         $data_count = DataKpu::where('nama', $request->nama_pemilih)->where('kelurahan', $request->kelurahan)->where('tps', $request->tps)->count();
         if ($data_count == 0) {
-            $data = DataKpu::where('nama', $request->nama_pemilih)->where('kelurahan', $request->kelurahan)->where('tps', $request->tps)->first();
             DataKpuInvalid::create([
                 'nama' => $request->nama_pemilih,
                 'nik' => $request->NIK,
@@ -369,7 +368,7 @@ class PemilihController extends Controller
             ]);
             return [
                 'result' => false,
-                'message' => back()->with('error', 'Ditemukan kesamaan data dengan Data KPU atas nama ' . $data->nama)
+                'message' => back()->with('error', 'Tidak ditemukan kesamaan data dengan Data KPU atas nama ' . $request->nama_pemilih)
             ];
         }
         return [

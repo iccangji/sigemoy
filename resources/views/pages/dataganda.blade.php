@@ -176,7 +176,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="{{ route('pemilih.store') }}" method="POST">
+                    <form action="{{ route('ganda.store') }}" method="POST">
                         @csrf
                         @method('POST')
                         <div class="modal-body">
@@ -219,6 +219,8 @@
                                     <option value="Ponakan" @if ($item->hub_keluarga == 'Ponakan') selected @endif>Ponakan
                                     </option>
                                     <option value="Ipar" @if ($item->hub_keluarga == 'Ipar') selected @endif>Ipar</option>
+                                    <option value="Orang Tua" @if ($item->hub_keluarga == 'Orang Tua') selected @endif>Orang Tua
+                                    </option>
                                 </select>
                                 @error('hub_keluarga')
                                     <small class="text-danger">{{ $message }}</small>

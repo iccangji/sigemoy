@@ -219,6 +219,7 @@
                                 <option value="">--Pilih Hubungan Keluarga--</option>
                                 <option value="Suami/Istri">Suami/Istri</option>
                                 <option value="Anak">Anak</option>
+                                <option value="Orang Tua">Orang Tua</option>
                                 <option value="Saudara Kandung">Saudara Kandung</option>
                                 <option value="Mertua">Mertua</option>
                                 <option value="Ponakan">Ponakan</option>
@@ -342,6 +343,8 @@
                                     <option value="Ponakan" @if ($item->hub_keluarga == 'Ponakan') selected @endif>Ponakan
                                     </option>
                                     <option value="Ipar" @if ($item->hub_keluarga == 'Ipar') selected @endif>Ipar
+                                    </option>
+                                    <option value="Orang Tua" @if ($item->hub_keluarga == 'Orang Tua') selected @endif>Orang Tua
                                     </option>
                                     {{-- @endforeach --}}
                                 </select>

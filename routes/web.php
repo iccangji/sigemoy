@@ -71,6 +71,7 @@ Route::post('/kpu-import', [KpuController::class, 'importData'])->middleware(['a
 Route::get('/kpu-truncate', [KpuController::class, 'clearData'])->middleware(['auth'])->name('kpu.truncate');
 
 Route::get('/data-ganda', [GandaController::class, 'index'])->middleware(['auth', 'cors'])->name('ganda.index');
+Route::post('/data-ganda', [GandaController::class, 'store'])->middleware(['auth'])->name('ganda.store');
 Route::delete('/data-ganda/{id}', [GandaController::class, 'destroy'])->middleware(['auth', 'cors'])->name('ganda.destroy');
 
 Route::get('/data-invalid', [InvalidController::class, 'index'])->middleware(['auth', 'cors'])->name('invalid.index');
