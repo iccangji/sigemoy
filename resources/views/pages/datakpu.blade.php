@@ -351,12 +351,42 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Kembali</button>
-                        <button type="submit" class="btn btn-success">Simpan</button>
+
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('showEntries').addEventListener('change', function(event) {
+            var selectedValue = event.target.value;
+            if (selectedValue) {
+                window.location.href = selectedValue;
+            }
+        });
+    </script>
+@endsection
+
+    <script>
+        document.getElementById('showEntries').addEventListener('change', function(event) {
+            var selectedValue = event.target.value;
+            if (selectedValue) {
+                window.location.href = selectedValue;
+            }
+        });
+    </script>
+@endsection
+
+    <script>
+        document.getElementById('showEntries').addEventListener('change', function(event) {
+            var selectedValue = event.target.value;
+            if (selectedValue) {
+                window.location.href = selectedValue;
+            }
+        });
+    </script>
+@endsection
 
     <script>
         document.getElementById('showEntries').addEventListener('change', function(event) {
