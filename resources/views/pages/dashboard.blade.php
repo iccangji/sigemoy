@@ -90,8 +90,7 @@
     </div>
 
     <script>
-        let data;
-        let chartData;
+        initializeChart(30000);
 
         function generateColors(count) {
             const colors = [];
@@ -177,7 +176,8 @@
 
         function updateKelurahan(kecamatan) {
             const kelurahanData = Object.keys(data[kecamatan].kelurahan);
-            const totalVotersPerKelurahan = kelurahanData.map(kelurahan => calculateTotalVotersInKelurahan(data[kecamatan]
+            const totalVotersPerKelurahan = kelurahanData.map(kelurahan => calculateTotalVotersInKelurahan(data[
+                    kecamatan]
                 .kelurahan[kelurahan]));
 
             // Memperbarui label dengan jumlah pemilih
@@ -223,11 +223,11 @@
         }
         // Inisialisasi chart saat data sudah siap
 
-        function initializeChart(ctx, data) {
-            const totalVotersPerKecamatan = Object.keys(data).map(kecamatan => calculateTotalVotersInKecamatan(data[
-                kecamatan]));
+        async function initializeChart(interval) {
+            const data = await getData();
             chartData = createChartData(data);
-            myChart = new Chart(ctx, {
+
+            myChart = new Chart(document.getElementById('myChart').getContext('2d'), {
                 type: 'bar',
                 data: chartData,
                 options: {
@@ -277,14 +277,19 @@
                         }
                     },
                     scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
+                        y: {
+                            beginAtZero: true
+                        }
                     }
                 }
             });
+
+            setInterval(async () => {
+                const data = await getData();
+                chartData = createChartData(data);
+                myChart.data = chartData;
+                myChart.update();
+            }, interval)
         }
 
         let dataJson;
@@ -293,22 +298,14 @@
                 const response = await fetch('{{ route('dashboard.data') }}');
                 dataJson = await response.json(); //Progress bar berjalan
                 data = dataJson.data_grafik;
-            } catch (error) {
-                console.error('Error fetching or displaying data:', error);
-            } finally {
-                //Progress bar berhenti
-                console.log(dataJson);
-                const ctx = document.getElementById('myChart').getContext('2d');
-                initializeChart(ctx, data);
                 document.getElementById('count_pemilih').innerHTML = dataJson.pemilih
                 document.getElementById('count_kpu').innerHTML = dataJson.data_kpu
                 document.getElementById('count_data_ganda').innerHTML = dataJson.data_ganda
                 document.getElementById('count_data_kpu_invalid').innerHTML = dataJson.data_invalid
+                return data;
+            } catch (error) {
+                console.error('Error fetching or displaying data:', error);
             }
         }
-
-        getData();
-
-        setInterval(getData, 30000);
     </script>
 @endsection
