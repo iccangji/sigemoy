@@ -25,7 +25,7 @@ class UserController extends Controller
             $request->session()->regenerate();
             return redirect()->intended('/');
         } else {
-            return back()->with('loginError', 'User atau Password salah');
+            return back()->with('loginError', 'Username atau Password salah');
         }
     }
     public function logout()

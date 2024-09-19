@@ -75,7 +75,12 @@
                     <h3>Statistik Data Pemilih Yang Sudah di Validasi</h3>
                 </div>
                 <div class="card-body">
+                    <div id="loading-spinner" style="display: none;">
+                        <div class="spinner"></div>
+                    </div>
+                    <div id="page-content" style="display: none;">
                     <canvas id="myChart" width="400" height="200"></canvas>
+                    </div>
                 </div>
                 <div class="footer align-items-center mb-5 me-0" style="display: flex; justify-content: center;">
                     <button class="btn btn-warning" id="backButton" onclick="goBack()" style="display: none;"><i
@@ -307,5 +312,8 @@
                 console.error('Error fetching or displaying data:', error);
             }
         }
+
+        
+
     </script>
 @endsection

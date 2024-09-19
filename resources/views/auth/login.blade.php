@@ -22,6 +22,7 @@
     <link rel="manifest" href="assets/site.webmanifest">
     <!-- Start GA -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
 
@@ -84,16 +85,6 @@
                                         <form method="POST" action="{{ route('login.auth') }}" class="needs-validation"
                                             novalidate="">
                                             @csrf
-                                            @if (session('loginError'))
-                                                <div class="alert alert-danger alert-dismissible fade show"
-                                                    role="alert">
-                                                    {{ session('loginError') }}
-                                                    <button type="button" class="close" data-dismiss="alert"
-                                                        aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                            @endif
                                             <div class="form-group">
                                                 <label for="user"
                                                     class="text-left w-100 font-weight-bolder">Username</label>
@@ -218,23 +209,15 @@
             eyeIcon.classList.toggle('fa-eye-slash');
         });
 
-            @if(session('success'))
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil!',
-                    text: '{{ session('success') }}',
-                    showConfirmButton: false
-                });
-            @endif
             
-            @if(session('error'))
+        @if(session('loginError'))
                 Swal.fire({
-                    icon: 'danger',
-                    title: 'Gagal',
-                    text: '{{ session('error') }}',
+                    icon: 'error',
+                    title: 'Gagal Masuk',
+                    text: '{{ session('loginError') }}',
                     showConfirmButton: true
                 });
-            @endif
+        @endif
     </script>
 </body>
 

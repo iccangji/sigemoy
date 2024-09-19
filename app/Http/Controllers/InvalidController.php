@@ -136,7 +136,7 @@ class InvalidController extends Controller
 
         try {
             foreach ($data_pemilih as $item) {
-                if (DataKpu::where('nama', $item->nama)->where('kelurahan', $item->kelurahan)->where('tps', $item->tps)->count() != 0) {
+                if (DataKpu::where('nama', $item->nama)->where('kelurahan', $item->kelurahan)->where('tps', $item->tps)->count() == 0) {
                     array_push($data_batch, [
                         'nama' => $item->nama,
                         'nik' => $item->nik,
@@ -152,7 +152,7 @@ class InvalidController extends Controller
                 }
             }
             foreach ($data_invalid as $item) {
-                if (DataKpu::where('nama', $item->nama)->where('kelurahan', $item->kelurahan)->where('tps', $item->tps)->count() != 0) {
+                if (DataKpu::where('nama', $item->nama)->where('kelurahan', $item->kelurahan)->where('tps', $item->tps)->count() == 0) {
                     array_push($data_batch, [
                         'nama' => $item->nama,
                         'nik' => $item->nik,

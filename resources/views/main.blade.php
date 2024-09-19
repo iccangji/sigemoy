@@ -58,6 +58,45 @@
 </head>
 
 <body>
+    <style>
+        .spinner {
+        border: 8px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 8px solid #3498db;
+        width: 60px;
+        height: 60px;
+        animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+        }
+
+        #loading-spinner {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+        }
+
+    </style>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        // Tampilkan spinner
+        document.getElementById('loading-spinner').style.display = 'block';
+        
+        // Simulasi pemuatan data (ganti dengan kode pengambilan data sesungguhnya)
+        setTimeout(function() {
+            // Sembunyikan spinner dan tampilkan konten
+            document.getElementById('loading-spinner').style.display = 'none';
+            document.getElementById('page-content').style.display = 'block';
+        }, 500); // Sesuaikan dengan waktu pemuatan data atau ganti dengan AJAX
+    });
+
+    </script>
     <div id="app">
         <div class="main-wrapper main-wrapper-1">
             <div class="navbar-bg"></div>
@@ -95,6 +134,7 @@
             {{-- @if ($level != 'penginput') --}}
                 @include('partials.sidebar')
             {{-- @endif --}}
+           
 
             <!-- Main Content -->
             @yield('konten')
