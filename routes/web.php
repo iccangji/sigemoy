@@ -61,6 +61,7 @@ Route::resource('/data-kpu', KpuController::class)->only([
     'destroy'
 ])->middleware(['auth']);
 Route::post('/kpu-import', [KpuController::class, 'importData'])->middleware(['auth'])->name('kpu.import');
+Route::get('/kpu-truncate', [KpuController::class, 'clearData'])->middleware(['auth'])->name('kpu.truncate');
 
 Route::get('/data-ganda', [GandaController::class, 'index'])->middleware(['auth', 'cors'])->name('ganda.index');
 Route::delete('/data-ganda/{id}', [GandaController::class, 'destroy'])->middleware(['auth', 'cors'])->name('ganda.destroy');
@@ -68,6 +69,7 @@ Route::delete('/data-ganda/{id}', [GandaController::class, 'destroy'])->middlewa
 Route::get('/data-invalid', [InvalidController::class, 'index'])->middleware(['auth', 'cors'])->name('invalid.index');
 Route::delete('/data-invalid/{id}', [InvalidController::class, 'destroy'])->middleware(['auth', 'cors'])->name('invalid.destroy');
 Route::post('/data-invalid/insert', [InvalidController::class, 'store'])->middleware(['auth', 'cors'])->name('invalid.store');
+Route::get('/data-invalid/sync', [InvalidController::class, 'sync'])->middleware(['auth', 'cors'])->name('invalid.sync');
 
 Route::get('/penanggung-jawab', [PenanggungJawabController::class, 'index'])->middleware(['auth', 'cors'])->name('pj.index');;
 

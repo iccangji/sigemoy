@@ -129,4 +129,53 @@ class InvalidController extends Controller
             'message' => ''
         ];
     }
+    public function sync()
+    {
+        $data_pemilih = Pemilih::get();
+        $data_invalid = DataKpuInvalid::get();
+        $data_batch = [];
+
+        try {
+            foreach ($data_pemilih as $item) {
+                if (DataKpu::where('nama', $item->nama)->where('kelurahan', $item->kelurahan)->where('tps', $item->tps)->count() != 0) {
+                    array_push($data_batch, [
+                        'nama' => $item->nama,
+                        'nik' => $item->nik,
+                        'no_hp' => $item->no_hp,
+                        'hub_keluarga' => $item->hub_keluarga,
+                        'tps' => $item->tps,
+                        'kelurahan' => $item->kelurahan,
+                        'kecamatan' => $item->kecamatan,
+                        'nama_pj' => $item->nama_pj,
+                        'no_hp_pj' => $item->no_hp_pj,
+                    ]);
+                    $item->delete();
+                }
+            }
+            foreach ($data_invalid as $item) {
+                if (DataKpu::where('nama', $item->nama)->where('kelurahan', $item->kelurahan)->where('tps', $item->tps)->count() != 0) {
+                    array_push($data_batch, [
+                        'nama' => $item->nama,
+                        'nik' => $item->nik,
+                        'no_hp' => $item->no_hp,
+                        'hub_keluarga' => $item->hub_keluarga,
+                        'tps' => $item->tps,
+                        'kelurahan' => $item->kelurahan,
+                        'kecamatan' => $item->kecamatan,
+                        'nama_pj' => $item->nama_pj,
+                        'no_hp_pj' => $item->no_hp_pj,
+                    ]);
+                }
+            }
+
+            if (!empty($data_batch)) {
+                DataKpuInvalid::upsert($data_batch, uniqueBy: ['nik'], update: ['id']);
+                return back()->with('success', 'Data berhasil divalidasi');
+            }
+            return back()->with('success', 'Tidak ditemukan data yang tidak valid');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return back()->with('error', 'Data gagal divalidasi');
+        }
+    }
 }

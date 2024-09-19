@@ -127,4 +127,9 @@ class KpuController extends Controller
         }
         return redirect()->back()->with('error', 'Data gagal diimport, pastikan file berbentuk excel');
     }
+    public function clearData()
+    {
+        DataKpu::truncate();
+        return redirect()->back()->with('success', 'Data KPU telah dibersihkan');
+    }
 }

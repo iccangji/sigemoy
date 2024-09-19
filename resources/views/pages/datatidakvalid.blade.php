@@ -18,6 +18,16 @@
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h2 class="section-title">Data Tidak Valid</h2>
+                                @if ($level != 'viewer')
+                                    <div>
+                                        @if ($level == 'admin')
+                                            <button class="btn btn-info btn-round ml-2" data-toggle="modal"
+                                                data-target="#SyncData">
+                                                <i class="fa fa-rotate"></i> Sinkronisasi Data
+                                            </button>
+                                        @endif
+                                    </div>
+                                @endif
                             </div>
                             <div class="card-body">
                                 @if (session('success'))
@@ -208,6 +218,28 @@
         </div>
     @endforeach
 
+    <div class="modal fade" id="SyncData" tabindex="-1" role="dialog" aria-labelledby="SyncData"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Data pemilih</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-left w-100">Tindakan ini akan melakukan validasi ulang pada Data Pemilih terhadap Data
+                        KPU</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Kembali</button>
+                    <a href="{{ route('invalid.sync') }}"><button type="button"
+                            class="btn btn-success">Sinkronisasi</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <script>

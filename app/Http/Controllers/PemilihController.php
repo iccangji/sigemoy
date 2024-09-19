@@ -82,6 +82,13 @@ class PemilihController extends Controller
 
         $kecamatan = Kecamatan::where('id', $request->kecamatan)->first()->nama;
         if ($data) {
+            if (PenanggungJawab::where('nama', $request->nama_pj)->count() == 0) {
+                PenanggungJawab::create([
+                    'nama' => $request->nama_pj,
+                    'no_hp' => $request->no_hp_pj,
+                ]);
+            }
+
             Pemilih::create([
                 'nama' => $request->nama_pemilih,
                 'nik' => $request->NIK,
@@ -114,6 +121,21 @@ class PemilihController extends Controller
         ]);
         $kecamatan = Kecamatan::where('id', $request->kecamatan)->first()->nama;
         if ($data) {
+            $pj_count = PenanggungJawab::where('nama', $request->nama_pj)->count();
+            if ($pj_count == 0) {
+                PenanggungJawab::create([
+                    'nama' => $request->nama_pj,
+                    'no_hp' => $request->no_hp_pj,
+                ]);
+            } elseif ($pj_count == 1) {
+                $existing_pj = PenanggungJawab::where('nama', $request->nama_pj)->first();
+                if ($existing_pj->no_hp != $request->no_hp_pj) {
+                    PenanggungJawab::create([
+                        'nama' => $request->nama_pj,
+                        'no_hp' => $request->no_hp_pj,
+                    ]);
+                }
+            }
             $item = Pemilih::findOrFail($id);
             $item->update([
                 'nama' => $request->nama_pemilih,

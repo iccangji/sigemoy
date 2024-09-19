@@ -26,11 +26,19 @@
                                             <i class="fa fa-file-excel"></i> Upload Excel
                                         </button>
 
+
                                         <!-- Tombol Tambah Data -->
                                         <button class="btn btn-primary btn-round" data-toggle="modal"
                                             data-target="#Tambahdata">
                                             <i class="fa fa-plus"></i> Tambah Data
                                         </button>
+
+                                        @if ($level == 'admin')
+                                            <button class="btn btn-danger btn-round ml-2" data-toggle="modal"
+                                                data-target="#TruncateData">
+                                                <i class="fa fa-trash"></i> Bersihkan Data
+                                            </button>
+                                        @endif
                                     </div>
                                 @endif
                             </div>
@@ -351,42 +359,34 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Kembali</button>
-
+                        <button type="submit" class="btn btn-success">Simpan</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <script>
-        document.getElementById('showEntries').addEventListener('change', function(event) {
-            var selectedValue = event.target.value;
-            if (selectedValue) {
-                window.location.href = selectedValue;
-            }
-        });
-    </script>
-@endsection
-
-    <script>
-        document.getElementById('showEntries').addEventListener('change', function(event) {
-            var selectedValue = event.target.value;
-            if (selectedValue) {
-                window.location.href = selectedValue;
-            }
-        });
-    </script>
-@endsection
-
-    <script>
-        document.getElementById('showEntries').addEventListener('change', function(event) {
-            var selectedValue = event.target.value;
-            if (selectedValue) {
-                window.location.href = selectedValue;
-            }
-        });
-    </script>
-@endsection
+    <div class="modal fade" id="TruncateData" tabindex="-1" role="dialog" aria-labelledby="TruncateData"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Bersihkan Data</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Tindakan ini akan menghapus semua Data KPU. Konfirmasi sebelum membersihkan data
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <a href="{{ route('kpu.truncate') }}"><button class="btn btn-danger">Bersihkan Data</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         document.getElementById('showEntries').addEventListener('change', function(event) {

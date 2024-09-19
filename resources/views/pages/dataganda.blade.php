@@ -105,8 +105,8 @@
                                                                 data-toggle="modal"
                                                                 data-target="#edit-{{ $item->id }}"><i
                                                                     class="far fa-edit"> </i></a>
-                                                            <form action="#" method="POST"
-                                                                style="display:inline-block;">
+                                                            <form action="{{ route('ganda.destroy', $item->id) }}"
+                                                                method="POST" style="display:inline-block;">
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <button type="submit" class="btn btn-icon btn-danger"
@@ -172,26 +172,22 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="#" method="POST">
-                        @csrf
-                        @method('POST')
-                        <div class="modal-body">
-                            <p class="text-left w-75">{{ $item->report }}</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">Kembali</button>
-                        </div>
-                    </form>
+                    <div class="modal-body">
+                        <p class="text-left w-75">{{ $item->report }}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Kembali</button>
+                    </div>
                 </div>
             </div>
         </div>
-        <!-- Modal edit data -->
+        <!-- Modal Tambah Data -->
         <div class="modal fade" id="edit-{{ $item->id }}" tabindex="-1" role="dialog"
             aria-labelledby="edit-{{ $item->id }}" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Data pemilih</h5>
+                        <h5 class="modal-title">Tambah Data pemilih</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -278,7 +274,7 @@
                             <div class="form-group">
                                 <label>Nama Penanggung Jawab</label>
                                 <input type="text" class="form-control" name="nama_pj" id="nama_pj"
-                                    placeholder="Masukan Nama Penanggung Jawab" value="" required>
+                                    placeholder="Masukan Nama Penanggung Jawab" value="{{ old('nama_pj') }}" required>
                                 @error('nama_pj')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -286,7 +282,7 @@
                             <div class="form-group">
                                 <label>Nomor HP Penanggung Jawab</label>
                                 <input type="text" class="form-control" name="no_hp_pj" id="no_hp_pj"
-                                    placeholder="Masukan Nomor HP Penanggung Jawab" value=""
+                                    placeholder="Masukan Nomor HP Penanggung Jawab" value="{{ old('no_hp_pj') }}"
                                     required>
                                 @error('no_hp_pj')
                                     <small class="text-danger">{{ $message }}</small>
