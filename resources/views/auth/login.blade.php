@@ -217,6 +217,24 @@
             eyeIcon.classList.toggle('fa-eye');
             eyeIcon.classList.toggle('fa-eye-slash');
         });
+
+            @if(session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: '{{ session('success') }}',
+                    showConfirmButton: false
+                });
+            @endif
+            
+            @if(session('error'))
+                Swal.fire({
+                    icon: 'danger',
+                    title: 'Gagal',
+                    text: '{{ session('error') }}',
+                    showConfirmButton: true
+                });
+            @endif
     </script>
 </body>
 

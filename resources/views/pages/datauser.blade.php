@@ -1,7 +1,7 @@
 @extends('main')
 
 @section('konten')
-    <div class="main-content" @if ($level == 'penginput') style="padding-left:20px;" @endif>
+    <div class="main-content">
         <section class="section">
             <div class="section-header">
                 <h1>Data User</h1>
@@ -104,9 +104,9 @@
                                                                 method="POST" style="display:inline-block;">
                                                                 @csrf
                                                                 @method('DELETE')
-                                                                <button type="submit" class="btn btn-icon btn-danger"
-                                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus ini?')"><i
-                                                                        class="fas fa-times"></i></button>
+                                                                <button type="submit" class="btn btn-icon btn-danger delete-confirm">
+                                                                    <i class="fas fa-times"></i>
+                                                                </button>
                                                             </form>
                                                         </td>
                                                     @endif
@@ -262,56 +262,48 @@
     @endforeach
 
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        $('.delete-confirm').on('click', function(event) {
+            event.preventDefault();
+            var form = $(this).closest('form');
 
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Data ini akan dihapus!",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+         });
 
-    {{-- <script>
-  document.getElementById('showEntries').addEventListener('change', function(event) {
-    var selectedValue = event.target.value;
-    if (selectedValue) {
-      window.location.href = selectedValue;
-    }
-  });
+            @if(session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: '{{ session('success') }}',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            @endif
+            
+            @if(session('error'))
+                Swal.fire({
+                    icon: 'danger',
+                    title: 'Gagal',
+                    text: '{{ session('error') }}',
+                    timer: 5000,
+                    showConfirmButton: true
+                });
+            @endif
+</script>
 
-  $(document).ready(function() {
-      $('#kecamatan-insert').on('change', function() {
-          var kecamatanId = $(this).val();
-          if(kecamatanId) {
-              $.ajax({
-                  url: '/pemilih-lokasi/' + kecamatanId,
-                  type: "GET",
-                  dataType: "json",
-                  success:function(data) {
-                      $('#kelurahan-insert').empty();
-                      $('#kelurahan-insert').append('<option value="">-- Pilih Kelurahan --</option>'); 
-                      $.each(data, function(key, kelurahan) {
-                          $('#kelurahan-insert').append('<option value="'+ kelurahan.id +'">'+ kelurahan.nama +'</option>');
-                      });
-                  }
-              });
-          } else {
-              $('#kelurahan-insert').empty();
-          }
-      });
-      
-      $('#kecamatan-edit').on('change', function() {
-          var kecamatanId = $(this).val();
-          if(kecamatanId) {
-              $.ajax({
-                  url: '/pemilih-lokasi/' + kecamatanId,
-                  type: "GET",
-                  dataType: "json",
-                  success:function(data) {
-                      $('#kelurahan-edit').empty();
-                      $('#kelurahan-edit').append('<option value="">-- Pilih Kelurahan --</option>'); 
-                      $.each(data, function(key, kelurahan) {
-                          $('#kelurahan-edit').append('<option value="'+ kelurahan.id +'">'+ kelurahan.nama +'</option>');
-                      });
-                  }
-              });
-          } else {
-              $('#kelurahan-edit').empty();
-          }
-      });
-  });
-</script> --}}
 @endsection

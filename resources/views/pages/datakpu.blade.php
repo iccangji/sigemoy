@@ -43,24 +43,7 @@
                                 @endif
                             </div>
                             <div class="card-body">
-                                @if (session('success'))
-                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                        {{ session('success') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @elseif (session('error'))
-                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        {{ session('error') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-
-
-
+                                
                                 <div class="d-flex justify-content-between mb-3 align-items-center">
                                     <div class="form-group">
                                         <label for="showEntries">Data Perbaris :</label>
@@ -122,9 +105,9 @@
                                                                 method="POST" style="display:inline-block;">
                                                                 @csrf
                                                                 @method('DELETE')
-                                                                <button type="submit" class="btn btn-icon btn-danger"
-                                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus ini?')"><i
-                                                                        class="fas fa-times"></i></button>
+                                                                <button type="submit" class="btn btn-icon btn-danger delete-confirm">
+                                                                    <i class="fas fa-times"></i>
+                                                                </button>
                                                             </form>
                                                         </td>
                                                     @endif
@@ -395,5 +378,47 @@
                 window.location.href = selectedValue;
             }
         });
+
+        document.addEventListener('DOMContentLoaded', function() {
+        $('.delete-confirm').on('click', function(event) {
+            event.preventDefault();
+            var form = $(this).closest('form');
+
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Data ini akan dihapus!",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+         });
+
+            @if(session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: '{{ session('success') }}',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            @endif
+            
+            @if(session('error'))
+                Swal.fire({
+                    icon: 'danger',
+                    title: 'Gagal',
+                    text: '{{ session('error') }}',
+                    timer: 3000,
+                    showConfirmButton: true
+                });
+            @endif
     </script>
 @endsection

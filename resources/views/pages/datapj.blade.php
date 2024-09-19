@@ -1,7 +1,7 @@
 @extends('main')
 
 @section('konten')
-    <div class="main-content" @if ($level == 'penginput') style="padding-left:20px;" @endif>
+    <div class="main-content">
         <section class="section">
             <div class="section-header">
                 <h1>Data Penanggung Jawab</h1>
