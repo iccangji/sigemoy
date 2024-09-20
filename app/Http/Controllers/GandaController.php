@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DataGanda;
+use App\Models\DataKpu;
 use App\Models\Kecamatan;
 use App\Models\Pemilih;
 use App\Models\PenanggungJawab;
@@ -69,16 +70,18 @@ class GandaController extends Controller
         $dataKpuValidate = $pemilihController->dataKpuValidate($request);
 
         if (!$dataGandaValidate['result']) {
+            DataGanda::where('nik', $request->NIK)->first()->delete();
             return $dataGandaValidate['message'];
         }
 
         if (!$dataKpuValidate['result']) {
+            DataGanda::where('nik', $request->NIK)->first()->delete();
             return $dataKpuValidate['message'];
         }
 
-        $kecamatan = Kecamatan::where('id', $request->kecamatan)->first()->nama;
+        $kecamatan = Kecamatan::where('id','like',"%$request->kecamatan%")->first()->nama;
         if ($data) {
-            if (PenanggungJawab::where('nama', $request->nama_pj)->count() == 0) {
+            if (PenanggungJawab::where('nama','like',"%$request->nama_pj%")->count() == 0) {
                 PenanggungJawab::create([
                     'nama' => $request->nama_pj,
                     'no_hp' => $request->no_hp_pj,

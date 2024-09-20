@@ -129,9 +129,9 @@ class PemilihController extends Controller
             return $dataKpuValidate['message'];
         }
 
-        $kecamatan = Kecamatan::where('id', $request->kecamatan)->first()->nama;
+        $kecamatan = Kecamatan::where('id','like',"%$request->kecamatan%")->first()->nama;
         if ($data) {
-            if (PenanggungJawab::where('nama', $request->nama_pj)->count() == 0) {
+            if (PenanggungJawab::where('nama','like',"%$request->nama_pj%")->count() == 0) {
                 PenanggungJawab::create([
                     'nama' => $request->nama_pj,
                     'no_hp' => $request->no_hp_pj,
@@ -168,16 +168,16 @@ class PemilihController extends Controller
             'nama_pj' => 'required',
             'no_hp_pj' => 'required',
         ]);
-        $kecamatan = Kecamatan::where('id', $request->kecamatan)->first()->nama;
+        $kecamatan = Kecamatan::where('id','like',"%$request->kecamatan%")->first()->nama;
         if ($data) {
-            $pj_count = PenanggungJawab::where('nama', $request->nama_pj)->count();
+            $pj_count = PenanggungJawab::where('nama','like',"%$request->nama_pj%")->count();
             if ($pj_count == 0) {
                 PenanggungJawab::create([
                     'nama' => $request->nama_pj,
                     'no_hp' => $request->no_hp_pj,
                 ]);
             } elseif ($pj_count == 1) {
-                $existing_pj = PenanggungJawab::where('nama', $request->nama_pj)->first();
+                $existing_pj = PenanggungJawab::where('nama','like',"%$request->nama_pj%")->first();
                 if ($existing_pj->no_hp != $request->no_hp_pj) {
                     PenanggungJawab::create([
                         'nama' => $request->nama_pj,
@@ -211,7 +211,7 @@ class PemilihController extends Controller
 
     public function location($kecamatan_id)
     {
-        $kelurahans = Kelurahan::where('kecamatan_id', $kecamatan_id)->get();
+        $kelurahans = Kelurahan::where('kecamatan_id','like',"%$kecamatan_id%")->get();
         return response()->json($kelurahans);
     }
 
@@ -230,7 +230,7 @@ class PemilihController extends Controller
                 $data_invalid_insert = [];
 
                 foreach ($imported_data as $item) {
-                    if (DataKpu::where('nama', $item[0])->where('kelurahan', $item[5])->where('tps', $item[6])->count() > 0) {
+                    if (DataKpu::where('nama', 'like',"%$item[0]%")->where('kelurahan', $item[5])->where('tps', $item[6])->count() > 0) {
                         if (DataGanda::where('nik', $item[1])->count() == 0) {
                             if (Pemilih::where('nik', $item[1])->count() == 0) {
                                 array_push($imported_pemilih_insert, [
@@ -317,7 +317,7 @@ class PemilihController extends Controller
 
     public function dataGandaValidate(Request $request)
     {
-        $pj_count = PenanggungJawab::where('nama', $request->nama_pj)->count();
+        $pj_count = PenanggungJawab::where('nama','like',"%$request->nama_pj%")->count();
         if ($pj_count == 0) {
             PenanggungJawab::create([
                 'nama' => $request->nama_pj,
@@ -328,7 +328,7 @@ class PemilihController extends Controller
         $data_count = Pemilih::where('nik', $request->NIK)->count();
         if ($data_count > 0) {
             $data = Pemilih::where('nik', $request->NIK)->first();
-            $data_pj = PenanggungJawab::where('nama', $data->nama_pj)->first();
+            $data_pj = PenanggungJawab::where('nama','like',"%$data->nama_pj%")->first();
             DataGanda::create([
                 'nama' => $data->nama,
                 'nik' => $data->nik,
@@ -353,8 +353,9 @@ class PemilihController extends Controller
 
     public function dataKpuValidate(Request $request)
     {
-        $data_count = DataKpu::where('nama', $request->nama_pemilih)->where('kelurahan', $request->kelurahan)->where('tps', $request->tps)->count();
+        $data_count = DataKpu::where('nama','like',"%$request->nama_pemilih%")->where('kelurahan','like',"%$request->kelurahan%" )->where('tps','like',"%$request->tps%" )->count();
         if ($data_count == 0) {
+            $kecamatan = Kecamatan::where('id','like',"%$request->kecamatan%")->first()->nama;
             DataKpuInvalid::create([
                 'nama' => $request->nama_pemilih,
                 'nik' => $request->NIK,
@@ -362,7 +363,7 @@ class PemilihController extends Controller
                 'hub_keluarga' => $request->hub_keluarga,
                 'tps' => $request->tps,
                 'kelurahan' => $request->kelurahan,
-                'kecamatan' => $request->kecamatan,
+                'kecamatan' => $kecamatan,
                 'nama_pj' => $request->nama_pj,
                 'no_hp_pj' => $request->no_hp_pj,
             ]);

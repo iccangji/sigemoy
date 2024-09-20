@@ -473,7 +473,7 @@
 
         @if (session('error'))
             Swal.fire({
-                icon: 'danger',
+                icon: 'error',
                 title: 'Gagal',
                 text: '{{ session('error') }}',
                 timer: 3000,

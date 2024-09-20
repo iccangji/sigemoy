@@ -9,6 +9,7 @@ use App\Models\Kecamatan;
 use App\Models\Pemilih;
 use App\Models\PenanggungJawab;
 use Illuminate\Http\Request;
+use Spatie\FlareClient\Http\Exceptions\InvalidData;
 
 class InvalidController extends Controller
 {
@@ -81,7 +82,7 @@ class InvalidController extends Controller
                 'created_by' => auth()->user()->user,
             ]);
 
-            DataKpuInvalid::where('nik', $request->NIK)->delete();
+            DataKpuInvalid::where('nik',$request->NIK)->delete();
             return redirect()->route('pemilih.index')->with('success', 'Data berhasil dimasukkan');
         }
         return back()->with('error', 'Data pemilih tidak dapat dimasukkan');
@@ -95,7 +96,7 @@ class InvalidController extends Controller
 
     private function dataGandaValidate(Request $request)
     {
-        $pj_count = PenanggungJawab::where('nama', $request->nama_pj)->count();
+        $pj_count = PenanggungJawab::where('nama', 'like',"$request->nama_pj")->count();
         if ($pj_count == 0) {
             PenanggungJawab::create([
                 'nama' => $request->nama_pj,
@@ -103,10 +104,10 @@ class InvalidController extends Controller
             ]);
         }
 
-        $data_count = Pemilih::where('nik', $request->NIK)->count();
+        $data_count = Pemilih::where('nik','like', $request->NIK)->count();
         if ($data_count > 0) {
             $data = Pemilih::where('nik', $request->NIK)->first();
-            $data_pj = PenanggungJawab::where('nama', $data->nama_pj)->first();
+            $data_pj = PenanggungJawab::where('nama','like',"%$data->nama_pj%")->first();
             DataGanda::create([
                 'nama' => $data->nama,
                 'nik' => $data->nik,
@@ -117,7 +118,7 @@ class InvalidController extends Controller
                 'kecamatan' => $data->kecamatan,
                 'report' => 'Terdapat irisan data antara penanggung jawab atas nama ' . $data->nama_pj . ' (' . $data_pj->no_hp . ') dan ' . $request->nama_pj . ' (' . $request->no_hp_pj . ')',
             ]);
-            Pemilih::where('nik', $request->NIK)->delete();
+            DataKpuInvalid::where('nik', $request->NIK)->delete();
             return [
                 'result' => false,
                 'message' => back()->with('error', 'Ditemukan data ganda atas nama ' . $data->nama . ' antara penanggung jawab ' . $data->nama_pj . ' dan ' . $request->nama_pj . '. Harap periksa halaman data ganda')
@@ -133,10 +134,11 @@ class InvalidController extends Controller
         $data_pemilih = Pemilih::get();
         $data_invalid = DataKpuInvalid::get();
         $data_batch = [];
+        $data_batch_valid = [];
 
         try {
             foreach ($data_pemilih as $item) {
-                if (DataKpu::where('nama', $item->nama)->where('kelurahan', $item->kelurahan)->where('tps', $item->tps)->count() == 0) {
+                if (DataKpu::where('nama', 'like',"%$item->nama%")->where('kelurahan','like',"%$item->kelurahan%")->where('tps','like' ,"%$item->tps%")->count() == 0) {
                     array_push($data_batch, [
                         'nama' => $item->nama,
                         'nik' => $item->nik,
@@ -152,8 +154,20 @@ class InvalidController extends Controller
                 }
             }
             foreach ($data_invalid as $item) {
-                if (DataKpu::where('nama', $item->nama)->where('kelurahan', $item->kelurahan)->where('tps', $item->tps)->count() == 0) {
+                if (DataKpu::where('nama','like',"%$item->nama%")->where('kelurahan','like',"%$item->kelurahan%")->where('tps','like',"%$item->tps%")->count() == 0) {
                     array_push($data_batch, [
+                        'nama' => $item->nama,
+                        'nik' => $item->nik,
+                        'no_hp' => $item->no_hp,
+                        'hub_keluarga' => $item->hub_keluarga,
+                        'tps' => $item->tps,
+                        'kelurahan' => $item->kelurahan,
+                        'kecamatan' => $item->kecamatan,
+                        'nama_pj' => $item->nama_pj,
+                        'no_hp_pj' => $item->no_hp_pj,
+                    ]);
+                }else{
+                    array_push($data_batch_valid, [
                         'nama' => $item->nama,
                         'nik' => $item->nik,
                         'no_hp' => $item->no_hp,
@@ -169,12 +183,14 @@ class InvalidController extends Controller
 
             if (!empty($data_batch)) {
                 DataKpuInvalid::upsert($data_batch, uniqueBy: ['nik'], update: ['id']);
-                return back()->with('success', 'Data berhasil divalidasi');
             }
-            return back()->with('success', 'Tidak ditemukan data yang tidak valid');
+            if (!empty($data_batch_valid)) {
+                Pemilih::upsert($data_batch_valid, uniqueBy: ['nik'], update: ['id']);
+            }
+            return back()->with('success', 'Data Berhasil Disinkronisasi');
         } catch (\Throwable $th) {
             //throw $th;
-            return back()->with('error', 'Data gagal divalidasi');
+            return back()->with('error', 'Data gagal divalidasi'.$th);
         }
     }
 }
