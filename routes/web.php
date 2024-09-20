@@ -34,7 +34,7 @@ Route::get('/login', [UserController::class, 'auth'])->name('login');
 Route::post('/login', [UserController::class, 'login'])->name('login.auth');
 Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
-Route::get('/', [IndexController::class, 'index'])->middleware(['auth', 'cors'])->name('dashboard');
+Route::get('/', [IndexController::class, 'index'])->middleware(['auth', 'cors', 'no-cache'])->name('dashboard');
 Route::get('/data-index', [IndexController::class, 'indexData'])->middleware(['auth', 'cors'])->name('dashboard.data');
 
 Route::resource('/pemilih', PemilihController::class)->only([
