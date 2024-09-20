@@ -18,19 +18,19 @@ class UserSeeder extends Seeder
     {
         User::create([
             'user' => 'admin',
-            'password' => Hash::make('123'),
+            'password' => Hash::make('Gemoy123!A'),
             'level' => 'admin',
         ]);
 
         User::create([
             'user' => 'viewer',
-            'password' => Hash::make('123'),
+            'password' => Hash::make('Gemoy123!V'),
             'level' => 'viewer',
         ]);
 
         User::create([
             'user' => 'penginput',
-            'password' => Hash::make('123'),
+            'password' => Hash::make('Gemoy123!P'),
             'level' => 'penginput',
         ]);
     }

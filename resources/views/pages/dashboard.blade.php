@@ -75,11 +75,8 @@
                     <h3>Statistik Data Pemilih Yang Sudah di Validasi</h3>
                 </div>
                 <div class="card-body">
-                    <div id="loading-spinner" style="display: none;">
-                        <div class="spinner"></div>
-                    </div>
-                    <div id="page-content" style="display: none;">
-                    <canvas id="myChart" width="400" height="200"></canvas>
+                    <div id="page-content" style="">
+                        <canvas id="myChart" width="400" height="200"></canvas>
                     </div>
                 </div>
                 <div class="footer align-items-center mb-5 me-0" style="display: flex; justify-content: center;">
@@ -95,7 +92,18 @@
     </div>
 
     <script>
-        initializeChart(30000);
+        initializeChart(120000);
+
+        function isWebGLSupported() {
+            try {
+                const canvas = document.createElement('canvas');
+                return !!(window.WebGLRenderingContext && (canvas.getContext('webgl') || canvas.getContext(
+                    'experimental-webgl')));
+            } catch (e) {
+                return false;
+            }
+        }
+
 
         function generateColors(count) {
             const colors = [];
@@ -232,6 +240,9 @@
             const data = await getData();
             chartData = createChartData(data);
 
+            const renderingMode = isWebGLSupported() ? 'webgl' : '2d';
+            console.log(renderingMode);
+
             myChart = new Chart(document.getElementById('myChart').getContext('2d'), {
                 type: 'bar',
                 data: chartData,
@@ -264,7 +275,8 @@
                                     });
                                 }
                             }
-                        }
+                        },
+                        renderingMode: renderingMode
                     },
                     onClick: (e) => {
                         const activePoint = myChart.getElementsAtEventForMode(e, 'nearest', {
@@ -312,8 +324,5 @@
                 console.error('Error fetching or displaying data:', error);
             }
         }
-
-        
-
     </script>
 @endsection
