@@ -76,7 +76,7 @@
                 </div>
                 <div class="card-body">
                     <div id="page-content" style="">
-                        <canvas id="myChart" width="400" height="200"></canvas>
+                        <canvas id="myChart" width="400" height="250"></canvas>
                     </div>
                 </div>
                 <div class="footer align-items-center mb-5 me-0" style="display: flex; justify-content: center;">
@@ -201,7 +201,6 @@
             chartData.datasets[0].backgroundColor = generateColors(kelurahanData.length); // Menghasilkan warna acak
 
             myChart.update();
-
             document.getElementById('backButton').style.display = 'block'; // Memperlihatkan tombol kembali
         }
 
@@ -242,6 +241,7 @@
 
             const renderingMode = isWebGLSupported() ? 'webgl' : '2d';
             console.log(renderingMode);
+            console.log(chartData);
 
             myChart = new Chart(document.getElementById('myChart').getContext('2d'), {
                 type: 'bar',
@@ -283,7 +283,9 @@
                             intersect: true
                         }, false);
                         if (activePoint.length > 0) {
-                            const clickedIndex = activePoint[0].index;
+                            const clickedIndex = activePoint[0]._index ? activePoint[0]._index :
+                                activePoint[0].index;
+                            console.log(activePoint[0]);
                             const currentLabel = chartData.labels[clickedIndex].split(' (')[0];
 
                             if (chartData.datasets[0].label === 'Kecamatan') {
@@ -295,9 +297,12 @@
                     },
                     scales: {
                         y: {
-                            beginAtZero: true
-                        }
-                    }
+                            type: 'linear',
+                            min: 0,
+                            suggestedMin: 0,
+                            beginAtZero: true, // Menentukan agar sumbu Y dimulai dari 0
+                        },
+                    },
                 }
             });
 

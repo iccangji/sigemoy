@@ -1,11 +1,11 @@
 @extends('main')
 
 @section('konten')
-    <div class="main-content" @if ($level == 'penginput') style="padding-left:20px;" @endif>
+    <div class="main-content">
         <section class="section">
             <div class="section-header">
                 <h1>Data Pemilih</h1>
-                
+
             </div>
 
             <div class="section-body">
@@ -31,7 +31,7 @@
                                 @endif
                             </div>
                             <div class="card-body">
-                                
+
                                 <div class="d-flex justify-content-between mb-3 align-items-center">
                                     <div class="form-group">
                                         <label for="showEntries">Data Perbaris :</label>
