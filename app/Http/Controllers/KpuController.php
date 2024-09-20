@@ -78,8 +78,8 @@ class KpuController extends Controller
 
         $kelurahan = Kelurahan::orderBy('nama', 'asc')->get();
         return view('pages.datakpufilter', [
-            'page' => 'pemilih',
-            'title' => 'Data Pemilih',
+            'page' => 'data-kpu',
+            'title' => 'Data KPU',
             'user' => auth()->user()->user,
             'level' => auth()->user()->level,
             'data' => $items,

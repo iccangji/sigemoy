@@ -35,7 +35,7 @@
                                 @endif
                             </div>
                             <div class="card-body">
-                                
+
                                 <div class="d-flex justify-content-between mb-3 align-items-center">
                                     <div class="form-group">
                                         <label for="showEntries">Data Perbaris :</label>
@@ -107,7 +107,8 @@
                                                                 method="POST" style="display:inline-block;">
                                                                 @csrf
                                                                 @method('DELETE')
-                                                                <button type="submit" class="btn btn-icon btn-danger delete-confirm">
+                                                                <button type="submit"
+                                                                    class="btn btn-icon btn-danger delete-confirm">
                                                                     <i class="fas fa-times"></i>
                                                                 </button>
                                                             </form>
@@ -228,7 +229,7 @@
                             <label for="kelurahan">Kelurahan</label>
                             <select name="kelurahan" id="kelurahan-insert" class="form-control" required>
                                 <option value="">--Pilih Kelurahan--</option>
-                                
+
                             </select>
                             @error('kelurahan')
                                 <small class="text-danger">{{ $message }}</small>
@@ -536,9 +537,9 @@
         });
 
         document.addEventListener('DOMContentLoaded', function() {
-        $('.delete-confirm').on('click', function(event) {
-            event.preventDefault();
-            var form = $(this).closest('form');
+            $('.delete-confirm').on('click', function(event) {
+                event.preventDefault();
+                var form = $(this).closest('form');
 
                 Swal.fire({
                     title: 'Apakah Anda yakin?',
@@ -555,26 +556,26 @@
                     }
                 });
             });
-         });
+        });
 
-        @if(session('success'))
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil!',
-                    text: '{{ session('success') }}',
-                    timer: 3000,
-                    showConfirmButton: false
-                });
-            @endif
-            
-            @if(session('error'))
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Gagal',
-                    text: '{{ session('error') }}',
-                    timer: 5000,
-                    showConfirmButton: true
-                });
-            @endif
+        @if (session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        @endif
+
+        @if (session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: '{{ session('error') }}',
+                timer: 5000,
+                showConfirmButton: true
+            });
+        @endif
     </script>
 @endsection

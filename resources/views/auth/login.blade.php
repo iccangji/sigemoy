@@ -39,7 +39,7 @@
 <body class="bg-babyblue">
     <div id="app container" class="container">
         <section class="section mt-4">
-            <div class="container mt-5 align-item-center">
+            <div class="container mt-5 align-item-center ml-3">
                 <div class="row w-100">
                     <div class="col-md-12 col-lg-6 col-xxl-10">
                         <div class="login-brand">

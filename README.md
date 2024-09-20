@@ -4,7 +4,9 @@ FIX
 1. tampilan sidebar untuk penginput
 2. halaman login di versi mobile tidak rata tengah 
 3. gambar yang dimuat terlalu berat
-4. 
+4. fix realtime chart
+5. hapus notif sidebar untuk halaman data user 
+
 
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>

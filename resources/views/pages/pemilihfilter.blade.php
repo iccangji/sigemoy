@@ -5,11 +5,7 @@
         <section class="section">
             <div class="section-header">
                 <h1>Data Pemilih</h1>
-                {{-- <div class="section-header-breadcrumb">
-        <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-        <div class="breadcrumb-item"><a href="#">Informasi Data Pemilih</a></div>
-        <div class="breadcrumb-item">Data Pemilih</div>
-      </div> --}}
+                
             </div>
 
             <div class="section-body">
@@ -35,24 +31,7 @@
                                 @endif
                             </div>
                             <div class="card-body">
-                                @if (session('success'))
-                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                        {{ session('success') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @elseif (session('error'))
-                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        {{ session('error') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-
-
-
+                                
                                 <div class="d-flex justify-content-between mb-3 align-items-center">
                                     <div class="form-group">
                                         <label for="showEntries">Data Perbaris :</label>

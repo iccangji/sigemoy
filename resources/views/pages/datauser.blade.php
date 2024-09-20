@@ -29,49 +29,7 @@
                                 @endif
                             </div>
                             <div class="card-body">
-                                @if (session('success'))
-                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                        {{ session('success') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @elseif (session('error'))
-                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        {{ session('error') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
 
-
-
-                                {{-- <div class="d-flex justify-content-between mb-3 align-items-center">
-                <div class="form-group">
-                  <label for="showEntries">Data Perbaris :</label>
-                  <select id="showEntries" class="form-control" style="width: 100px;">
-                    <option value="/pemilih?size=50"
-                      @if ($selected_size == 50)
-                      selected
-                      @endif>50</option>
-                    <option value="/pemilih?size=100"
-                      @if ($selected_size == 100)
-                      selected
-                      @endif>100</option>
-                    <option value="/pemilih?size=200"
-                      @if ($selected_size == 200)
-                      selected
-                      @endif>200</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <form id="search-form" method="GET" action="./pemilih">
-                    <label for="Pencarian Data">Pencarian Data</label>
-                    <input type="text" name="search" class="form-control" id="searchInput" value="{{ $search }}" placeholder="Masukkan nama...">
-                  </form>
-                </div>
-              </div> --}}
 
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-hover">
@@ -104,7 +62,8 @@
                                                                 method="POST" style="display:inline-block;">
                                                                 @csrf
                                                                 @method('DELETE')
-                                                                <button type="submit" class="btn btn-icon btn-danger delete-confirm">
+                                                                <button type="submit"
+                                                                    class="btn btn-icon btn-danger delete-confirm">
                                                                     <i class="fas fa-times"></i>
                                                                 </button>
                                                             </form>
@@ -262,11 +221,11 @@
     @endforeach
 
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        $('.delete-confirm').on('click', function(event) {
-            event.preventDefault();
-            var form = $(this).closest('form');
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            $('.delete-confirm').on('click', function(event) {
+                event.preventDefault();
+                var form = $(this).closest('form');
 
                 Swal.fire({
                     title: 'Apakah Anda yakin?',
@@ -283,27 +242,26 @@
                     }
                 });
             });
-         });
+        });
 
-            @if(session('success'))
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil!',
-                    text: '{{ session('success') }}',
-                    timer: 3000,
-                    showConfirmButton: false
-                });
-            @endif
-            
-            @if(session('error'))
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Gagal',
-                    text: '{{ session('error') }}',
-                    timer: 5000,
-                    showConfirmButton: true
-                });
-            @endif
-</script>
+        @if (session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        @endif
 
+        @if (session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: '{{ session('error') }}',
+                timer: 5000,
+                showConfirmButton: true
+            });
+        @endif
+    </script>
 @endsection

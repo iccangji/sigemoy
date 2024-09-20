@@ -5,11 +5,7 @@
         <section class="section">
             <div class="section-header">
                 <h1>Data KPU</h1>
-                {{-- <div class="section-header-breadcrumb">
-        <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-        <div class="breadcrumb-item"><a href="#">Informasi Data Pemilih</a></div>
-        <div class="breadcrumb-item">Data Pemilih</div>
-      </div> --}}
+
             </div>
 
             <div class="section-body">
@@ -322,7 +318,7 @@
         </div>
     @endforeach
 
-    {{-- modal upload data excel  --}}
+    {{-- modal filter data  --}}
     <div class="modal fade" id="filterSearch" tabindex="-1" role="dialog" aria-labelledby="filterSearch"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
