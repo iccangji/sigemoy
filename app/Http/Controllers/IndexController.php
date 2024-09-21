@@ -26,7 +26,11 @@ class IndexController extends Controller
                 'title' => 'Dashboard',
                 'user' => auth()->user()->user,
                 'level' => $level,
-                'data_grafik' => $this->getCountData()
+                'data_grafik' => json_decode($this->getCountData()->content(), true)['data_grafik'],    
+                'data_pemilih' => json_decode($this->getCountData()->content(), true)['pemilih'],
+                'data_kpu' => json_decode($this->getCountData()->content(), true)['data_kpu'],
+                'data_ganda' => json_decode($this->getCountData()->content(), true)['data_ganda'],    
+                'data_invalid' => json_decode($this->getCountData()->content(), true)['data_invalid']    
             ]
         );
     }

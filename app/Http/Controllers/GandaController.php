@@ -81,7 +81,7 @@ class GandaController extends Controller
 
         $kecamatan = Kecamatan::where('id','like',"%$request->kecamatan%")->first()->nama;
         if ($data) {
-            if (PenanggungJawab::where('nama','like',"%$request->nama_pj%")->count() == 0) {
+            if (PenanggungJawab::where('nama', "%$request->nama_pj%")->count() == 0) {
                 PenanggungJawab::create([
                     'nama' => $request->nama_pj,
                     'no_hp' => $request->no_hp_pj,

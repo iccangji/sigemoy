@@ -127,7 +127,7 @@
 <script src="{{ asset('assets/modules/jquery-ui/jquery-ui.min.js') }}"></script>
 
 {{-- <!-- Page Specific JS File --> --}}
-<script src="{{ asset('assets/js/page/modules-datatables.js') }}"></script>
+{{-- <script src="{{ asset('assets/js/page/modules-datatables.js') }}"></script> --}}
 
 <!-- Template JS File -->
 <script src="{{ asset('assets/js/scripts.js') }}"></script>

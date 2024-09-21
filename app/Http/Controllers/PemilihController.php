@@ -47,7 +47,7 @@ class PemilihController extends Controller
             'kecamatan' => $kecamatan,
             'kelurahan' => $kelurahan,
             'isFilter' => false,
-            'route' => route('pemilih.index')
+            'route' => route('pemilih.index'),
         ]);
     }
 
@@ -129,9 +129,9 @@ class PemilihController extends Controller
             return $dataKpuValidate['message'];
         }
 
-        $kecamatan = Kecamatan::where('id','like',"%$request->kecamatan%")->first()->nama;
+        $kecamatan = Kecamatan::where('id', 'like', "%$request->kecamatan%")->first()->nama;
         if ($data) {
-            if (PenanggungJawab::where('nama','like',"%$request->nama_pj%")->count() == 0) {
+            if (PenanggungJawab::where('nama', 'like', "%$request->nama_pj%")->count() == 0) {
                 PenanggungJawab::create([
                     'nama' => $request->nama_pj,
                     'no_hp' => $request->no_hp_pj,
@@ -168,16 +168,18 @@ class PemilihController extends Controller
             'nama_pj' => 'required',
             'no_hp_pj' => 'required',
         ]);
-        $kecamatan = Kecamatan::where('id','like',"%$request->kecamatan%")->first()->nama;
+        $kecamatan = Kecamatan::where('id', 'like', "%$request->kecamatan%")->first()->nama;
         if ($data) {
-            $pj_count = PenanggungJawab::where('nama','like',"%$request->nama_pj%")->count();
+            $nama_pj_pemilih = Pemilih::where('id', $id)->first()->nama_pj;
+
+            $pj_count = PenanggungJawab::where('nama', "$request->nama_pj")->count();
             if ($pj_count == 0) {
                 PenanggungJawab::create([
                     'nama' => $request->nama_pj,
                     'no_hp' => $request->no_hp_pj,
                 ]);
-            } elseif ($pj_count == 1) {
-                $existing_pj = PenanggungJawab::where('nama','like',"%$request->nama_pj%")->first();
+            } else {
+                $existing_pj = PenanggungJawab::where('nama', "$request->nama_pj")->first();
                 if ($existing_pj->no_hp != $request->no_hp_pj) {
                     PenanggungJawab::create([
                         'nama' => $request->nama_pj,
@@ -185,6 +187,7 @@ class PemilihController extends Controller
                     ]);
                 }
             }
+
             $item = Pemilih::findOrFail($id);
             $item->update([
                 'nama' => $request->nama_pemilih,
@@ -198,6 +201,12 @@ class PemilihController extends Controller
                 'no_hp_pj' => $request->no_hp_pj,
                 'created_by' => auth()->user()->user,
             ]);
+
+            $pj_count_pemilih = Pemilih::where('nama_pj', "$nama_pj_pemilih")->count();
+            $pj_count_invalid = DataKpuInvalid::where('nama_pj', "$nama_pj_pemilih")->count();
+            if ($pj_count_pemilih + $pj_count_invalid == 0) {
+                PenanggungJawab::where('nama', "$nama_pj_pemilih")->delete();
+            }
             return back()->with('success', 'Data berhasil diubah');
         }
         return back()->with('error', 'Data pemilih tidak dapat diubah');
@@ -205,13 +214,20 @@ class PemilihController extends Controller
 
     public function destroy($id)
     {
+        $nama_pj_pemilih = Pemilih::where('id', $id)->first()->nama_pj;
         Pemilih::destroy($id);
+
+        $pj_count_pemilih = Pemilih::where('nama_pj', "$nama_pj_pemilih")->count();
+        $pj_count_invalid = DataKpuInvalid::where('nama_pj', "$nama_pj_pemilih")->count();
+        if ($pj_count_pemilih + $pj_count_invalid == 0) {
+            PenanggungJawab::where('nama', "$nama_pj_pemilih")->delete();
+        }
         return back()->with('success', 'Data berhasil dihapus');
     }
 
     public function location($kecamatan_id)
     {
-        $kelurahans = Kelurahan::where('kecamatan_id','like',"%$kecamatan_id%")->get();
+        $kelurahans = Kelurahan::where('kecamatan_id', 'like', "%$kecamatan_id%")->get();
         return response()->json($kelurahans);
     }
 
@@ -230,7 +246,12 @@ class PemilihController extends Controller
                 $data_invalid_insert = [];
 
                 foreach ($imported_data as $item) {
-                    if (DataKpu::where('nama', 'like',"%$item[0]%")->where('kelurahan', $item[5])->where('tps', $item[6])->count() > 0) {
+                    if (
+                        DataKpu::where('nama', 'like', "%$item[0]%")
+                            ->where('kelurahan', $item[5])
+                            ->where('tps', $item[6])
+                            ->count() > 0
+                    ) {
                         if (DataGanda::where('nik', $item[1])->count() == 0) {
                             if (Pemilih::where('nik', $item[1])->count() == 0) {
                                 array_push($imported_pemilih_insert, [
@@ -309,7 +330,9 @@ class PemilihController extends Controller
                 return redirect()->back()->with('success', 'Data berhasil diimport!');
             } catch (\Throwable $th) {
                 report($th);
-                return redirect()->back()->with('error', 'Data gagal diimport. Pastikan tidak ada data yang kosong dan file sesuai dengan format, error: ' . $th);
+                return redirect()
+                    ->back()
+                    ->with('error', 'Data gagal diimport. Pastikan tidak ada data yang kosong dan file sesuai dengan format, error: ' . $th);
             }
         }
         return redirect()->back()->with('error', 'Data gagal diimport. Pastikan file berbentuk excel');
@@ -317,7 +340,7 @@ class PemilihController extends Controller
 
     public function dataGandaValidate(Request $request)
     {
-        $pj_count = PenanggungJawab::where('nama','like',"%$request->nama_pj%")->count();
+        $pj_count = PenanggungJawab::where('nama', 'like', "%$request->nama_pj%")->count();
         if ($pj_count == 0) {
             PenanggungJawab::create([
                 'nama' => $request->nama_pj,
@@ -328,7 +351,7 @@ class PemilihController extends Controller
         $data_count = Pemilih::where('nik', $request->NIK)->count();
         if ($data_count > 0) {
             $data = Pemilih::where('nik', $request->NIK)->first();
-            $data_pj = PenanggungJawab::where('nama','like',"%$data->nama_pj%")->first();
+            $data_pj = PenanggungJawab::where('nama', 'like', "%$data->nama_pj%")->first();
             DataGanda::create([
                 'nama' => $data->nama,
                 'nik' => $data->nik,
@@ -342,20 +365,23 @@ class PemilihController extends Controller
             Pemilih::where('nik', $request->NIK)->delete();
             return [
                 'result' => false,
-                'message' => back()->with('error', 'Ditemukan data ganda atas nama ' . $data->nama . ' antara penanggung jawab ' . $data->nama_pj . ' dan ' . $request->nama_pj . '. Harap periksa halaman data ganda')
+                'message' => back()->with('error', 'Ditemukan data ganda atas nama ' . $data->nama . ' antara penanggung jawab ' . $data->nama_pj . ' dan ' . $request->nama_pj . '. Harap periksa halaman data ganda'),
             ];
         }
         return [
             'result' => true,
-            'message' => ''
+            'message' => '',
         ];
     }
 
     public function dataKpuValidate(Request $request)
     {
-        $data_count = DataKpu::where('nama','like',"%$request->nama_pemilih%")->where('kelurahan','like',"%$request->kelurahan%" )->where('tps','like',"%$request->tps%" )->count();
+        $data_count = DataKpu::where('nama', 'like', "%$request->nama_pemilih%")
+            ->where('kelurahan', 'like', "%$request->kelurahan%")
+            ->where('tps', 'like', "%$request->tps%")
+            ->count();
         if ($data_count == 0) {
-            $kecamatan = Kecamatan::where('id','like',"%$request->kecamatan%")->first()->nama;
+            $kecamatan = Kecamatan::where('id', 'like', "%$request->kecamatan%")->first()->nama;
             DataKpuInvalid::create([
                 'nama' => $request->nama_pemilih,
                 'nik' => $request->NIK,
@@ -369,53 +395,12 @@ class PemilihController extends Controller
             ]);
             return [
                 'result' => false,
-                'message' => back()->with('error', 'Tidak ditemukan kesamaan data dengan Data KPU atas nama ' . $request->nama_pemilih)
+                'message' => back()->with('error', 'Tidak ditemukan kesamaan data dengan Data KPU atas nama ' . $request->nama_pemilih),
             ];
         }
         return [
             'result' => true,
-            'message' => ''
+            'message' => '',
         ];
     }
-
-    // public function cari(Request $request)
-    // {
-    //     $size = $request->input('size', 50);
-    //     $page = $request->input('page', 1);
-    //     $search = $request->query('search', '');
-
-    //     if (auth()->user()->level != 'penginput') {
-    //         $items = Pemilih::where('nama', 'like', "%$search%")
-    //             ->orderBy('updated_at', 'desc')
-    //             ->paginate($size);
-    //         $countPemilih = Pemilih::where('nama', 'like', "%$search%")
-    //             ->orderBy('updated_at', 'desc')->count();
-    //     } else {
-    //         $items = Pemilih::where('nama', 'like', "%$search%")
-    //             ->where('created_by', auth()->user()->user)
-    //             ->orderBy('updated_at', 'desc')
-    //             ->paginate($size);
-    //         $countPemilih = Pemilih::where('nama', 'like', "%$search%")
-    //             ->where('created_by', auth()->user()->user)
-    //             ->orderBy('updated_at', 'desc')->count();
-    //     }
-
-    //     $kecamatan = Kecamatan::get();
-    //     $kelurahan = Kelurahan::get();
-    //     return view('pages.pemilih', [
-    //         'page' => 'pemilih',
-    //         'title' => 'Data Pemilih',
-    //         'user' => auth()->user()->user,
-    //         'level' => auth()->user()->level,
-    //         'data' => $items,
-    //         'search' => $search,
-    //         'count' => $countPemilih,
-    //         'selected_size' => $size,
-    //         'current_page' => $page,
-    //         'kecamatan' => $kecamatan,
-    //         'kelurahan' => $kelurahan,
-    //         'route' => route('pemilih.filter')
-    //     ]);
-    //     // return view('welcome');
-    // }
 }

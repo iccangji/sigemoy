@@ -17,7 +17,7 @@
                                 <h4>Data Pemilih</h4>
                             </div>
                             <div class="card-body" id="count_pemilih">
-
+                                {{ $data_pemilih }}
                             </div>
                         </div>
                     </div>
@@ -32,7 +32,7 @@
                                 <h4>Data KPU</h4>
                             </div>
                             <div class="card-body" id="count_kpu">
-
+                                {{ $data_kpu }}
                             </div>
                         </div>
                     </div>
@@ -48,6 +48,7 @@
                                     <h4>Data Ganda</h4>
                                 </div>
                                 <div class="card-body" id="count_data_ganda">
+                                    {{ $data_ganda }}
                                 </div>
                             </div>
                         </div>
@@ -62,6 +63,7 @@
                                     <h4>Data Tidak Valid</h4>
                                 </div>
                                 <div class="card-body" id="count_data_kpu_invalid">
+                                    {{ $data_invalid }}
                                 </div>
                             </div>
                         </div>
@@ -92,7 +94,7 @@
     </div>
 
     <script>
-        initializeChart(120000);
+        initializeChart(60000);
 
         function isWebGLSupported() {
             try {
@@ -233,15 +235,10 @@
             currentState.kecamatan = currentKecamatan;
             currentState.kelurahan = kelurahan;
         }
-        // Inisialisasi chart saat data sudah siap
 
         async function initializeChart(interval) {
-            const data = await getData();
+            data = @json($data_grafik);
             chartData = createChartData(data);
-
-            const renderingMode = isWebGLSupported() ? 'webgl' : '2d';
-            console.log(renderingMode);
-            console.log(chartData);
 
             myChart = new Chart(document.getElementById('myChart').getContext('2d'), {
                 type: 'bar',
@@ -276,7 +273,6 @@
                                 }
                             }
                         },
-                        renderingMode: renderingMode
                     },
                     onClick: (e) => {
                         const activePoint = myChart.getElementsAtEventForMode(e, 'nearest', {
@@ -306,6 +302,7 @@
                     },
                 }
             });
+
 
             setInterval(async () => {
                 const data = await getData();

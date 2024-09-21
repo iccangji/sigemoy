@@ -90,7 +90,14 @@ class InvalidController extends Controller
 
     public function destroy($id)
     {
+        $nama_pj_pemilih = DataKpuInvalid::where('id', $id)->first()->nama_pj;
         DataKpuInvalid::destroy($id);
+
+        $pj_count_pemilih = Pemilih::where('nama_pj', "$nama_pj_pemilih")->count();
+        $pj_count_invalid = DataKpuInvalid::where('nama_pj', "$nama_pj_pemilih")->count();
+        if ($pj_count_pemilih + $pj_count_invalid == 0) {
+            PenanggungJawab::where('nama', "$nama_pj_pemilih")->delete();
+        }
         return back()->with('success', 'Data berhasil dihapus');
     }
 
