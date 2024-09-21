@@ -14,24 +14,5 @@ class UserSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run(): void
-    {
-        User::create([
-            'user' => 'admin',
-            'password' => Hash::make('Gemoy123!A'),
-            'level' => 'admin',
-        ]);
-
-        User::create([
-            'user' => 'viewer',
-            'password' => Hash::make('Gemoy123!V'),
-            'level' => 'viewer',
-        ]);
-
-        User::create([
-            'user' => 'penginput',
-            'password' => Hash::make('Gemoy123!P'),
-            'level' => 'penginput',
-        ]);
-    }
+    public function run(): void {}
 }
