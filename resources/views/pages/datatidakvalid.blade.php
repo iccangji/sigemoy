@@ -5,7 +5,7 @@
         <section class="section">
             <div class="section-header">
                 <h1>Data Tidak Valid</h1>
-                
+
             </div>
 
             <div class="section-body">
@@ -170,11 +170,16 @@
                             <input type="hidden" class="form-control" name="hub_keluarga" id="hub_keluarga"
                                 placeholder="Masukan Nomor Handphone" value="{{ $item->hub_keluarga }}" required>
                             @php
-                                $kecamatan_nama =
-                                    $kecamatan[array_search($item->kecamatan, array_column($kecamatan, 'id'))]['nama'];
+                                // $kecamatan_nama =
+                                //     $kecamatan[array_search($item->kecamatan, array_column($kecamatan, 'id'))]['nama'];
+                                // dd(
+                                //     $kecamatan_nama[array_search($item->kecamatan, array_column($kecamatan, 'id'))][
+                                //         'nama'
+                                //     ],
+                                // );
                             @endphp
                             <input type="hidden" class="form-control" name="kecamatan" id="kecamatan"
-                                placeholder="Masukan Nomor Handphone" value="{{ $kecamatan_nama }}" required>
+                                placeholder="Masukan Nomor Handphone" value="{{ $item->kecamatan }}" required>
                             <input type="hidden" class="form-control" name="kelurahan" id="kelurahan"
                                 placeholder="Masukan Nomor Handphone" value="{{ $item->kelurahan }}" required>
                             <input type="hidden" class="form-control" name="tps" id="tps"

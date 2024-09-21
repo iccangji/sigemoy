@@ -283,7 +283,8 @@
                             intersect: true
                         }, false);
                         if (activePoint.length > 0) {
-                            const clickedIndex = activePoint[0]._index ? activePoint[0]._index :
+                            const clickedIndex = activePoint[0]._index !== undefined ? activePoint[0]
+                                ._index :
                                 activePoint[0].index;
                             console.log(activePoint[0]);
                             const currentLabel = chartData.labels[clickedIndex].split(' (')[0];

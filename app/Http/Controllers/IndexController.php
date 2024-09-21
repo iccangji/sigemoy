@@ -25,7 +25,8 @@ class IndexController extends Controller
                 'page' => 'dashboard',
                 'title' => 'Dashboard',
                 'user' => auth()->user()->user,
-                'level' => $level
+                'level' => $level,
+                'data_grafik' => $this->getCountData()
             ]
         );
     }
