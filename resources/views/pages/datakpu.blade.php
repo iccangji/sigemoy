@@ -5,7 +5,7 @@
         <section class="section">
             <div class="section-header">
                 <h1>Data KPU</h1>
-              
+
             </div>
 
             <div class="section-body">
@@ -409,12 +409,12 @@
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header">
+                {{-- <div class="modal-header">
                     <h5 class="modal-title">Bersihkan Data</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                </div>
+                </div> --}}
                 <div class="modal-body">
                     <p>
                         Tindakan ini akan menghapus semua Data KPU. Konfirmasi sebelum membersihkan data
