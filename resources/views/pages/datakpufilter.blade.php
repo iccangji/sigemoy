@@ -29,12 +29,12 @@
                                             <i class="fa fa-plus"></i> Tambah Data
                                         </button>
 
-                                        @if ($level == 'admin')
+                                        {{-- @if ($level == 'admin')
                                             <button class="btn btn-danger btn-round ml-2" data-toggle="modal"
                                                 data-target="#TruncateData">
                                                 <i class="fa fa-trash"></i> Bersihkan Data
                                             </button>
-                                        @endif
+                                        @endif --}}
                                     </div>
                                 @endif
                             </div>
