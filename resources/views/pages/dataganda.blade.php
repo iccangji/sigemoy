@@ -210,11 +210,14 @@
                                     <option value="Anak" @if ($item->hub_keluarga == 'Anak') selected @endif>Anak</option>
                                     <option value="Saudara Kandung" @if ($item->hub_keluarga == 'Saudara Kandung') selected @endif>
                                         Saudara Kandung</option>
+                                    <option value="Sepupu" @if ($item->hub_keluarga == 'Sepupu') selected @endif>
+                                        Sepupu</option>
                                     <option value="Mertua" @if ($item->hub_keluarga == 'Mertua') selected @endif>Mertua
                                     </option>
                                     <option value="Ponakan" @if ($item->hub_keluarga == 'Ponakan') selected @endif>Ponakan
                                     </option>
-                                    <option value="Ipar" @if ($item->hub_keluarga == 'Ipar') selected @endif>Ipar</option>
+                                    <option value="Ipar" @if ($item->hub_keluarga == 'Ipar') selected @endif>Ipar
+                                    </option>
                                     <option value="Orang Tua" @if ($item->hub_keluarga == 'Orang Tua') selected @endif>Orang Tua
                                     </option>
                                     <option value="Teman" @if ($item->hub_keluarga == 'Teman') selected @endif>Teman

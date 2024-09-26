@@ -205,6 +205,7 @@
                                 <option value="Anak">Anak</option>
                                 <option value="Orang Tua">Orang Tua</option>
                                 <option value="Saudara Kandung">Saudara Kandung</option>
+                                <option value="Sepupu">Sepupu</option>
                                 <option value="Mertua">Mertua</option>
                                 <option value="Ponakan">Ponakan</option>
                                 <option value="Ipar">Ipar</option>
@@ -326,6 +327,8 @@
                                     <option value="Saudara Kandung" @if ($item->hub_keluarga == 'Saudara Kandung') selected @endif>
                                         Saudara Kandung</option>
                                     <option value="Mertua" @if ($item->hub_keluarga == 'Mertua') selected @endif>Mertua
+                                    </option>
+                                    <option value="Sepupu" @if ($item->hub_keluarga == 'Sepupu') selected @endif>Sepupu
                                     </option>
                                     <option value="Ponakan" @if ($item->hub_keluarga == 'Ponakan') selected @endif>Ponakan
                                     </option>
