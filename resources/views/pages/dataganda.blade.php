@@ -217,6 +217,10 @@
                                     <option value="Ipar" @if ($item->hub_keluarga == 'Ipar') selected @endif>Ipar</option>
                                     <option value="Orang Tua" @if ($item->hub_keluarga == 'Orang Tua') selected @endif>Orang Tua
                                     </option>
+                                    <option value="Teman" @if ($item->hub_keluarga == 'Teman') selected @endif>Teman
+                                    </option>
+                                    <option value="Tetangga" @if ($item->hub_keluarga == 'Tetangga') selected @endif>Tetangga
+                                    </option>
                                 </select>
                                 @error('hub_keluarga')
                                     <small class="text-danger">{{ $message }}</small>

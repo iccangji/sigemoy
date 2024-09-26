@@ -257,5 +257,21 @@ class KelurahanSeeder extends Seeder
             'nama' => 'Wundumbatu',
             'kecamatan_id' => 3,
         ]);
+        Kelurahan::create([
+            'nama' => 'Punggaloba',
+            'kecamatan_id' => 5,
+        ]);
+        Kelurahan::create([
+            'nama' => 'Benu Benua',
+            'kecamatan_id' => 5,
+        ]);
+        Kelurahan::create([
+            'nama' => 'Wowawanggu',
+            'kecamatan_id' => 8,
+        ]);
+        Kelurahan::create([
+            'nama' => 'Punggolaka',
+            'kecamatan_id' => 7,
+        ]);
     }
 }

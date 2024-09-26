@@ -15,6 +15,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class PemilihController extends Controller
 {
+
     public function index(Request $request)
     {
         $size = $request->input('size', 50);
@@ -227,7 +228,7 @@ class PemilihController extends Controller
 
     public function location($kecamatan_id)
     {
-        $kelurahans = Kelurahan::where('kecamatan_id', 'like', "%$kecamatan_id%")->get();
+        $kelurahans = Kelurahan::where('kecamatan_id', $kecamatan_id)->get();
         return response()->json($kelurahans);
     }
 
@@ -248,9 +249,9 @@ class PemilihController extends Controller
                 foreach ($imported_data as $item) {
                     if (
                         DataKpu::where('nama', 'like', "%$item[0]%")
-                            ->where('kelurahan', $item[5])
-                            ->where('tps', $item[6])
-                            ->count() > 0
+                        ->where('kelurahan', $item[5])
+                        ->where('tps', $item[6])
+                        ->count() > 0
                     ) {
                         if (DataGanda::where('nik', $item[1])->count() == 0) {
                             if (Pemilih::where('nik', $item[1])->count() == 0) {

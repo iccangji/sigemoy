@@ -202,6 +202,8 @@
                                 <option value="Mertua">Mertua</option>
                                 <option value="Ponakan">Ponakan</option>
                                 <option value="Ipar">Ipar</option>
+                                <option value="Teman">Teman</option>
+                                <option value="Tetangga">Tetangga</option>
                             </select>
                             @error('hub_keluarga')
                                 <small class="text-danger">{{ $message }}</small>
