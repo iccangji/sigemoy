@@ -18,5 +18,7 @@ class DataKpuInvalid extends Model
         'kecamatan',
         'nama_pj',
         'no_hp_pj',
+        'created_at',
+        'updated_at',
     ];
 }

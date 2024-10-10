@@ -205,20 +205,20 @@ class InvalidController extends Controller
     public function pemilihValidate()
     {
         try {
-            $count = DataKpuInvalid::select('nama', 'nik', 'no_hp', 'hub_keluarga', 'tps', 'kelurahan', 'kecamatan', 'nama_pj', 'no_hp_pj', DB::raw("'" . auth()->user()->user . "' as created_by"))
+            $count = DataKpuInvalid::select('nama', 'nik', 'no_hp', 'hub_keluarga', 'tps', 'kelurahan', 'kecamatan', 'nama_pj', 'no_hp_pj', DB::raw("'" . auth()->user()->user . "' as created_by"), DB::raw(now()->toDateTimeString() . " as created_at"), DB::raw(now()->toDateTimeString() . " as updated_at"))
                 ->where('tps', '!=', '000')
-                ->where('id', '>=', 1203)
+                ->where('id', '>=', value: 1203)
                 ->count();
-            Pemilih::insert(
-                DataKpuInvalid::select('nama', 'nik', 'no_hp', 'hub_keluarga', 'tps', 'kelurahan', 'kecamatan', 'nama_pj', 'no_hp_pj', DB::raw("'" . auth()->user()->user . "' as created_by"), DB::raw("'" . now() . "' as created_at"), DB::raw("'" . now() . "' as updated_at"))
-                    ->where('tps', '!=', '000')
-                    ->where('id', '>=', 1203)
-                    ->get()
-                    ->toArray()
-            );
-            DataKpuInvalid::where('tps', '!=', '000')
-                ->where('id', '>=', 1203)
-                ->delete();
+            DB::statement("
+                INSERT INTO pemilih (nama, nik, no_hp, hub_keluarga, tps, kelurahan, kecamatan, nama_pj, no_hp_pj, created_at, updated_at, created_by)
+                SELECT nama, nik, no_hp, hub_keluarga, tps, kelurahan, kecamatan, nama_pj, no_hp_pj, created_at, updated_at, 'admin_kpu'
+                FROM data_kpu_invalid
+                WHERE NOT tps = '000' AND id>=1203;
+            ");
+            DB::statement("
+                DELETE FROM data_kpu_invalid
+                WHERE NOT tps = '000' AND id>=1203;
+            ");
             return back()->with('success', 'Data berhasil divalidasi<br>Total Data: ' . $count);
         } catch (\Throwable $th) {
             //throw $th;

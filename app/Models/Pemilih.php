@@ -21,5 +21,7 @@ class Pemilih extends Model
         'nama_pj',
         'no_hp_pj',
         'created_by',
+        'created_at',
+        'updated_at',
     ];
 }
