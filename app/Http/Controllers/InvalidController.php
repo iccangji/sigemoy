@@ -212,12 +212,12 @@ class InvalidController extends Controller
             Pemilih::insert(
                 DataKpuInvalid::select('nama', 'nik', 'no_hp', 'hub_keluarga', 'tps', 'kelurahan', 'kecamatan', 'nama_pj', 'no_hp_pj', DB::raw("'" . auth()->user()->user . "' as created_by"))
                     ->where('tps', '!=', '000')
-                    ->where('id', '>=', 0)
+                    ->where('id', '>=', 1203)
                     ->get()
                     ->toArray()
             );
             DataKpuInvalid::where('tps', '!=', '000')
-                ->where('id', '>=', 0)
+                ->where('id', '>=', 1203)
                 ->delete();
             return back()->with('success', 'Data berhasil divalidasi<br>Total Data: ' . $count);
         } catch (\Throwable $th) {
