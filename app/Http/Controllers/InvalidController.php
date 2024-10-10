@@ -207,10 +207,10 @@ class InvalidController extends Controller
         try {
             $count = DataKpuInvalid::select('nama', 'nik', 'no_hp', 'hub_keluarga', 'tps', 'kelurahan', 'kecamatan', 'nama_pj', 'no_hp_pj', DB::raw("'" . auth()->user()->user . "' as created_by"))
                 ->where('tps', '!=', '000')
-                ->where('id', '>=', 0)
+                ->where('id', '>=', 1203)
                 ->count();
             Pemilih::insert(
-                DataKpuInvalid::select('nama', 'nik', 'no_hp', 'hub_keluarga', 'tps', 'kelurahan', 'kecamatan', 'nama_pj', 'no_hp_pj', DB::raw("'" . auth()->user()->user . "' as created_by"))
+                DataKpuInvalid::select('nama', 'nik', 'no_hp', 'hub_keluarga', 'tps', 'kelurahan', 'kecamatan', 'nama_pj', 'no_hp_pj', DB::raw("'" . auth()->user()->user . "' as created_by"), DB::raw("'" . now() . "' as created_at"), DB::raw("'" . now() . "' as updated_at"))
                     ->where('tps', '!=', '000')
                     ->where('id', '>=', 1203)
                     ->get()
