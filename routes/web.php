@@ -77,6 +77,7 @@ Route::delete('/data-ganda/{id}', [GandaController::class, 'destroy'])->middlewa
 Route::get('/data-invalid', [InvalidController::class, 'index'])->middleware(['auth', 'cors'])->name('invalid.index');
 Route::delete('/data-invalid/{id}', [InvalidController::class, 'destroy'])->middleware(['auth', 'cors'])->name('invalid.destroy');
 Route::post('/data-invalid/insert', [InvalidController::class, 'store'])->middleware(['auth', 'cors'])->name('invalid.store');
+Route::put('/data-invalid/{id}', [InvalidController::class, 'update'])->middleware(['auth', 'cors'])->name('invalid.update');
 Route::get('/data-invalid/sync', [InvalidController::class, 'sync'])->middleware(['auth', 'cors'])->name('invalid.sync');
 Route::get('/data-invalid/validate', [InvalidController::class, 'pemilihValidate'])->middleware(['auth', 'cors'])->name('invalid.validate');
 

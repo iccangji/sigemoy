@@ -6,6 +6,7 @@ use App\Models\DataGanda;
 use App\Models\DataKpu;
 use App\Models\DataKpuInvalid;
 use App\Models\Kecamatan;
+use App\Models\Kelurahan;
 use App\Models\Pemilih;
 use App\Models\PenanggungJawab;
 use Illuminate\Http\Request;
@@ -33,6 +34,7 @@ class InvalidController extends Controller
         }
 
         $kecamatan = Kecamatan::get();
+        $kelurahan = Kelurahan::get();
         return view(
             'pages.datatidakvalid',
             [
@@ -45,6 +47,8 @@ class InvalidController extends Controller
                 'count' => $countPemilih,
                 'selected_size' => $size,
                 'kecamatan' => $kecamatan->toArray(),
+                'kecamatan_edit' => $kecamatan,
+                'kelurahan' => $kelurahan,
             ]
         );
     }
@@ -224,5 +228,37 @@ class InvalidController extends Controller
             //throw $th;
             return back()->with('error', 'Data gagal divalidasi' . $th);
         }
+    }
+
+    public function update(Request $request, $id)
+    {
+        $data = $request->validate([
+            'nama_pemilih' => 'required',
+            'NIK' => 'required',
+            'no_hp' => 'required',
+            'hub_keluarga' => 'required',
+            'tps' => 'required',
+            'kelurahan' => 'required',
+            'kecamatan' => 'required',
+            'nama_pj' => 'required',
+            'no_hp_pj' => 'required',
+        ]);
+        $kecamatan = Kecamatan::where('id', 'like', "%$request->kecamatan%")->first()->nama;
+        if ($data) {
+            $item = DataKpuInvalid::findOrFail($id);
+            $item->update([
+                'nama' => $request->nama_pemilih,
+                'nik' => $request->NIK,
+                'no_hp' => $request->no_hp,
+                'hub_keluarga' => $request->hub_keluarga,
+                'tps' => $request->tps,
+                'kelurahan' => $request->kelurahan,
+                'kecamatan' => $kecamatan,
+                'nama_pj' => $request->nama_pj,
+                'no_hp_pj' => $request->no_hp_pj,
+            ]);
+            return back()->with('success', 'Data berhasil diubah');
+        }
+        return back()->with('error', 'Data pemilih tidak dapat diubah');
     }
 }

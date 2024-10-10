@@ -93,8 +93,12 @@
                                                         <td class="text-center text-nowrap">
                                                             <a href="#" class="btn btn-icon btn-success"
                                                                 data-toggle="modal"
-                                                                data-target="#editdata-{{ $item->id }}"><i
+                                                                data-target="#senddata-{{ $item->id }}"><i
                                                                     class="fa fa-check"></i></a>
+                                                            <a href="#" class="btn btn-icon btn-info"
+                                                                data-toggle="modal"
+                                                                data-target="#editdata-{{ $item->id }}"><i
+                                                                    class="far fa-edit"></i></a>
                                                             <form action="{{ route('invalid.destroy', $item->id) }}"
                                                                 method="POST" style="display:inline-block;">
                                                                 @csrf
@@ -161,12 +165,147 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
+                    <form action="{{ route('invalid.update', $item->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Nama Pemilh</label>
+                                <input type="text" name="nama_pemilih" id="nama_pemilih"
+                                    placeholder="Masukan Nama Pemilih" class="form-control" value="{{ $item->nama }}"
+                                    required>
+                                @error('nama_pemilih')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label>NIK</label>
+                                <input type="text" class="form-control" name="NIK" id="NIK"
+                                    placeholder="Masukan NIK" value="{{ $item->nik }}" required>
+                                @error('NIK')
+                                    <small class="text-danger"></small>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label>No. HP</label>
+                                <input type="text" class="form-control" name="no_hp" id="no_hp"
+                                    placeholder="Masukan Nomor Handphone" value="{{ $item->no_hp }}" required>
+                                @error('no_hp')
+                                    <small class="text-danger"></small>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="hub_keluarga">Hubungan Keluarga</label>
+                                <select name="hub_keluarga" class="form-control" required>
+                                    <option value="">--Pilih Hubungan Keluarga--</option>
+                                    <option value="Suami/Istri" @if ($item->hub_keluarga == 'Suami/Istri') selected @endif>
+                                        Suami/Istri
+                                    </option>
+                                    <option value="Anak" @if ($item->hub_keluarga == 'Anak') selected @endif>Anak</option>
+                                    <option value="Saudara Kandung" @if ($item->hub_keluarga == 'Saudara Kandung') selected @endif>
+                                        Saudara Kandung</option>
+                                    <option value="Mertua" @if ($item->hub_keluarga == 'Mertua') selected @endif>Mertua
+                                    </option>
+                                    <option value="Sepupu" @if ($item->hub_keluarga == 'Sepupu') selected @endif>Sepupu
+                                    </option>
+                                    <option value="Ponakan" @if ($item->hub_keluarga == 'Ponakan') selected @endif>Ponakan
+                                    </option>
+                                    <option value="Ipar" @if ($item->hub_keluarga == 'Ipar') selected @endif>Ipar
+                                    </option>
+                                    <option value="Orang Tua" @if ($item->hub_keluarga == 'Orang Tua') selected @endif>Orang Tua
+                                    </option>
+                                    <option value="Teman" @if ($item->hub_keluarga == 'Teman') selected @endif>Teman
+                                    </option>
+                                    <option value="Tetangga" @if ($item->hub_keluarga == 'Tetangga') selected @endif>Tetangga
+                                    </option>
+                                    {{-- @endforeach --}}
+                                </select>
+                                @error('hub_keluarga')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="kecamatan">Kecamatan</label>
+                                <select name="kecamatan" class="form-control" id="kecamatan-edit" required>
+                                    <option value="">--Pilih Kecamatan--</option>
+                                    @foreach ($kecamatan_edit as $p)
+                                        <option value="{{ $p->id }}"
+                                            @if ($item->kecamatan == $p->nama) selected @endif>{{ $p->nama }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('kecamatan')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="kelurahan">Kelurahan</label>
+                                <select name="kelurahan" id="kelurahan-edit" class="form-control" required>
+                                    <option value="">--Pilih Kelurahan--</option>
+                                    @foreach ($kelurahan as $p)
+                                        <option value="{{ $p->nama }}"
+                                            @if ($item->kelurahan == $p->nama) selected @endif>{{ $p->nama }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('kelurahan')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label>TPS</label>
+                                <input type="text" class="form-control" name="tps" id="tps"
+                                    placeholder="Masukan TPS" value="{{ $item->tps }}" required>
+                                @error('tps')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label>Nama Penanggung Jawab</label>
+                                <input type="text" class="form-control" name="nama_pj" id="nama_pj"
+                                    placeholder="Masukan Nama Penanggung Jawab" value="{{ $item->nama_pj }}" required>
+                                @error('nama_pj')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label>Nomor HP Penanggung Jawab</label>
+                                <input type="text" class="form-control" name="no_hp_pj" id="no_hp_pj"
+                                    placeholder="Masukan Nomor HP Penanggung Jawab" value="{{ $item->no_hp_pj }}"
+                                    required>
+                                @error('no_hp_pj')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger mb-2" data-dismiss="modal">Kembali</button>
+                            <button type="submit" class="btn btn-success">Edit Data</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endforeach
+    @foreach ($data as $item)
+        <div class="modal fade" id="senddata-{{ $item->id }}" tabindex="-1" role="dialog"
+            aria-labelledby="senddata-{{ $item->id }}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Data pemilih</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                     <form action="{{ route('invalid.store') }}" method="POST">
                         @csrf
                         @method('POST')
                         <div class="modal-body">
-                            <input type="hidden" name="nama_pemilih" id="nama_pemilih" placeholder="Masukan Nama Pemilih"
-                                class="form-control" value="{{ $item->nama }}" required>
+                            <input type="hidden" name="nama_pemilih" id="nama_pemilih"
+                                placeholder="Masukan Nama Pemilih" class="form-control" value="{{ $item->nama }}"
+                                required>
                             <input type="hidden" class="form-control" name="NIK" id="NIK"
                                 placeholder="Masukan NIK" value="{{ $item->nik }}" required>
                             <input type="hidden" class="form-control" name="no_hp" id="no_hp"
