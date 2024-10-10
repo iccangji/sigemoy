@@ -9,6 +9,7 @@ use App\Models\Kecamatan;
 use App\Models\Pemilih;
 use App\Models\PenanggungJawab;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Spatie\FlareClient\Http\Exceptions\InvalidData;
 
 class InvalidController extends Controller
@@ -82,7 +83,7 @@ class InvalidController extends Controller
                 'created_by' => auth()->user()->user,
             ]);
 
-            DataKpuInvalid::where('nik',$request->NIK)->delete();
+            DataKpuInvalid::where('nik', $request->NIK)->delete();
             return redirect()->route('pemilih.index')->with('success', 'Data berhasil dimasukkan');
         }
         return back()->with('error', 'Data pemilih tidak dapat dimasukkan');
@@ -103,7 +104,7 @@ class InvalidController extends Controller
 
     private function dataGandaValidate(Request $request)
     {
-        $pj_count = PenanggungJawab::where('nama', 'like',"$request->nama_pj")->count();
+        $pj_count = PenanggungJawab::where('nama', 'like', "$request->nama_pj")->count();
         if ($pj_count == 0) {
             PenanggungJawab::create([
                 'nama' => $request->nama_pj,
@@ -111,10 +112,10 @@ class InvalidController extends Controller
             ]);
         }
 
-        $data_count = Pemilih::where('nik','like', $request->NIK)->count();
+        $data_count = Pemilih::where('nik', 'like', $request->NIK)->count();
         if ($data_count > 0) {
             $data = Pemilih::where('nik', $request->NIK)->first();
-            $data_pj = PenanggungJawab::where('nama','like',"%$data->nama_pj%")->first();
+            $data_pj = PenanggungJawab::where('nama', 'like', "%$data->nama_pj%")->first();
             DataGanda::create([
                 'nama' => $data->nama,
                 'nik' => $data->nik,
@@ -145,7 +146,7 @@ class InvalidController extends Controller
 
         try {
             foreach ($data_pemilih as $item) {
-                if (DataKpu::where('nama', 'like',"%$item->nama%")->where('kelurahan','like',"%$item->kelurahan%")->where('tps','like' ,"%$item->tps%")->count() == 0) {
+                if (DataKpu::where('nama', 'like', "%$item->nama%")->where('kelurahan', 'like', "%$item->kelurahan%")->where('tps', 'like', "%$item->tps%")->count() == 0) {
                     array_push($data_batch, [
                         'nama' => $item->nama,
                         'nik' => $item->nik,
@@ -161,7 +162,7 @@ class InvalidController extends Controller
                 }
             }
             foreach ($data_invalid as $item) {
-                if (DataKpu::where('nama','like',"%$item->nama%")->where('kelurahan','like',"%$item->kelurahan%")->where('tps','like',"%$item->tps%")->count() == 0) {
+                if (DataKpu::where('nama', 'like', "%$item->nama%")->where('kelurahan', 'like', "%$item->kelurahan%")->where('tps', 'like', "%$item->tps%")->count() == 0) {
                     array_push($data_batch, [
                         'nama' => $item->nama,
                         'nik' => $item->nik,
@@ -173,7 +174,7 @@ class InvalidController extends Controller
                         'nama_pj' => $item->nama_pj,
                         'no_hp_pj' => $item->no_hp_pj,
                     ]);
-                }else{
+                } else {
                     array_push($data_batch_valid, [
                         'nama' => $item->nama,
                         'nik' => $item->nik,
@@ -197,7 +198,31 @@ class InvalidController extends Controller
             return back()->with('success', 'Data Berhasil Disinkronisasi');
         } catch (\Throwable $th) {
             //throw $th;
-            return back()->with('error', 'Data gagal divalidasi'.$th);
+            return back()->with('error', 'Data gagal divalidasi' . $th);
+        }
+    }
+
+    public function pemilihValidate()
+    {
+        try {
+            $count = DataKpuInvalid::select('nama', 'nik', 'no_hp', 'hub_keluarga', 'tps', 'kelurahan', 'kecamatan', 'nama_pj', 'no_hp_pj', DB::raw("'" . auth()->user()->user . "' as created_by"))
+                ->where('tps', '!=', '000')
+                ->where('id', '>=', 0)
+                ->count();
+            Pemilih::insert(
+                DataKpuInvalid::select('nama', 'nik', 'no_hp', 'hub_keluarga', 'tps', 'kelurahan', 'kecamatan', 'nama_pj', 'no_hp_pj', DB::raw("'" . auth()->user()->user . "' as created_by"))
+                    ->where('tps', '!=', '000')
+                    ->where('id', '>=', 0)
+                    ->get()
+                    ->toArray()
+            );
+            DataKpuInvalid::where('tps', '!=', '000')
+                ->where('id', '>=', 0)
+                ->delete();
+            return back()->with('success', 'Data berhasil divalidasi<br>Total Data: ' . $count);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return back()->with('error', 'Data gagal divalidasi' . $th);
         }
     }
 }

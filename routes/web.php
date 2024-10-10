@@ -78,6 +78,7 @@ Route::get('/data-invalid', [InvalidController::class, 'index'])->middleware(['a
 Route::delete('/data-invalid/{id}', [InvalidController::class, 'destroy'])->middleware(['auth', 'cors'])->name('invalid.destroy');
 Route::post('/data-invalid/insert', [InvalidController::class, 'store'])->middleware(['auth', 'cors'])->name('invalid.store');
 Route::get('/data-invalid/sync', [InvalidController::class, 'sync'])->middleware(['auth', 'cors'])->name('invalid.sync');
+Route::get('/data-invalid/validate', [InvalidController::class, 'pemilihValidate'])->middleware(['auth', 'cors'])->name('invalid.validate');
 
 Route::get('/penanggung-jawab', [PenanggungJawabController::class, 'index'])->middleware(['auth', 'cors'])->name('pj.index');;
 

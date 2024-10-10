@@ -17,9 +17,13 @@
                                 @if ($level != 'viewer')
                                     <div>
                                         @if ($level == 'admin')
-                                            <button class="btn btn-info btn-round ml-2" data-toggle="modal"
+                                            {{-- SINKRONISASI DATA BUTTON <button class="btn btn-info btn-round ml-2" data-toggle="modal"
                                                 data-target="#SyncData">
                                                 <i class="fa fa-rotate"></i> Sinkronisasi Data
+                                            </button> --}}
+                                            <button class="btn btn-info btn-round ml-2" data-toggle="modal"
+                                                data-target="#ValidateData">
+                                                <i class="fa fa-rotate"></i> Validasi Data
                                             </button>
                                         @endif
                                     </div>
@@ -200,6 +204,7 @@
         </div>
     @endforeach
 
+    {{-- SINKRONISASI DATA MODAL 
     <div class="modal fade" id="SyncData" tabindex="-1" role="dialog" aria-labelledby="SyncData"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -221,8 +226,30 @@
                 </div>
             </div>
         </div>
+    </div> --}}
+    <div class="modal fade" id="ValidateData" tabindex="-1" role="dialog" aria-labelledby="ValidateData"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Validasi Data Tidak Valid</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-left w-100">Tindakan ini akan memasukkan semua data dengan TPS selain 000 ke dalam data
+                        Pemilih</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Kembali</button>
+                    <a href="{{ route('invalid.validate') }}"><button type="button" class="btn btn-success">Validasi
+                            Data
+                            Pemilh</button></a>
+                </div>
+            </div>
+        </div>
     </div>
-
 
     <script>
         document.getElementById('showEntries').addEventListener('change', function(event) {
@@ -299,11 +326,11 @@
         });
 
         @if (session('success'))
+            var message = `{!! session('success') !!}`;
             Swal.fire({
                 icon: 'success',
                 title: 'Berhasil!',
-                text: '{{ session('success') }}',
-                timer: 3000,
+                html: message,
                 showConfirmButton: false
             });
         @endif
