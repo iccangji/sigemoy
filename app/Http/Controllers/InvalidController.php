@@ -215,7 +215,7 @@ class InvalidController extends Controller
                 ->count();
             DB::statement("
                 INSERT INTO pemilih (nama, nik, no_hp, hub_keluarga, tps, kelurahan, kecamatan, nama_pj, no_hp_pj, created_at, updated_at, created_by)
-                SELECT nama, nik, no_hp, hub_keluarga, tps, kelurahan, kecamatan, nama_pj, no_hp_pj, created_at, updated_at, 'admin_kpu'
+                SELECT nama, nik, no_hp, hub_keluarga, tps, kelurahan, kecamatan, nama_pj, no_hp_pj, '" . now() . "', '" . now() . "', '" . auth()->user()->user . "'
                 FROM data_kpu_invalid
                 WHERE NOT tps = '000' AND id>=1203;
             ");
