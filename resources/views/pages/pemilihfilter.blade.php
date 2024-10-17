@@ -320,9 +320,17 @@
                                         Saudara Kandung</option>
                                     <option value="Mertua" @if ($item->hub_keluarga == 'Mertua') selected @endif>Mertua
                                     </option>
+                                    <option value="Sepupu" @if ($item->hub_keluarga == 'Sepupu') selected @endif>Sepupu
+                                    </option>
                                     <option value="Ponakan" @if ($item->hub_keluarga == 'Ponakan') selected @endif>Ponakan
                                     </option>
                                     <option value="Ipar" @if ($item->hub_keluarga == 'Ipar') selected @endif>Ipar
+                                    </option>
+                                    <option value="Orang Tua" @if ($item->hub_keluarga == 'Orang Tua') selected @endif>Orang Tua
+                                    </option>
+                                    <option value="Teman" @if ($item->hub_keluarga == 'Teman') selected @endif>Teman
+                                    </option>
+                                    <option value="Tetangga" @if ($item->hub_keluarga == 'Tetangga') selected @endif>Tetangga
                                     </option>
                                     {{-- @endforeach --}}
                                 </select>
@@ -349,7 +357,7 @@
                                 <select name="kelurahan" id="kelurahan-edit" class="form-control" required>
                                     <option value="">--Pilih Kelurahan--</option>
                                     @foreach ($kelurahan as $p)
-                                        <option value="{{ $p->id }}"
+                                        <option value="{{ $p->nama }}"
                                             @if ($item->kelurahan == $p->nama) selected @endif>{{ $p->nama }}
                                         </option>
                                     @endforeach
