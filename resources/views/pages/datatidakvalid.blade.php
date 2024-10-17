@@ -379,12 +379,14 @@
                 <div class="modal-body">
                     <p class="text-left w-100">Tindakan ini akan memasukkan semua data dengan TPS selain 000 ke dalam data
                         Pemilih</p>
+                    <p class="text-left w-100">(Belum dapat digunakan untuk saat ini)</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Kembali</button>
-                    <a href="{{ route('invalid.validate') }}"><button type="button" class="btn btn-success">Validasi
+                    {{-- <a href="{{ route('invalid.validate') }}"><button type="button" class="btn btn-success"
+                            disabled>Validasi
                             Data
-                            Pemilh</button></a>
+                            Pemilh</button></a> --}}
                 </div>
             </div>
         </div>
