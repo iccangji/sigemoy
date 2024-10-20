@@ -213,12 +213,54 @@ class InvalidController extends Controller
                 ->where('tps', '!=', '000')
                 ->where('id', '>=', value: 1203)
                 ->count();
-            DB::statement("
-                INSERT INTO pemilih (nama, nik, no_hp, hub_keluarga, tps, kelurahan, kecamatan, nama_pj, no_hp_pj, created_at, updated_at, created_by)
-                SELECT nama, nik, no_hp, hub_keluarga, tps, kelurahan, kecamatan, nama_pj, no_hp_pj, '" . now() . "', '" . now() . "', '" . auth()->user()->user . "'
-                FROM data_kpu_invalid
-                WHERE NOT tps = '000' AND id>=1203;
-            ");
+            $count = DataKpuInvalid::select('nama', 'nik', 'no_hp', 'hub_keluarga', 'tps', 'kelurahan', 'kecamatan', 'nama_pj', 'no_hp_pj', DB::raw("'" . auth()->user()->user . "' as created_by"), DB::raw(now()->toDateTimeString() . " as created_at"), DB::raw(now()->toDateTimeString() . " as updated_at"))
+                ->where('tps', '!=', '000')
+                ->where('id', '>=', value: 1203)
+                ->count();
+
+            $data_valid = DataKpuInvalid::where('tps', '!=', '000')
+                ->where('id', '>=', value: 1203)
+                ->get()
+                ->toArray();
+            // dd($data_valid);
+            $imported_pemilih_insert = [];
+            $imported_pj_insert = [];
+            foreach ($data_valid as $item) {
+                array_push($imported_pemilih_insert, [
+                    'nama' => $item['nama'],
+                    'nik' => $item['nik'],
+                    'no_hp' => $item['no_hp'],
+                    'hub_keluarga' => $item['hub_keluarga'],
+                    'tps' => $item['tps'],
+                    'kelurahan' => $item['kelurahan'],
+                    'kecamatan' => $item['kecamatan'],
+                    'nama_pj' => $item['nama_pj'],
+                    'no_hp_pj' => $item['no_hp_pj'],
+                    'created_by' => auth()->user()->user,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+
+                if (PenanggungJawab::where('nama', $item['nama_pj'])->count() == 0) {
+                    $pj_is_exist = array_search($item['nama_pj'], array_column($imported_pj_insert, 'nama'));
+                    if ($pj_is_exist === false) {
+                        array_push($imported_pj_insert, [
+                            'nama' => $item['nama_pj'],
+                            'no_hp' => $item['no_hp_pj'],
+                        ]);
+                    }
+                }
+            }
+
+            if (!empty($imported_pemilih_insert)) {
+                Pemilih::upsert($imported_pemilih_insert, uniqueBy: ['nik'], update: ['id']);
+            }
+            if (!empty($imported_pj_insert)) {
+                PenanggungJawab::upsert($imported_pj_insert, uniqueBy: ['nama'], update: ['nama']);
+            }
+
+
+            // dd($imported_pj_insert);
             DB::statement("
                 DELETE FROM data_kpu_invalid
                 WHERE NOT tps = '000' AND id>=1203;
