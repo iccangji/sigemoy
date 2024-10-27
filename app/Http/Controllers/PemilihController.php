@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\PemilihExport;
 use App\Imports\PemilihImport;
 use App\Models\DataGanda;
 use App\Models\DataKpu;
@@ -337,6 +338,11 @@ class PemilihController extends Controller
             }
         }
         return redirect()->back()->with('error', 'Data gagal diimport. Pastikan file berbentuk excel');
+    }
+
+    public function exportData(Request $request)
+    {
+        return Excel::download(new PemilihExport, 'data-pemilih.xlsx');
     }
 
     public function dataGandaValidate(Request $request)

@@ -21,6 +21,13 @@
                                 @if ($level != 'viewer')
                                     <div>
                                         <!-- Tombol Upload Excel -->
+                                        <a href="{{ route('pemilih.export') }}">
+                                            <button class="btn btn-outline-success btn-round mr-2">
+                                                <i class="fa fa-file-excel"></i> Export Excel
+                                            </button>
+                                        </a>
+
+                                        <!-- Tombol Upload Excel -->
                                         <button class="btn btn-success btn-round mr-2" data-toggle="modal"
                                             data-target="#uploadExcel">
                                             <i class="fa fa-file-excel"></i> Upload Excel

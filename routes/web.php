@@ -49,6 +49,7 @@ Route::post('/pemilih/filter', [PemilihController::class, 'cari'])->middleware([
 
 Route::get('/pemilih-lokasi/{id}', [PemilihController::class, 'location'])->middleware(['auth'])->name('pemilih.location');
 Route::post('/pemilih-import', [PemilihController::class, 'importData'])->middleware(['auth'])->name('pemilih.import');
+Route::get('/pemilih-export', [PemilihController::class, 'exportData'])->middleware(['auth'])->name('pemilih.export');
 
 Route::resource('/data-user', UserController::class)->only([
     'index',
