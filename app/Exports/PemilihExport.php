@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class PemilihExport implements FromCollection, WithHeadings, WithColumnFormatting
+class PemilihExport implements FromCollection, WithHeadings
 {
     /**
      * @return \Illuminate\Support\Collection
@@ -43,10 +43,10 @@ class PemilihExport implements FromCollection, WithHeadings, WithColumnFormattin
             'No HP Penanggung Jawab'
         ];
     }
-    public function columnFormats(): array
-    {
-        return [
-            'B' => NumberFormat::FORMAT_NUMBER, // Mengatur kolom 'C' (Phone Number) sebagai angka
-        ];
-    }
+    // public function columnFormats(): array
+    // {
+    //     return [
+    //         'B' => NumberFormat::FORMAT_NUMBER, // Mengatur kolom 'C' (Phone Number) sebagai angka
+    //     ];
+    // }
 }
