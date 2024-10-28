@@ -30,6 +30,10 @@
                 <li class="{{ Request::is('data-user') ? 'active' : '' }}">
                     <a class="nav-link" href="/data-user"><i class="fa-solid fa-user"></i><span>Data User </span></a>
                 </li>
+                <li class="{{ $page == 'rekap-data' ? 'active' : '' }}">
+                    <a class="nav-link" href="/rekap-data"><i class="fa-solid fa-database"></i><span>Rekap
+                            Data</span></a>
+                </li>
             @elseif ($level == 'penginput')
                 <li class="{{ Request::is('pemilih') ? 'active' : '' }}">
                     <a class="nav-link" href="/pemilih"><i class="fa-solid fa-list"></i><span>Data Pemilih</span></a>

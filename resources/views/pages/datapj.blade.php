@@ -48,8 +48,13 @@
                                     <div class="form-group">
                                         <form id="search-form" method="GET" action="{{ route('pj.index') }}">
                                             <label for="Pencarian Data">Pencarian Data</label>
-                                            <input type="text" name="search" class="form-control" id="searchInput"
-                                                value="{{ $search }}" placeholder="Masukkan nama...">
+                                            <div class="d-flex flex-row">
+                                                <input type="text" name="search" class="form-control" id="searchInput"
+                                                    value="{{ $search }}" placeholder="Masukkan nama...">
+                                                <button type="submit" class="btn btn-success ml-2"><i class="fa fa-search"
+                                                        aria-hidden="true"></i></button>
+                                            </div>
+                                            <div class="suggestions w-25" id="suggestions" style="display: none;"></div>
                                         </form>
                                     </div>
                                 </div>
@@ -124,6 +129,46 @@
             if (selectedValue) {
                 window.location.href = selectedValue;
             }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#searchInput').on('keyup', function() {
+                let query = $(this).val();
+
+                if (query.length > 2) { // Hanya mencari jika panjang input lebih dari 2 karakter
+                    $.ajax({
+                        url: '/rekap-data-suggestion',
+                        method: 'GET',
+                        data: {
+                            query: query
+                        },
+                        success: function(data) {
+                            let suggestions = $('#suggestions');
+                            suggestions.empty(); // Kosongkan area suggestion sebelumnya
+
+                            if (data.length) {
+                                suggestions.show();
+                                data.forEach(function(item) {
+                                    suggestions.append('<div class="suggestion-item">' +
+                                        item + '</div>');
+                                });
+                            } else {
+                                suggestions.hide();
+                            }
+                        }
+                    });
+                } else {
+                    $('#suggestions').hide(); // Sembunyikan jika kurang dari 3 karakter
+                }
+            });
+
+            // Mengatur ketika pengguna mengklik item suggestion
+            $(document).on('click', '.suggestion-item', function() {
+                $('#searchInput').val($(this).text()); // Isi input dengan teks item yang diklik
+                $('#suggestions').hide(); // Sembunyikan suggestion setelah pemilihan
+            });
         });
     </script>
 @endsection

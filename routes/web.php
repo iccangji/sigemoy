@@ -7,6 +7,7 @@ use App\Http\Controllers\InvalidController;
 use App\Http\Controllers\KpuController;
 use App\Http\Controllers\PemilihController;
 use App\Http\Controllers\PenanggungJawabController;
+use App\Http\Controllers\RekapDataController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ViewController;
 use Illuminate\Support\Facades\Route;
@@ -83,6 +84,9 @@ Route::get('/data-invalid/sync', [InvalidController::class, 'sync'])->middleware
 Route::get('/data-invalid/validate', [InvalidController::class, 'pemilihValidate'])->middleware(['auth', 'cors'])->name('invalid.validate');
 
 Route::get('/penanggung-jawab', [PenanggungJawabController::class, 'index'])->middleware(['auth', 'cors'])->name('pj.index');;
+Route::get('/rekap-data', [RekapDataController::class, 'index'])->middleware(['auth'])->name('rekap.index');
+Route::get('/rekap-data-export', [RekapDataController::class, 'exportData'])->middleware(['auth'])->name('rekap.export');
+Route::get('/rekap-data-suggestion', [RekapDataController::class, 'suggestion'])->middleware(['auth'])->name('rekap.suggestion');
 
 
 // Route::get('/data-kpu', [KpuController::class, 'index'])->middleware(['auth']);
