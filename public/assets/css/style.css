@@ -4212,7 +4212,7 @@ body:not(.sidebar-mini) .sidebar-style-2 .sidebar-menu li.active ul.dropdown-men
   border-radius: 10px;
   max-height: 150px;
   overflow-y: auto;
-  position: absolute;
+  position: fixed;
   background-color: white;
   z-index: 1000;
 }

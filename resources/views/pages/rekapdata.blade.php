@@ -37,11 +37,11 @@
                                                     <input type="text" name="search" class="form-control"
                                                         id="searchInput" value="{{ $search }}"
                                                         placeholder="Masukkan nama PJ...">
-                                                    <div class="suggestions w-25" id="suggestions" style="display: none;">
-                                                    </div>
                                                 </div>
                                                 <button type="submit" class="btn btn-success ml-2"><i class="fa fa-search"
                                                         aria-hidden="true"></i></button>
+                                            </div>
+                                            <div class="suggestions w-25" id="suggestions" style="display: none;">
                                             </div>
                                         </form>
                                     </div>
