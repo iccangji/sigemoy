@@ -4207,9 +4207,8 @@ body:not(.sidebar-mini) .sidebar-style-2 .sidebar-menu li.active ul.dropdown-men
 
 .suggestions {
   margin-top: 6px;
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
-  border-radius: 10px;
   max-height: 150px;
   overflow-y: auto;
   position: fixed;
@@ -4220,6 +4219,7 @@ body:not(.sidebar-mini) .sidebar-style-2 .sidebar-menu li.active ul.dropdown-men
 .suggestion-item {
   padding: 8px;
   cursor: pointer;
+  border: 1px solid #ccc;
 }
 
 .suggestion-item:hover {
