@@ -307,7 +307,7 @@ class PemilihController extends Controller
                         ]);
                     }
                 }
-                dd(count($data_ganda_insert));
+                // dd(count($data_ganda_insert));
                 Pemilih::upsert($imported_pemilih_insert, uniqueBy: ['nik'], update: ['id']);
                 PenanggungJawab::upsert($imported_pj_insert, uniqueBy: ['nama'], update: ['nama']);
                 DataGanda::upsert($data_ganda_insert, uniqueBy: ['id'], update: ['id']);
