@@ -579,7 +579,6 @@
                 icon: 'success',
                 title: 'Berhasil!',
                 text: '{{ session('success') }}',
-                timer: 3000,
                 showConfirmButton: false
             });
         @endif
@@ -589,7 +588,6 @@
                 icon: 'error',
                 title: 'Gagal',
                 text: '{{ session('error') }}',
-                timer: 5000,
                 showConfirmButton: true
             });
         @endif

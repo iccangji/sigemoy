@@ -235,6 +235,7 @@ class PemilihController extends Controller
 
     public function importData(Request $request)
     {
+        set_time_limit(300);
         $data = $request->validate([
             'upload' => 'required|mimes:xls,xlsx',
         ]);
@@ -249,10 +250,7 @@ class PemilihController extends Controller
 
                 foreach ($imported_data as $item) {
                     if (
-                        DataKpu::where('nama', 'like', "%$item[0]%")
-                        ->where('kelurahan', $item[5])
-                        ->where('tps', $item[6])
-                        ->count() > 0
+                        $item[6] != "000"
                     ) {
                         if (DataGanda::where('nik', $item[1])->count() == 0) {
                             if (Pemilih::where('nik', $item[1])->count() == 0) {
@@ -294,6 +292,7 @@ class PemilihController extends Controller
                                 Pemilih::where('nik', $item[1])->delete();
                             }
                         }
+                        // Tambahkan algoritma jika data telah terdapat di data ganda
                     } else {
                         array_push($data_invalid_insert, [
                             'nama' => $item[0],
@@ -308,19 +307,11 @@ class PemilihController extends Controller
                         ]);
                     }
                 }
-
-                if (!empty($imported_pemilih_insert)) {
-                    Pemilih::upsert($imported_pemilih_insert, uniqueBy: ['nik'], update: ['id']);
-                }
-                if (!empty($imported_pj_insert)) {
-                    PenanggungJawab::upsert($imported_pj_insert, uniqueBy: ['nama'], update: ['nama']);
-                }
-                if (!empty($data_ganda_insert)) {
-                    DataGanda::upsert($data_ganda_insert, uniqueBy: ['id'], update: ['id']);
-                }
-                if (!empty($data_invalid_insert)) {
-                    DataKpuInvalid::upsert($data_invalid_insert, uniqueBy: ['nik'], update: ['id']);
-                }
+                dd(count($data_ganda_insert));
+                Pemilih::upsert($imported_pemilih_insert, uniqueBy: ['nik'], update: ['id']);
+                PenanggungJawab::upsert($imported_pj_insert, uniqueBy: ['nama'], update: ['nama']);
+                DataGanda::upsert($data_ganda_insert, uniqueBy: ['id'], update: ['id']);
+                DataKpuInvalid::upsert($data_invalid_insert, uniqueBy: ['nik'], update: ['id']);
 
                 if (!empty($data_ganda_insert) && empty($data_invalid_insert)) {
                     return back()->with('error', 'Ditemukan 1 atau lebih data ganda. Harap periksa halaman data ganda');
