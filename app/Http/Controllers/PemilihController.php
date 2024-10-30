@@ -309,11 +309,18 @@ class PemilihController extends Controller
                         }
                     }
                 }
-                // dd($imported_pemilih_insert);
-                DataKpuInvalid::upsert($data_invalid_insert, uniqueBy: ['nik'], update: ['id']);
-                Pemilih::upsert($imported_pemilih_insert, uniqueBy: ['nik'], update: ['id']);
-                PenanggungJawab::upsert($imported_pj_insert, uniqueBy: ['nama'], update: ['nama']);
-                DataGanda::upsert($data_ganda_insert, uniqueBy: ['id'], update: ['id']);
+                if (!empty($data_invalid_insert)) {
+                    DataKpuInvalid::upsert($data_invalid_insert, uniqueBy: ['nik'], update: ['id']);
+                }
+                if (!empty($data_ganda_insert)) {
+                    DataGanda::upsert($data_ganda_insert, uniqueBy: ['id'], update: ['id']);
+                }
+                if (!empty($imported_pemilih_insert)) {
+                    Pemilih::upsert($imported_pemilih_insert, uniqueBy: ['nik'], update: ['id']);
+                }
+                if (!empty($imported_pj_insert)) {
+                    PenanggungJawab::upsert($imported_pj_insert, uniqueBy: ['nama'], update: ['nama']);
+                }
 
                 if (!empty($data_ganda_insert) && empty($data_invalid_insert)) {
                     return back()->with('error', 'Ditemukan 1 atau lebih data ganda. Harap periksa halaman data ganda');
@@ -324,10 +331,7 @@ class PemilihController extends Controller
                 }
                 return redirect()->back()->with('success', 'Data berhasil diimport!');
             } catch (\Throwable $th) {
-                report($th);
-                return redirect()
-                    ->back()
-                    ->with('error', 'Data gagal diimport. Pastikan tidak ada data yang kosong dan file sesuai dengan format, error: ' . $th);
+                return back()->with('error', 'Error ditemukan pada data atas nama ' . $item[0] . ' (' . $item[1] . ')');
             }
         }
         return redirect()->back()->with('error', 'Data gagal diimport. Pastikan file berbentuk excel');
