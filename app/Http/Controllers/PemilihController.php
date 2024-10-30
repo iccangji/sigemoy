@@ -249,69 +249,71 @@ class PemilihController extends Controller
                 $data_invalid_insert = [];
 
                 foreach ($imported_data as $item) {
-                    if (
-                        $item[6] != "000"
-                    ) {
-                        if (DataGanda::where('nik', $item[1])->count() == 0) {
-                            if (Pemilih::where('nik', $item[1])->count() == 0) {
-                                array_push($imported_pemilih_insert, [
-                                    'nama' => $item[0],
-                                    'nik' => $item[1],
-                                    'no_hp' => $item[2],
-                                    'hub_keluarga' => $item[3],
-                                    'tps' => $item[6],
-                                    'kelurahan' => $item[5],
-                                    'kecamatan' => $item[4],
-                                    'nama_pj' => $item[7],
-                                    'no_hp_pj' => $item[8],
-                                    'created_by' => auth()->user()->user,
-                                ]);
+                    if ($item[1] != null) {
+                        if (
+                            $item[6] != "000"
+                        ) {
+                            if (DataGanda::where('nik', $item[1])->count() == 0) {
+                                if (Pemilih::where('nik', $item[1])->count() == 0) {
+                                    array_push($imported_pemilih_insert, [
+                                        'nama' => $item[0],
+                                        'nik' => $item[1],
+                                        'no_hp' => $item[2],
+                                        'hub_keluarga' => $item[3],
+                                        'tps' => $item[6],
+                                        'kelurahan' => $item[5],
+                                        'kecamatan' => $item[4],
+                                        'nama_pj' => $item[7],
+                                        'no_hp_pj' => $item[8],
+                                        'created_by' => auth()->user()->user,
+                                    ]);
 
-                                if (PenanggungJawab::where('nama', $item[7])->count() == 0) {
-                                    $pj_is_exist = array_search($item[7], array_column($imported_pj_insert, 'nama'));
-                                    if ($pj_is_exist === false) {
-                                        array_push($imported_pj_insert, [
-                                            'nama' => $item[7],
-                                            'no_hp' => $item[8],
-                                        ]);
+                                    if (PenanggungJawab::where('nama', $item[7])->count() == 0) {
+                                        $pj_is_exist = array_search($item[7], array_column($imported_pj_insert, 'nama'));
+                                        if ($pj_is_exist === false) {
+                                            array_push($imported_pj_insert, [
+                                                'nama' => $item[7],
+                                                'no_hp' => $item[8],
+                                            ]);
+                                        }
                                     }
+                                } else {
+                                    $existing_nama_pj = Pemilih::where('nik', $item[1])->first()->nama_pj;
+                                    $existing_no_hp_pj = PenanggungJawab::where('nama', $existing_nama_pj)->first()->no_hp;
+                                    array_push($data_ganda_insert, [
+                                        'nama' => $item[0],
+                                        'nik' => $item[1],
+                                        'no_hp' => $item[2],
+                                        'hub_keluarga' => $item[3],
+                                        'tps' => $item[6],
+                                        'kelurahan' => $item[5],
+                                        'kecamatan' => $item[4],
+                                        'report' => 'Terdapat irisan data antara penanggung jawab atas nama ' . $existing_nama_pj . ' (' . $existing_no_hp_pj . ') dan ' . $item[7] . ' (' . $item[8] . ')',
+                                    ]);
+                                    Pemilih::where('nik', $item[1])->delete();
                                 }
-                            } else {
-                                $existing_nama_pj = Pemilih::where('nik', $item[1])->first()->nama_pj;
-                                $existing_no_hp_pj = PenanggungJawab::where('nama', $existing_nama_pj)->first()->no_hp;
-                                array_push($data_ganda_insert, [
-                                    'nama' => $item[0],
-                                    'nik' => $item[1],
-                                    'no_hp' => $item[2],
-                                    'hub_keluarga' => $item[3],
-                                    'tps' => $item[6],
-                                    'kelurahan' => $item[5],
-                                    'kecamatan' => $item[4],
-                                    'report' => 'Terdapat irisan data antara penanggung jawab atas nama ' . $existing_nama_pj . ' (' . $existing_no_hp_pj . ') dan ' . $item[7] . ' (' . $item[8] . ')',
-                                ]);
-                                Pemilih::where('nik', $item[1])->delete();
                             }
+                            // Tambahkan algoritma jika data telah terdapat di data ganda
+                        } else {
+                            array_push($data_invalid_insert, [
+                                'nama' => $item[0],
+                                'nik' => $item[1],
+                                'no_hp' => $item[2],
+                                'hub_keluarga' => $item[3],
+                                'tps' => $item[6],
+                                'kelurahan' => $item[5],
+                                'kecamatan' => $item[4],
+                                'nama_pj' => $item[7],
+                                'no_hp_pj' => $item[8],
+                            ]);
                         }
-                        // Tambahkan algoritma jika data telah terdapat di data ganda
-                    } else {
-                        array_push($data_invalid_insert, [
-                            'nama' => $item[0],
-                            'nik' => $item[1],
-                            'no_hp' => $item[2],
-                            'hub_keluarga' => $item[3],
-                            'tps' => $item[6],
-                            'kelurahan' => $item[5],
-                            'kecamatan' => $item[4],
-                            'nama_pj' => $item[7],
-                            'no_hp_pj' => $item[8],
-                        ]);
                     }
                 }
-                // dd(count($data_ganda_insert));
+                // dd($imported_pemilih_insert);
+                DataKpuInvalid::upsert($data_invalid_insert, uniqueBy: ['nik'], update: ['id']);
                 Pemilih::upsert($imported_pemilih_insert, uniqueBy: ['nik'], update: ['id']);
                 PenanggungJawab::upsert($imported_pj_insert, uniqueBy: ['nama'], update: ['nama']);
                 DataGanda::upsert($data_ganda_insert, uniqueBy: ['id'], update: ['id']);
-                DataKpuInvalid::upsert($data_invalid_insert, uniqueBy: ['nik'], update: ['id']);
 
                 if (!empty($data_ganda_insert) && empty($data_invalid_insert)) {
                     return back()->with('error', 'Ditemukan 1 atau lebih data ganda. Harap periksa halaman data ganda');
