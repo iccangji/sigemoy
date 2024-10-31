@@ -323,15 +323,16 @@ class PemilihController extends Controller
                 }
 
                 if (!empty($data_ganda_insert) && empty($data_invalid_insert)) {
-                    return back()->with('error', 'Ditemukan 1 atau lebih data ganda. Harap periksa halaman data ganda');
+                    return back()->with('success', 'Ditemukan 1 atau lebih data ganda. Harap periksa halaman data ganda');
                 } elseif (empty($data_ganda_insert) && !empty($data_invalid_insert)) {
-                    return back()->with('error', 'Ditemukan 1 atau lebih data yang tidak valid dengan data KPU. Harap periksa halaman data tidak valid');
+                    return back()->with('success', 'Ditemukan 1 atau lebih data yang tidak valid dengan data KPU. Harap periksa halaman data tidak valid');
                 } elseif (!empty($data_ganda_insert) && !empty($data_invalid_insert)) {
-                    return back()->with('error', 'Ditemukan 1 atau lebih data ganda dan data yang tidak valid dengan data KPU. Harap periksa halaman data ganda dan halaman data tidak valid');
+                    return back()->with('success', 'Ditemukan 1 atau lebih data ganda dan data yang tidak valid dengan data KPU. Harap periksa halaman data ganda dan halaman data tidak valid');
                 }
                 return redirect()->back()->with('success', 'Data berhasil diimport!');
             } catch (\Throwable $th) {
-                return back()->with('error', 'Error ditemukan pada data atas nama ' . $item[0] . ' (' . $item[1] . ')');
+                $null_index = strpos($th->getMessage(), 'null');
+                return back()->with('error', 'Error ditemukan pada data atas nama ' . $item[0] . ' (' . $item[1] . '). Error: ' . substr($th->getMessage(), 0, $null_index + strlen("null")));
             }
         }
         return redirect()->back()->with('error', 'Data gagal diimport. Pastikan file berbentuk excel');

@@ -578,8 +578,8 @@
             Swal.fire({
                 icon: 'success',
                 title: 'Berhasil!',
-                text: '{{ session('success') }}',
-                showConfirmButton: false
+                html: '{{ session('success') }}',
+                showConfirmButton: true
             });
         @endif
 
@@ -587,7 +587,7 @@
             Swal.fire({
                 icon: 'error',
                 title: 'Gagal',
-                text: '{{ session('error') }}',
+                html: '{{ session('error') }}',
                 showConfirmButton: true
             });
         @endif
