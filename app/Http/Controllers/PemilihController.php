@@ -246,6 +246,7 @@ class PemilihController extends Controller
                 $imported_pj_insert = [];
                 $imported_pemilih_insert = [];
                 $data_ganda_insert = [];
+                $existing_data_ganda_ = [];
                 $data_invalid_insert = [];
 
                 foreach ($imported_data as $item) {
@@ -290,7 +291,7 @@ class PemilihController extends Controller
                                         'kecamatan' => $item[4],
                                         'report' => 'Terdapat irisan data antara penanggung jawab atas nama ' . $existing_nama_pj . ' (' . $existing_no_hp_pj . ') dan ' . $item[7] . ' (' . $item[8] . ')',
                                     ]);
-                                    Pemilih::where('nik', $item[1])->delete();
+                                    $existing_data_ganda[] = $item[1];
                                 }
                             }
                             // Tambahkan algoritma jika data telah terdapat di data ganda
@@ -314,6 +315,9 @@ class PemilihController extends Controller
                 }
                 if (!empty($data_ganda_insert)) {
                     DataGanda::upsert($data_ganda_insert, uniqueBy: ['id'], update: ['id']);
+                }
+                if (!empty($existing_data_ganda)) {
+                    Pemilih::whereIn('nik', $existing_data_ganda)->delete();
                 }
                 if (!empty($imported_pemilih_insert)) {
                     Pemilih::upsert($imported_pemilih_insert, uniqueBy: ['nik'], update: ['id']);
