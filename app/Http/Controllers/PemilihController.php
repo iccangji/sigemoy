@@ -253,7 +253,9 @@ class PemilihController extends Controller
                 $data_kecamatan = Kecamatan::pluck('nama')->toArray();
                 $data_kelurahan = Kelurahan::pluck('nama')->toArray();
 
+                $data_index = 2;
                 foreach ($imported_data as $item) {
+                    array_splice($item, 9);
                     if (!in_array(null, $item, true)) {
                         $data_seen[] = $item[1];
                         if (
@@ -262,10 +264,10 @@ class PemilihController extends Controller
                             if (DataGanda::where('nik', $item[1])->count() == 0) {
                                 if (Pemilih::where('nik', $item[1])->count() == 0) {
                                     if (!in_array($item[4], $data_kecamatan)) {
-                                        return back()->with('error', 'Terdapat data kecamatan yang tidak ditemukan pada file excel (' . $item[4] . ')');
+                                        return back()->with('error', 'Terdapat data kecamatan yang tidak ditemukan pada file excel baris ke-' . $data_index . ' (' . $item[4] . ')');
                                     }
                                     if (!in_array($item[5], $data_kelurahan)) {
-                                        return back()->with('error', 'Terdapat data kelurahan yang tidak ditemukan pada file excel (' . $item[5] . ')');
+                                        return back()->with('error', 'Terdapat data kelurahan yang tidak ditemukan pada file excel baris ke-' . $data_index . ' (' . $item[5] . ')');
                                     }
                                     array_push($imported_pemilih_insert, [
                                         'nama' => $item[0],
@@ -320,13 +322,16 @@ class PemilihController extends Controller
                             ]);
                         }
                     } else {
-                        return back()->with('error', 'Masih terdapat data kosong pada file excel');
+                        if (!empty(array_filter($item))) {
+                            return back()->with('error', 'Masih terdapat data kosong pada baris ke-' . $data_index);
+                        }
                     }
+                    $data_index += 1;
                 }
 
                 $data_duplicate = array_diff_assoc($data_seen, array_unique($data_seen));
                 if (count($data_duplicate) > 0) {
-                    return back()->with('error', 'Masih terdapat data duplikat pada file excel. Data Duplikat: ' . implode($data_duplicate));
+                    return back()->with('error', 'Masih terdapat data duplikat pada file excel. Data Duplikat: ' . implode(', ', $data_duplicate));
                 }
 
                 if (!empty($data_invalid_insert)) {
