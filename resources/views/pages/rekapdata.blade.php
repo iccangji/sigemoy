@@ -18,8 +18,8 @@
                                         <!-- Tombol Upload Excel -->
                                         @if ($search && $count_pemilih)
                                             <a href="{{ route('rekap.export', ['search' => $search]) }}">
-                                                <button class="btn btn-outline-success btn-round mr-2">
-                                                    <i class="fa fa-file-excel"></i> Export Excel
+                                                <button class="btn btn-outline-danger btn-round mr-2">
+                                                    <i class="fa-solid fa-file-pdf"></i> Export PDF
                                                 </button>
                                             </a>
                                         @endif

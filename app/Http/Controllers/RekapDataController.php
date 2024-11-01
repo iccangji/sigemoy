@@ -7,9 +7,9 @@ use App\Models\DataKpuInvalid;
 use App\Models\Pemilih;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
-use App\Exports\RekapExport;
 use App\Models\PenanggungJawab;
-use Maatwebsite\Excel\Facades\Excel;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 
 class RekapDataController extends Controller
@@ -68,19 +68,59 @@ class RekapDataController extends Controller
 
     public function exportData(Request $request)
     {
-        $search = $request->query('search', '');
-        // dd($search);
         ini_set('memory_limit', -1);
-        return Excel::download(new RekapExport($search), 'rekap-data.xlsx');
+        $search = $request->query('search', '');
+        $items = Pemilih::where('nama_pj', 'like', "%$search%")
+            ->orderBy('updated_at', 'desc')->get()->map(function ($item) {
+                $item->status = 'Valid';
+                return $item;
+            });
+        $itemsGanda = DataGanda::where('report', 'like', "%$search%")
+            ->orderBy('updated_at', 'desc')->get()->map(function ($item) {
+                $item->status = 'Ganda';
+                return $item;
+            });
+        $itemsInvalid = DataKpuInvalid::where('nama_pj', 'like', "%$search%")
+            ->orderBy('updated_at', 'desc')->get()->map(function ($item) {
+                $item->status = 'Tidak Valid';
+                return $item;
+            });
+
+        $itemsPj = PenanggungJawab::where('nama', 'like', "%$search%")->get();
+        $countPemilih = $items->count();
+        $countGanda = $itemsGanda->count();
+        $countInvalid = $itemsInvalid->count();
+
+        $items = $items->concat($itemsGanda)->concat($itemsInvalid);
+
+        $html = view('export.rekappdf', [
+            'data' => $items,
+            'data_pj' => $itemsPj,
+            'search' => $search,
+            'count_pemilih' => $countPemilih,
+            'count_ganda' => $countGanda,
+            'count_invalid' => $countInvalid,
+        ]);
+
+
+        $options = new Options();
+        $options->set('defaultFont', 'Helvetica');
+        $dompdf = new Dompdf($options);
+
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+        return $dompdf->stream("rekap-data-sigemoy.pdf", ["Attachment" => true]);
     }
 
     public function suggestion(Request $request)
     {
         $query = $request->get('query');
 
-        // Misalnya, Anda memiliki model untuk mencari data
+
         $suggestions = PenanggungJawab::where('nama', 'like', "%$query%")
-            ->pluck('nama'); // Sesuaikan nama kolom dan model
+            ->pluck('nama');
 
         return response()->json($suggestions);
     }

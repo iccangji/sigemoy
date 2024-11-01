@@ -246,16 +246,27 @@ class PemilihController extends Controller
                 $imported_pj_insert = [];
                 $imported_pemilih_insert = [];
                 $data_ganda_insert = [];
-                $existing_data_ganda_ = [];
+                $existing_data_ganda = [];
                 $data_invalid_insert = [];
 
+                $data_seen = [];
+                $data_kecamatan = Kecamatan::pluck('nama')->toArray();
+                $data_kelurahan = Kelurahan::pluck('nama')->toArray();
+
                 foreach ($imported_data as $item) {
-                    if ($item[1] != null) {
+                    if (!in_array(null, $item, true)) {
+                        $data_seen[] = $item[1];
                         if (
                             $item[6] != "000"
                         ) {
                             if (DataGanda::where('nik', $item[1])->count() == 0) {
                                 if (Pemilih::where('nik', $item[1])->count() == 0) {
+                                    if (!in_array($item[4], $data_kecamatan)) {
+                                        return back()->with('error', 'Terdapat data kecamatan yang tidak ditemukan pada file excel (' . $item[4] . ')');
+                                    }
+                                    if (!in_array($item[5], $data_kelurahan)) {
+                                        return back()->with('error', 'Terdapat data kelurahan yang tidak ditemukan pada file excel (' . $item[5] . ')');
+                                    }
                                     array_push($imported_pemilih_insert, [
                                         'nama' => $item[0],
                                         'nik' => $item[1],
@@ -308,8 +319,16 @@ class PemilihController extends Controller
                                 'no_hp_pj' => $item[8],
                             ]);
                         }
+                    } else {
+                        return back()->with('error', 'Masih terdapat data kosong pada file excel');
                     }
                 }
+
+                $data_duplicate = array_diff_assoc($data_seen, array_unique($data_seen));
+                if (count($data_duplicate) > 0) {
+                    return back()->with('error', 'Masih terdapat data duplikat pada file excel. Data Duplikat: ' . implode($data_duplicate));
+                }
+
                 if (!empty($data_invalid_insert)) {
                     DataKpuInvalid::upsert($data_invalid_insert, uniqueBy: ['nik'], update: ['id']);
                 }
