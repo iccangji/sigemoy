@@ -46,7 +46,8 @@
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <form id="search-form" method="GET" action="{{ route('pj.index') }}">
+                                        <form id="search-form" method="GET" action="{{ route('pj.index') }}"
+                                            autocomplete="off">
                                             <label for="Pencarian Data">Pencarian Data</label>
                                             <div class="d-flex flex-row">
                                                 <input type="text" name="search" class="form-control" id="searchInput"

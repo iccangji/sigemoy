@@ -30,7 +30,8 @@
 
                                 <div class="d-flex justify-content-between mb-2 align-items-center">
                                     <div class="form-group d-flex align-items-end flex-column">
-                                        <form id="search-form" method="GET" action="{{ $route }}">
+                                        <form id="search-form" method="GET" action="{{ $route }}"
+                                            autocomplete="off">
                                             <label for="Pencarian Data">Nama Penanggung Jawab</label>
                                             <div class="d-flex flex-row">
                                                 <div>
