@@ -18,23 +18,24 @@ class RekapDataController extends Controller
     {
         $search = $request->query('search', '');
 
-        $items = Pemilih::where('nama_pj', 'like', "%$search%")
+        $items = Pemilih::where('nama_pj', "$search")
             ->orderBy('updated_at', 'desc')->get()->map(function ($item) {
                 $item->status = 'Valid';
                 return $item;
             });
-        $itemsGanda = DataGanda::where('report', 'like', "%$search%")
+        $itemsGanda = DataGanda::where('report', 'like', "%atas nama $search (%")
+            ->orWhere('report', 'like', "%dan $search (%")
             ->orderBy('updated_at', 'desc')->get()->map(function ($item) {
                 $item->status = 'Ganda';
                 return $item;
             });
-        $itemsInvalid = DataKpuInvalid::where('nama_pj', 'like', "%$search%")
+        $itemsInvalid = DataKpuInvalid::where('nama_pj', "$search")
             ->orderBy('updated_at', 'desc')->get()->map(function ($item) {
                 $item->status = 'Tidak Valid';
                 return $item;
             });
 
-        $itemsPj = PenanggungJawab::where('nama', 'like', "%$search%")->get();
+        $itemsPj = PenanggungJawab::where('nama', "$search")->get();
         $countPemilih = $items->count();
         $countGanda = $itemsGanda->count();
         $countInvalid = $itemsInvalid->count();
@@ -70,23 +71,24 @@ class RekapDataController extends Controller
     {
         ini_set('memory_limit', -1);
         $search = $request->query('search', '');
-        $items = Pemilih::where('nama_pj', 'like', "%$search%")
+        $items = Pemilih::where('nama_pj', "$search")
             ->orderBy('updated_at', 'desc')->get()->map(function ($item) {
                 $item->status = 'Valid';
                 return $item;
             });
-        $itemsGanda = DataGanda::where('report', 'like', "%$search%")
+        $itemsGanda = DataGanda::where('report', 'like', "%atas nama $search (%")
+            ->orWhere('report', 'like', "%dan $search (%")
             ->orderBy('updated_at', 'desc')->get()->map(function ($item) {
                 $item->status = 'Ganda';
                 return $item;
             });
-        $itemsInvalid = DataKpuInvalid::where('nama_pj', 'like', "%$search%")
+        $itemsInvalid = DataKpuInvalid::where('nama_pj', "$search")
             ->orderBy('updated_at', 'desc')->get()->map(function ($item) {
                 $item->status = 'Tidak Valid';
                 return $item;
             });
 
-        $itemsPj = PenanggungJawab::where('nama', 'like', "%$search%")->get();
+        $itemsPj = PenanggungJawab::where('nama', "$search")->get();
         $countPemilih = $items->count();
         $countGanda = $itemsGanda->count();
         $countInvalid = $itemsInvalid->count();
@@ -111,7 +113,7 @@ class RekapDataController extends Controller
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
-        return $dompdf->stream("rekap-data-sigemoy.pdf", ["Attachment" => true]);
+        return $dompdf->stream("rekap-data-sigemoy-$search.pdf", ["Attachment" => true]);
     }
 
     public function suggestion(Request $request)
